@@ -5,6 +5,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 First, run the development server:
 
 ```bash
+nvm use # read .nvmrc and set node version to >25.8.0
 npm run dev
 # or
 yarn dev
