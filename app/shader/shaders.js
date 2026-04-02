@@ -17,6 +17,7 @@ uniform float aspect;
 
 // display parameters
 uniform float param_1;
+uniform float param_2;
 `
 
 const complexNumbers = `
@@ -49,7 +50,7 @@ vec2 pow4(vec2 a) {
 
 const functionToBeGraphed = `
 vec2 function(vec2 x) {
-  vec2 y = pow4(x);
+  vec2 y = pow4(x) - vec2(0.5, 0.0);
 
   return y;
 }
@@ -74,7 +75,7 @@ void main() {
   float fac = 1.0/(radius + 1.0);
 
   // color by complex angle
-  vec3 color = vec3(sin(angle), sin(angle - 2.0*PI/3.0), sin(angle - 4.0*PI/3.0));
+  vec3 color = vec3(sin(angle + param_2), sin(angle + param_2 - 2.0*PI/3.0), sin(angle + param_2 - 4.0*PI/3.0));
   
   // extra parameters
   float inv_param_1 = 1.0 - param_1;
