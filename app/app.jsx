@@ -37,11 +37,15 @@ const App = () => {
                 gap: '5px'
             }}>
                 <div style={{
+                    display:'flex',
+                    flexDirection:'column',
                     padding: '1rem',
-                    width: '200px'
+                    width: '200px',
+                    gap: '5px'
                 }}>
-                    Display options
+                    <p style={{fontSize: '24px'}}>Display options</p>
                     <InputSlider
+                        title="Color intensity"
                         value={shaderParameter1}
                         step={0.01}
                         min={0}
@@ -49,6 +53,7 @@ const App = () => {
                         setValue={setShaderParameter1}
                     />
                     <InputSlider
+                        title="Phase"
                         value={shaderParameter2}
                         step={0.01}
                         min={0}
