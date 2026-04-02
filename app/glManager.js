@@ -15,12 +15,12 @@ export default class glManager {
 
         this.shaderAttribs = {
             vertexPosition: gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
-            // resolution: gl.getUniformLocation(this.shaderProgram, 'resolution'),
-            // aspect: gl.getUniformLocation(this.shaderProgram, 'aspect')
+            resolution: gl.getUniformLocation(this.shaderProgram, 'resolution'),
+            aspect: gl.getUniformLocation(this.shaderProgram, 'aspect')
         };
         
-        // gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
-        // gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width)
+        gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
+        gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width)
 
         this.positionBuffer = initPositionBuffer(gl, this.shaderAttribs.vertexPosition);
 

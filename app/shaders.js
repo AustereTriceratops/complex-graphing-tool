@@ -8,40 +8,72 @@ void main() {
 
 const fragmentShaderSetup = `
 precision highp float;
+
+float PI = 3.14159265358;
+
+// canvas dims
+uniform vec2 resolution;
+uniform float aspect;
 `
 
-const coordinateTransforms =
+const complexNumbers = `
+vec2 conj(vec2 a) {
+  return vec2(a.x, -a.y);
+}
+
+float len_sq(vec2 a) {
+  return a.x*a.x + a.y*a.y;
+}
+  
+vec2 multiply(vec2 a, vec2 b) {
+  return vec2(a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x);
+}
+    
+// calculate a/b
+vec2 divide(vec2 a, vec2 b) {
+  return a * conj(b)/len_sq(b);
+}
+
+vec2 square(vec2 a) {
+  return vec2(a.x * a.x - a.y * a.y, 2.0 * a.x * a.y);
+}
+
+vec2 pow4(vec2 a) {
+  vec2 sq = square(a);
+  return square(sq);
+}
 `
-// COORDINATE TRANSFORMS ===========
-vec2 to0Pos1( vec2 v ) {
-  return vec2(aspect, 1.0) * v / resolution;
-}
 
-vec2 toNeg1Pos1( vec2 v ) {
-  vec2 w = to0Pos1(v);
-  return vec2(2.0*w.x - aspect, 2.0*w.y - 1.0);
-}
+const functionToBeGraphed = `
+vec2 function(vec2 x) {
+  vec2 y = pow4(x);
 
-// maps p in interval a to interval b
-float toInterval( vec2 a, vec2 b, float p ) {
-  float n = (p - a.x)/(a.y - a.x);
-  float m = n * (b.y - b.x) + b.x;
-  return m;
+  return y;
 }
 `
 
 const fragmentShaderMain = `
-// gl_FragCoord in [0,1]
+// gl_FragCoord in [ (0, 0), (pixel_width, pixel_height) ]
 void main() {
-    // vec2 uv = toNeg1Pos1(gl_FragCoord.xy) * vec2(1.0/(aspect*aspect), 1.0);
+  // these ternary conditions ensures that the scale of the image will never be below 1 in either dimension
+  vec2 scale = (aspect < 1.0) ? vec2(1.0/aspect, 1.0) : vec2(1.0, aspect);
+  vec2 disp = (aspect < 1.0) ? vec2(1.0/aspect, 1.0) : vec2(1.0, aspect);
+  
+  // all coords will be in the range [-1, 1] and [-aspect, aspect]
+  vec2 coords = scale * 2.0 * gl_FragCoord.xy/resolution - disp;
 
-    // background color
-    vec3 color = vec3(0.9, 0.6, 0.65);
+  vec2 val = function(coords);
 
-    gl_FragColor = vec4(color, 1.0);
+  float angle = atan(val.y, val.x);
+  float radius = sqrt(val.x * val.x + val.y * val.y);
+  float fac = 1.0/(radius + 1.0);
+
+  vec3 color = vec3(0.7, 0.7, 0.7) + 0.3 * vec3(sin(angle), sin(angle - 2.0*PI/3.0), sin(angle - 4.0*PI/3.0));
+
+  gl_FragColor = vec4(fac*color, 1.0);
 }
 `
 
-const fragmentShader = fragmentShaderSetup + fragmentShaderMain
+const fragmentShader = fragmentShaderSetup + complexNumbers + functionToBeGraphed + fragmentShaderMain
 
 export {vertexShader, fragmentShader}

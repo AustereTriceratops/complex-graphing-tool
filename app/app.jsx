@@ -18,8 +18,12 @@ const App = () => {
 
     return (
         <div>
-            <p>Hello :)</p>
-            <canvas ref={canvasRef}/>
+            <p>y = x^4</p>
+            <canvas
+                ref={canvasRef}
+                width={1000}
+                height={600}
+            />
         </div>
     )
 }
