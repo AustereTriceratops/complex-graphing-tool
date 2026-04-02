@@ -16,7 +16,8 @@ export default class glManager {
         this.shaderAttribs = {
             vertexPosition: gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
             resolution: gl.getUniformLocation(this.shaderProgram, 'resolution'),
-            aspect: gl.getUniformLocation(this.shaderProgram, 'aspect')
+            aspect: gl.getUniformLocation(this.shaderProgram, 'aspect'),
+            param_1: gl.getUniformLocation(this.shaderProgram, 'param_1')
         };
         
         gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
@@ -27,8 +28,9 @@ export default class glManager {
         this.gl = gl
     }
 
-    render() {
-        console.log("render called")
+    render(shaderParameter1) {
+        this.gl.uniform1f(this.shaderAttribs.param_1, shaderParameter1)
+
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
     }

@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/app.jsx", "app/glManager.js"  ],
+, "app/app.jsx", "app/shader/glManager.js"  ],
   "exclude": ["node_modules"]
 }

@@ -14,6 +14,9 @@ float PI = 3.14159265358;
 // canvas dims
 uniform vec2 resolution;
 uniform float aspect;
+
+// display parameters
+uniform float param_1;
 `
 
 const complexNumbers = `
@@ -66,9 +69,16 @@ void main() {
 
   float angle = atan(val.y, val.x);
   float radius = sqrt(val.x * val.x + val.y * val.y);
+
+  // modulate the brightness by complex magnitude
   float fac = 1.0/(radius + 1.0);
 
-  vec3 color = vec3(0.7, 0.7, 0.7) + 0.3 * vec3(sin(angle), sin(angle - 2.0*PI/3.0), sin(angle - 4.0*PI/3.0));
+  // color by complex angle
+  vec3 color = vec3(sin(angle), sin(angle - 2.0*PI/3.0), sin(angle - 4.0*PI/3.0));
+  
+  // extra parameters
+  float inv_param_1 = 1.0 - param_1;
+  color = vec3(inv_param_1, inv_param_1, inv_param_1) + param_1 * color;
 
   gl_FragColor = vec4(fac*color, 1.0);
 }
