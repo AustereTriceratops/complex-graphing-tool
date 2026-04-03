@@ -1,0 +1,24 @@
+<project name='Compiler' default='compile'>
+    <target name="clean-lexer">
+        <delete file="src/lexer/lexer.java"/>
+        <delete file="src/lexer/lexer.java~"/>
+    </target>
+
+    <target name="clean" depends="clean-lexer">
+        <delete dir="build"/>
+    </target>
+
+    <target name='init'>
+         <mkdir dir="build"/>
+    </target>
+
+    <target name='build-lexer' depends="clean-lexer">
+        <java classname="jflex.Main" classpath="lib/jflex-full-1.8.2.jar">
+            <arg value="src/lexer/lexer.jflex"/>
+        </java>
+    </target>
+
+    <target name='compile' depends='init, build-lexer'>
+        <javac srcdir="src" destdir="build" classpath="lib/java-cup-11b.jar"/>
+    </target>
+</project>
