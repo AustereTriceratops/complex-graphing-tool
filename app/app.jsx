@@ -4,8 +4,14 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import glManager from './shader/glManager';
 import InputSlider from './InputSlider';
+import NumberInput from './NumberInput';
 
 const App = () => {
+    // INTERACTIVITY
+    
+    const [aspect, setAspect] = useState(0);
+    const [xMin, setXMin] = useState(0);
+
     // CANVAS AND SHADER SETUP
     const canvasRef = useRef(null);
     const programRef = useRef(null);
@@ -15,6 +21,11 @@ const App = () => {
 
         if (canvas) {
             programRef.current = new glManager(canvas);
+
+            const aspect = canvas.height/canvas.width;
+            setAspect(aspect);
+            setXMin(-aspect);
+            setXMax(aspect);
         }
     }, [])
 
@@ -24,9 +35,7 @@ const App = () => {
 
     useEffect(() => {
         programRef.current.render(shaderParameter1, shaderParameter2)
-    }, [shaderParameter1, shaderParameter2])
-
-    // SHADER RE-RENDERING
+    }, [shaderParameter1, shaderParameter2]);
 
     return (
         <div>
@@ -40,10 +49,10 @@ const App = () => {
                     display:'flex',
                     flexDirection:'column',
                     padding: '1rem',
-                    width: '10%vw',
+                    width: '15%vw',
                     gap: '5px'
                 }}>
-                    <p style={{fontSize: '24px'}}>Display options</p>
+                    <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
                     <InputSlider
                         title="Color intensity"
                         value={shaderParameter1}
@@ -60,10 +69,15 @@ const App = () => {
                         max={4*Math.PI}
                         setValue={setShaderParameter2}
                     />
+                    <NumberInput
+                        title="x_min"
+                        value={xMin.toFixed(5)}
+                        onChange={(ev) => setXMin(ev.target.value)}
+                    />
                 </div>
                 <canvas
                     ref={canvasRef}
-                    width={0.9*window.innerWidth}
+                    width={0.85*window.innerWidth}
                     height={0.95*window.innerHeight}
                 />
             </div>

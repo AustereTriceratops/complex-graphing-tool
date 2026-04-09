@@ -181,8 +181,8 @@ void main() {
   float radius = complex_radius(val);
 
   // modulate the brightness by complex magnitude
-  // float fac = 1.0/(pow(radius, 1.0) + 1.0);
-  float fac = 1.0;
+  float fac = 1.0/(pow(radius, 0.2) + 1.0);
+  // float fac = 1.0;
 
   // color by complex angle
   vec3 color = vec3(sin(angle + param_2), sin(angle + param_2 - 2.0*PI/3.0), sin(angle + param_2 - 4.0*PI/3.0));
