@@ -25,7 +25,6 @@ const App = () => {
             const aspect = canvas.height/canvas.width;
             setAspect(aspect);
             setXMin(-aspect);
-            setXMax(aspect);
         }
     }, [])
 
