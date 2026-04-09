@@ -44,7 +44,7 @@ vec2 c_multiply(vec2 a, vec2 b) {
     
 // calculate a/b
 vec2 c_divide(vec2 a, vec2 b) {
-  return a * conj(b)/len_sq(b);
+  return c_multiply(a, conj(b)/len_sq(b));
 }
 
 vec2 c_pow2(vec2 a) {
@@ -77,7 +77,7 @@ vec2 c_exp(vec2 a) {
 }
 `
 
-const functionToBeGraphed = `
+const functions = `
 vec2 function(vec2 x) {
   // vec2 y = c_multiply(x, c_pow4(x)) - vec2(0.5, 0.0);
   // vec2 y = c_exp(x);
@@ -111,6 +111,54 @@ vec2 dedekind_eta_function(vec2 x) {
 
   return prod10;
 }
+
+vec2 eisenstein_function_4(vec2 x) {
+  vec2 q = q(x); 
+  vec2 term_1 = c_divide(q, vec2(1.0, 0.0) - q);
+
+  vec2 q_pow_2 = c_pow(q, 2.0);
+  vec2 term_2 = pow(2.0, 3.0) * c_divide(q_pow_2, vec2(1.0, 0.0) - q_pow_2);
+  vec2 q_pow_3 = c_pow(q, 3.0);
+  vec2 term_3 = pow(3.0, 3.0) * c_divide(q_pow_3, vec2(1.0, 0.0) - q_pow_3);
+  vec2 q_pow_4 = c_pow(q, 4.0);
+  vec2 term_4 = pow(4.0, 3.0) * c_divide(q_pow_4, vec2(1.0, 0.0) - q_pow_4);
+  vec2 q_pow_5 = c_pow(q, 5.0);
+  vec2 term_5 = pow(5.0, 3.0) * c_divide(q_pow_5, vec2(1.0, 0.0) - q_pow_5);
+  vec2 q_pow_6 = c_pow(q, 6.0);
+  vec2 term_6 = pow(6.0, 3.0) * c_divide(q_pow_6, vec2(1.0, 0.0) - q_pow_6);
+  vec2 q_pow_7 = c_pow(q, 7.0);
+  vec2 term_7 = pow(7.0, 3.0) * c_divide(q_pow_7, vec2(1.0, 0.0) - q_pow_7);
+  vec2 q_pow_8 = c_pow(q, 8.0);
+  vec2 term_8 = pow(8.0, 3.0) * c_divide(q_pow_8, vec2(1.0, 0.0) - q_pow_8);
+  vec2 q_pow_9 = c_pow(q, 9.0);
+  vec2 term_9 = pow(9.0, 3.0) * c_divide(q_pow_9, vec2(1.0, 0.0) - q_pow_9);
+  vec2 q_pow_10 = c_pow(q, 10.0);
+  vec2 term_10 = pow(10.0, 3.0) * c_divide(q_pow_10, vec2(1.0, 0.0) - q_pow_10);
+  vec2 q_pow_11 = c_pow(q, 11.0);
+  vec2 term_11 = pow(11.0, 3.0) * c_divide(q_pow_11, vec2(1.0, 0.0) - q_pow_11);
+  vec2 q_pow_12 = c_pow(q, 12.0);
+  vec2 term_12 = pow(12.0, 3.0) * c_divide(q_pow_12, vec2(1.0, 0.0) - q_pow_12);
+  vec2 q_pow_13 = c_pow(q, 13.0);
+  vec2 term_13 = pow(13.0, 3.0) * c_divide(q_pow_13, vec2(1.0, 0.0) - q_pow_13);
+  vec2 q_pow_14 = c_pow(q, 14.0);
+  vec2 term_14 = pow(14.0, 3.0) * c_divide(q_pow_14, vec2(1.0, 0.0) - q_pow_14);
+  vec2 q_pow_15 = c_pow(q, 15.0);
+  vec2 term_15 = pow(15.0, 3.0) * c_divide(q_pow_15, vec2(1.0, 0.0) - q_pow_15);
+  vec2 q_pow_16 = c_pow(q, 16.0);
+  vec2 term_16 = pow(16.0, 3.0) * c_divide(q_pow_16, vec2(1.0, 0.0) - q_pow_16);
+  vec2 q_pow_17 = c_pow(q, 17.0);
+  vec2 term_17 = pow(17.0, 3.0) * c_divide(q_pow_17, vec2(1.0, 0.0) - q_pow_17);
+  vec2 q_pow_18 = c_pow(q, 18.0);
+  vec2 term_18 = pow(18.0, 3.0) * c_divide(q_pow_18, vec2(1.0, 0.0) - q_pow_18);
+  vec2 q_pow_19 = c_pow(q, 19.0);
+  vec2 term_19 = pow(19.0, 3.0) * c_divide(q_pow_19, vec2(1.0, 0.0) - q_pow_19);
+
+  // return vec2(1.0, 0.0) + 240.0 * (term_1 + term_2 + term_3 + term_4 + term_5 + term_6 + term_7 + term_8 + term_9 + term_10);
+  return vec2(1.0, 0.0) + 240.0 * (
+    term_1 + term_2 + term_3 + term_4 + term_5 + term_6 + term_7 + term_8 + term_9 + term_10 +
+    term_11 + term_12 + term_13 + term_14 + term_15 + term_16 + term_17 + term_18 + term_19
+  );
+}
 `
 
 const fragmentShaderMain = `
@@ -122,18 +170,19 @@ void main() {
   // all coords will be in the range [-1, 1] and [-aspect, aspect]
 
   vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
-  float zoom = 1.0;
-  vec2 displacement = vec2(0.0, 1.0);
+  float zoom = 0.7;
+  vec2 displacement = vec2(0.0, zoom);
   vec2 coords = zoom * normalized_coords + displacement;
 
-  vec2 val = (coords.y > 0.0) ? dedekind_eta_function(coords) : vec2(0.0,0.0);
+  vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
   // vec2 val = function(coords);
 
   float angle = complex_angle(val);
   float radius = complex_radius(val);
 
   // modulate the brightness by complex magnitude
-  float fac = 1.0/(pow(radius, 0.3) + 1.0);
+  // float fac = 1.0/(pow(radius, 1.0) + 1.0);
+  float fac = 1.0;
 
   // color by complex angle
   vec3 color = vec3(sin(angle + param_2), sin(angle + param_2 - 2.0*PI/3.0), sin(angle + param_2 - 4.0*PI/3.0));
@@ -146,6 +195,6 @@ void main() {
 }
 `
 
-const fragmentShader = fragmentShaderSetup + complexNumbers + functionToBeGraphed + fragmentShaderMain
+const fragmentShader = fragmentShaderSetup + complexNumbers + functions + fragmentShaderMain
 
 export {vertexShader, fragmentShader}

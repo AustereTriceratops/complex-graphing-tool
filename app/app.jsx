@@ -16,7 +16,7 @@ const App = () => {
         if (canvas) {
             programRef.current = new glManager(canvas);
         }
-    })
+    }, [])
 
     // SHADER CONTROLS
     const [shaderParameter1, setShaderParameter1] = useState(0.3);
@@ -30,7 +30,7 @@ const App = () => {
 
     return (
         <div>
-            <p>y = x^4 - 1</p>
+            <p>Eisenstein series E_4</p>
             <div style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -40,7 +40,7 @@ const App = () => {
                     display:'flex',
                     flexDirection:'column',
                     padding: '1rem',
-                    width: '200px',
+                    width: '10%vw',
                     gap: '5px'
                 }}>
                     <p style={{fontSize: '24px'}}>Display options</p>
@@ -63,8 +63,8 @@ const App = () => {
                 </div>
                 <canvas
                     ref={canvasRef}
-                    width={1000}
-                    height={600}
+                    width={0.9*window.innerWidth}
+                    height={0.95*window.innerHeight}
                 />
             </div>
         </div>
