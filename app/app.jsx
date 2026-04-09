@@ -6,6 +6,7 @@ import glManager from './shader/glManager';
 import InputSlider from './InputSlider';
 import NumberInput from './NumberInput';
 
+// TODO: resizing the canvas with the browser window
 const App = () => {
     //
     // CANVAS AND SHADER SETUP
@@ -34,6 +35,24 @@ const App = () => {
     //
     // INTERACTIVITY
     //
+    const [mouseX, setMouseX] = useState(0);
+    const [mouseY, setMouseY] = useState(0);
+    
+    // zoom & offset
+    const [zoom, setZoom] = useState(1);
+    const [offsetX, setOffsetX] = useState(0);
+    const [offsetY, setOffsetY] = useState(0);
+
+    const onScroll = (ev) => {
+        const dZoom = 0.002 * zoom * ev.deltaY
+        setZoom(zoom + dZoom);
+
+        const biasX = mouseX/canvasWidth;
+        const biasY = mouseY/canvasHeight;
+        setOffsetX(offsetX - (2.0 * biasX - 1) * dZoom);
+        setOffsetY(offsetY + (2.0 * biasY - 1) * dZoom);
+
+    }
 
     // dragging
     const [isDragging, setIsDragging] = useState(false);
@@ -45,19 +64,6 @@ const App = () => {
     const onMouseUp = () => {
         setIsDragging(false);
     }
-
-    // zoom
-    const [zoom, setZoom] = useState(1);
-
-    const onScroll = (ev) => {
-        setZoom(zoom + 0.002 * zoom * ev.deltaY);
-    }
-
-    // mouse movement
-    const [mouseX, setMouseX] = useState(0);
-    const [mouseY, setMouseY] = useState(0);
-    const [offsetX, setOffsetX] = useState(0);
-    const [offsetY, setOffsetY] = useState(0);
     
     const onMouseMove = (ev) => {
         // (0,0) at top left, increasing rightwards and downwards to (canvasWidth, canvasHeight)
