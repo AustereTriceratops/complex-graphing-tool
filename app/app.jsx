@@ -1,27 +1,20 @@
 "use client"; // allows next.js to use useState, useRef, etc.
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import glManager from './shader/glManager';
 import InputSlider from './InputSlider';
 import NumberInput from './NumberInput';
 
 const App = () => {
-    // INTERACTIVITY
-    
-    const [aspect, setAspect] = useState(0);
-    const [xMin, setXMin] = useState(0);
-
-    const [zoom, setZoom] = useState(1)
-
-    const onScroll = (ev) => {
-        setZoom(zoom + 0.001 * zoom * ev.deltaY);
-        console.log(zoom)
-    }
-
+    //
     // CANVAS AND SHADER SETUP
+    //
     const canvasRef = useRef(null);
     const programRef = useRef(null);
+
+    const [canvasWidth, setCanvasWidth] = useState(0);
+    const [canvasHeight, setCanvasHeight] = useState(0);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -29,18 +22,44 @@ const App = () => {
         if (canvas) {
             programRef.current = new glManager(canvas);
 
-            const aspect = canvas.height/canvas.width;
-            setAspect(aspect);
-            setXMin(-aspect); //TODO: this is incorrect
+            setCanvasWidth(canvas.width);
+            setCanvasHeight(canvas.height);
         }
     }, [])
 
+    const aspect = useMemo(() => {
+        return canvasHeight/canvasWidth;
+    }, [canvasWidth, canvasHeight])
+
+    //
+    // INTERACTIVITY
+    //
+    const [xMin, setXMin] = useState(0);
+
+    const [mouseX, setMouseX] = useState(0);
+    const [mouseY, setMouseY] = useState(0);
+    
+    const onMouseMove = (ev) => {
+        // (0,0) at top left, increasing rightwards and downwards to (canvasWidth, canvasHeight)
+        const bounds = canvasRef.current.getBoundingClientRect();
+        setMouseX(ev.clientX - bounds.left);
+        setMouseY(ev.clientY - bounds.top);
+    }
+    const [zoom, setZoom] = useState(1);
+
+    const onScroll = (ev) => {
+        setZoom(zoom + 0.002 * zoom * ev.deltaY);
+    }
+
+    //
     // SHADER CONTROLS
+    //
     const [shaderParameter1, setShaderParameter1] = useState(0.3);
     const [shaderParameter2, setShaderParameter2] = useState(0);
 
-    // RENDER THE CANVAS
-
+    //
+    // CANVAS RE-RENDERING
+    //
     useEffect(() => {
         programRef.current.render(zoom, shaderParameter1, shaderParameter2)
     }, [zoom, shaderParameter1, shaderParameter2]);
@@ -88,6 +107,7 @@ const App = () => {
                     width={0.85*window.innerWidth}
                     height={0.95*window.innerHeight}
                     onWheel={onScroll}
+                    onMouseMove={onMouseMove}
                 />
             </div>
         </div>
