@@ -34,26 +34,48 @@ const App = () => {
     //
     // INTERACTIVITY
     //
-    const [mouseX, setMouseX] = useState(0);
-    const [mouseY, setMouseY] = useState(0);
-    
-    const onMouseMove = (ev) => {
-        // (0,0) at top left, increasing rightwards and downwards to (canvasWidth, canvasHeight)
-        const bounds = canvasRef.current.getBoundingClientRect();
-        setMouseX(ev.clientX - bounds.left);
-        setMouseY(ev.clientY - bounds.top);
+
+    // dragging
+    const [isDragging, setIsDragging] = useState(false);
+
+    const onMouseDown = () => {
+        setIsDragging(true);
     }
+
+    const onMouseUp = () => {
+        setIsDragging(false);
+    }
+
+    // zoom
     const [zoom, setZoom] = useState(1);
 
     const onScroll = (ev) => {
         setZoom(zoom + 0.002 * zoom * ev.deltaY);
     }
 
+    // mouse movement
+    const [mouseX, setMouseX] = useState(0);
+    const [mouseY, setMouseY] = useState(0);
+    const [offsetX, setOffsetX] = useState(0);
+    const [offsetY, setOffsetY] = useState(0);
+    
+    const onMouseMove = (ev) => {
+        // (0,0) at top left, increasing rightwards and downwards to (canvasWidth, canvasHeight)
+        const bounds = canvasRef.current.getBoundingClientRect();
+        setMouseX(ev.clientX - bounds.left);
+        setMouseY(ev.clientY - bounds.top);
+
+        if (isDragging) {
+            setOffsetX(offsetX - 2 * zoom * ev.movementX/canvasWidth);
+            setOffsetY(offsetY + 2 * zoom * ev.movementY/canvasHeight);
+        }
+    }
+
     const xMin = useMemo(() => {
-        const xMin = (aspect < 1) ? -zoom/aspect : -zoom;
+        const xMin = (aspect < 1) ? offsetX - zoom/aspect : offsetX - zoom;
         
         return xMin
-    }, [zoom, aspect]);
+    }, [zoom, aspect, offsetX]);
 
     //
     // SHADER CONTROLS
@@ -65,8 +87,8 @@ const App = () => {
     // CANVAS RE-RENDERING
     //
     useEffect(() => {
-        programRef.current.render(zoom, shaderParameter1, shaderParameter2)
-    }, [zoom, shaderParameter1, shaderParameter2]);
+        programRef.current.render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2)
+    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2]);
 
     return (
         <div>
@@ -100,6 +122,7 @@ const App = () => {
                         max={4*Math.PI}
                         setValue={setShaderParameter2}
                     />
+                    <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
                     <NumberInput
                         title="x_min"
                         value={xMin.toFixed(5)}
@@ -110,8 +133,10 @@ const App = () => {
                     ref={canvasRef}
                     width={0.85*window.innerWidth}
                     height={0.95*window.innerHeight}
-                    onWheel={onScroll}
+                    onMouseDown={onMouseDown}
+                    onMouseUp={onMouseUp}
                     onMouseMove={onMouseMove}
+                    onWheel={onScroll}
                 />
             </div>
         </div>

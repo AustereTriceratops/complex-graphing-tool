@@ -18,6 +18,7 @@ export default class glManager {
             resolution: gl.getUniformLocation(this.shaderProgram, 'resolution'),
             aspect: gl.getUniformLocation(this.shaderProgram, 'aspect'),
             zoom: gl.getUniformLocation(this.shaderProgram, 'zoom'),
+            offset: gl.getUniformLocation(this.shaderProgram, 'offset'),
             param_1: gl.getUniformLocation(this.shaderProgram, 'param_1'),
             param_2: gl.getUniformLocation(this.shaderProgram, 'param_2')
         };
@@ -30,10 +31,11 @@ export default class glManager {
         this.gl = gl
     }
 
-    render(zoom, shaderParameter1, shaderParameter2) {
-        this.gl.uniform1f(this.shaderAttribs.zoom, zoom)
-        this.gl.uniform1f(this.shaderAttribs.param_1, shaderParameter1)
-        this.gl.uniform1f(this.shaderAttribs.param_2, shaderParameter2)
+    render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2) {
+        this.gl.uniform1f(this.shaderAttribs.zoom, zoom);
+        this.gl.uniform2fv(this.shaderAttribs.offset, [offsetX, offsetY]);
+        this.gl.uniform1f(this.shaderAttribs.param_1, shaderParameter1);
+        this.gl.uniform1f(this.shaderAttribs.param_2, shaderParameter2);
 
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);

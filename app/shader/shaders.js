@@ -16,6 +16,7 @@ vec2 i = vec2(0.0, 1.0);
 uniform vec2 resolution;
 uniform float aspect;
 uniform float zoom;
+uniform vec2 offset;
 
 // display parameters
 uniform float param_1;
@@ -82,7 +83,7 @@ const functions = `
 vec2 function(vec2 x) {
   // vec2 y = c_multiply(x, c_pow4(x)) - vec2(0.5, 0.0);
   // vec2 y = c_exp(x);
-  vec2 y = c_pow(x, 5.0) - vec2(1.0, 0.0) + c_pow(x, 2.0);
+  vec2 y = c_pow(x, 5.0) - vec2(1.0, 0.0);
 
   return y;
 }
@@ -171,8 +172,7 @@ void main() {
   // all coords will be in the range [-1, 1] and [-aspect, aspect]
 
   vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
-  vec2 displacement = vec2(0.0, 0.0);
-  vec2 coords = zoom * normalized_coords + displacement;
+  vec2 coords = zoom * normalized_coords + offset;
 
   // vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
   vec2 val = function(coords);
