@@ -34,8 +34,6 @@ const App = () => {
     //
     // INTERACTIVITY
     //
-    const [xMin, setXMin] = useState(0);
-
     const [mouseX, setMouseX] = useState(0);
     const [mouseY, setMouseY] = useState(0);
     
@@ -50,6 +48,12 @@ const App = () => {
     const onScroll = (ev) => {
         setZoom(zoom + 0.002 * zoom * ev.deltaY);
     }
+
+    const xMin = useMemo(() => {
+        const xMin = (aspect < 1) ? -zoom/aspect : -zoom;
+        
+        return xMin
+    }, [zoom, aspect]);
 
     //
     // SHADER CONTROLS
