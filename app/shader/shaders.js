@@ -15,6 +15,7 @@ vec2 i = vec2(0.0, 1.0);
 // canvas dims
 uniform vec2 resolution;
 uniform float aspect;
+uniform float zoom;
 
 // display parameters
 uniform float param_1;
@@ -37,11 +38,11 @@ float complex_angle(vec2 a) {
 float complex_radius(vec2 a) {
   return sqrt(len_sq(a));
 }
-  
+
 vec2 c_multiply(vec2 a, vec2 b) {
   return vec2(a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x);
 }
-    
+
 // calculate a/b
 vec2 c_divide(vec2 a, vec2 b) {
   return c_multiply(a, conj(b)/len_sq(b));
@@ -170,7 +171,6 @@ void main() {
   // all coords will be in the range [-1, 1] and [-aspect, aspect]
 
   vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
-  float zoom = 2.0;
   vec2 displacement = vec2(0.0, 0.0);
   vec2 coords = zoom * normalized_coords + displacement;
 

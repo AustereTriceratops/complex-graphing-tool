@@ -17,6 +17,7 @@ export default class glManager {
             vertexPosition: gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
             resolution: gl.getUniformLocation(this.shaderProgram, 'resolution'),
             aspect: gl.getUniformLocation(this.shaderProgram, 'aspect'),
+            zoom: gl.getUniformLocation(this.shaderProgram, 'zoom'),
             param_1: gl.getUniformLocation(this.shaderProgram, 'param_1'),
             param_2: gl.getUniformLocation(this.shaderProgram, 'param_2')
         };
@@ -29,7 +30,8 @@ export default class glManager {
         this.gl = gl
     }
 
-    render(shaderParameter1, shaderParameter2) {
+    render(zoom, shaderParameter1, shaderParameter2) {
+        this.gl.uniform1f(this.shaderAttribs.zoom, zoom)
         this.gl.uniform1f(this.shaderAttribs.param_1, shaderParameter1)
         this.gl.uniform1f(this.shaderAttribs.param_2, shaderParameter2)
 

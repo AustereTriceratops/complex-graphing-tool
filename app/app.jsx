@@ -12,6 +12,13 @@ const App = () => {
     const [aspect, setAspect] = useState(0);
     const [xMin, setXMin] = useState(0);
 
+    const [zoom, setZoom] = useState(1)
+
+    const onScroll = (ev) => {
+        setZoom(zoom + 0.001 * zoom * ev.deltaY);
+        console.log(zoom)
+    }
+
     // CANVAS AND SHADER SETUP
     const canvasRef = useRef(null);
     const programRef = useRef(null);
@@ -24,7 +31,7 @@ const App = () => {
 
             const aspect = canvas.height/canvas.width;
             setAspect(aspect);
-            setXMin(-aspect);
+            setXMin(-aspect); //TODO: this is incorrect
         }
     }, [])
 
@@ -32,9 +39,11 @@ const App = () => {
     const [shaderParameter1, setShaderParameter1] = useState(0.3);
     const [shaderParameter2, setShaderParameter2] = useState(0);
 
+    // RENDER THE CANVAS
+
     useEffect(() => {
-        programRef.current.render(shaderParameter1, shaderParameter2)
-    }, [shaderParameter1, shaderParameter2]);
+        programRef.current.render(zoom, shaderParameter1, shaderParameter2)
+    }, [zoom, shaderParameter1, shaderParameter2]);
 
     return (
         <div>
@@ -78,6 +87,7 @@ const App = () => {
                     ref={canvasRef}
                     width={0.85*window.innerWidth}
                     height={0.95*window.innerHeight}
+                    onWheel={onScroll}
                 />
             </div>
         </div>
