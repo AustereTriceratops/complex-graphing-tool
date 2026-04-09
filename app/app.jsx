@@ -83,6 +83,24 @@ const App = () => {
         return xMin
     }, [zoom, aspect, offsetX]);
 
+    const xMax = useMemo(() => {
+        const xMax = (aspect < 1) ? offsetX + zoom/aspect : offsetX + zoom;
+        
+        return xMax
+    }, [zoom, aspect, offsetX]);
+
+    const yMin = useMemo(() => {
+        const yMin = (aspect < 1) ? offsetY - zoom : offsetY - zoom/aspect;
+        
+        return yMin
+    }, [zoom, aspect, offsetY]);
+
+    const yMax = useMemo(() => {
+        const yMax = (aspect < 1) ? offsetY + zoom : offsetY + zoom/aspect;
+        
+        return yMax
+    }, [zoom, aspect, offsetY]);
+
     //
     // SHADER CONTROLS
     //
@@ -108,7 +126,7 @@ const App = () => {
                     display:'flex',
                     flexDirection:'column',
                     padding: '1rem',
-                    width: '15%vw',
+                    width: '15%',
                     gap: '5px'
                 }}>
                     <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
@@ -132,7 +150,18 @@ const App = () => {
                     <NumberInput
                         title="x_min"
                         value={xMin.toFixed(5)}
-                        onChange={(ev) => setXMin(ev.target.value)}
+                    />
+                    <NumberInput
+                        title="x_max"
+                        value={xMax.toFixed(5)}
+                    />
+                    <NumberInput
+                        title="y_min"
+                        value={yMin.toFixed(5)}
+                    />
+                    <NumberInput
+                        title="y_max"
+                        value={yMax.toFixed(5)}
                     />
                 </div>
                 <canvas

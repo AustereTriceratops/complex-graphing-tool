@@ -7,18 +7,22 @@ const NumberInput = (props) => {
         <div style={{
             display:'flex',
             flexDirection:'row',
-            gap: '0.5rem'
+            justifyContent:'center',
+            gap: '1.0rem'
         }}>
             <div>
                 {title}
             </div>
-            <Input
+            <div>
+                {value}
+            </div>
+            {/* <Input
                 type='number'
                 value={value}
                 onChange={onChange}
-                style={{backgroundColor: 'white', paddingLeft: '5px',}}
+                sx={{backgroundColor: 'white', paddingLeft: '5px'}}
                 readOnly
-            />
+            /> */}
         </div>
     )
 }
