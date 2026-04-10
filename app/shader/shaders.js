@@ -174,15 +174,15 @@ void main() {
   vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
   vec2 coords = zoom * normalized_coords + offset;
 
-  // vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
-  vec2 val = function(coords);
+  vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
+  // vec2 val = function(coords);
 
   float angle = complex_angle(val);
   float radius = complex_radius(val);
 
   // modulate the brightness by complex magnitude
-  float fac = 1.0/(pow(radius, 0.2) + 1.0);
-  // float fac = 1.0;
+  // float fac = 1.0/(pow(radius, 0.2) + 1.0);
+  float fac = 1.0;
 
   // color by complex angle
   vec3 color = vec3(sin(angle + param_2), sin(angle + param_2 - 2.0*PI/3.0), sin(angle + param_2 - 4.0*PI/3.0));

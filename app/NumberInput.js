@@ -10,7 +10,7 @@ const NumberInput = (props) => {
         <div style={{
             display:'flex',
             flexDirection:'row',
-            justifyContent:'center',
+            justifyContent:'space-between',
             gap: '1.0rem'
         }}>
             <div>
@@ -20,7 +20,7 @@ const NumberInput = (props) => {
                 type='number'
                 value={internalValue}
                 onChange={(ev) => setInternalValue(ev.target.value)}
-                sx={{backgroundColor: 'white', paddingLeft: '5px'}}
+                sx={{backgroundColor: 'white', paddingLeft: '5px', maxWidth: '7rem'}}
                 readOnly={readOnly}
                 onKeyDown={(ev) => {
                     if (ev.key == 'Enter') {
