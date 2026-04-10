@@ -5,7 +5,7 @@ const InputSlider = (props) => {
 
     return (
         <div>
-            {title}
+            <div>{title}</div>
             <div style={{
                 display: 'flex',
                 flexDirection:'row',

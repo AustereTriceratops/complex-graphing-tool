@@ -15,6 +15,8 @@ vec2 i = vec2(0.0, 1.0);
 // canvas dims
 uniform vec2 resolution;
 uniform float aspect;
+uniform float zoom;
+uniform vec2 offset;
 
 // display parameters
 uniform float param_1;
@@ -37,11 +39,11 @@ float complex_angle(vec2 a) {
 float complex_radius(vec2 a) {
   return sqrt(len_sq(a));
 }
-  
+
 vec2 c_multiply(vec2 a, vec2 b) {
   return vec2(a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x);
 }
-    
+
 // calculate a/b
 vec2 c_divide(vec2 a, vec2 b) {
   return c_multiply(a, conj(b)/len_sq(b));
@@ -81,7 +83,7 @@ const functions = `
 vec2 function(vec2 x) {
   // vec2 y = c_multiply(x, c_pow4(x)) - vec2(0.5, 0.0);
   // vec2 y = c_exp(x);
-  vec2 y = c_pow(x, 3.0) - vec2(1.0, 0.0);
+  vec2 y = c_pow(x, 5.0) - vec2(1.0, 0.0);
 
   return y;
 }
@@ -170,9 +172,7 @@ void main() {
   // all coords will be in the range [-1, 1] and [-aspect, aspect]
 
   vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
-  float zoom = 0.7;
-  vec2 displacement = vec2(0.0, zoom);
-  vec2 coords = zoom * normalized_coords + displacement;
+  vec2 coords = zoom * normalized_coords + offset;
 
   vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
   // vec2 val = function(coords);
@@ -181,7 +181,7 @@ void main() {
   float radius = complex_radius(val);
 
   // modulate the brightness by complex magnitude
-  // float fac = 1.0/(pow(radius, 1.0) + 1.0);
+  // float fac = 1.0/(pow(radius, 0.2) + 1.0);
   float fac = 1.0;
 
   // color by complex angle
