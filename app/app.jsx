@@ -1,15 +1,22 @@
 "use client"; // allows next.js to use useState, useRef, etc.
 
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import glManager from './shader/glManager';
 import InputSlider from './components/InputSlider';
 import NumberInput from './components/NumberInput';
 import NumberDisplay from './components/NumberDisplay';
 import EquationInput from './components/EquationInput';
+import Lexer from './parsing/Lexer';
 
 // TODO: More display options
 const App = () => {
+    // test entry point - set up something else to run this code
+    useEffect(() => {
+        const tokens = Lexer.scan("x^2 + 1 + i");
+        console.log(tokens.map((t) => t.name))
+    }, []);
+
     //
     // CANVAS AND SHADER SETUP
     //
