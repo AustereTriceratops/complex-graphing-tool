@@ -5,7 +5,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import glManager from './shader/glManager';
 import InputSlider from './InputSlider';
 import NumberInput from './NumberInput';
+import NumberDisplay from './NumberDisplay';
 
+// TODO: User input
+// TODO: More display options
 // TODO: resizing the canvas with the browser window
 const App = () => {
     //
@@ -148,18 +151,33 @@ const App = () => {
                     />
                     <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
                     <NumberInput
+                        title="zoom"
+                        value={zoom.toFixed(5)}
+                        updateValue={setZoom}
+                    />
+                    <NumberInput
+                        title="offset_x"
+                        value={offsetX.toFixed(5)}
+                        updateValue={setOffsetX}
+                        />
+                    <NumberInput
+                        title="offset_y"
+                        value={offsetY.toFixed(5)}
+                        updateValue={setOffsetY}
+                    />
+                    <NumberDisplay
                         title="x_min"
                         value={xMin.toFixed(5)}
                     />
-                    <NumberInput
+                    <NumberDisplay
                         title="x_max"
                         value={xMax.toFixed(5)}
                     />
-                    <NumberInput
+                    <NumberDisplay
                         title="y_min"
                         value={yMin.toFixed(5)}
                     />
-                    <NumberInput
+                    <NumberDisplay
                         title="y_max"
                         value={yMax.toFixed(5)}
                     />

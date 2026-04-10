@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { Input } from '@mui/material';
 
 const NumberInput = (props) => {
-    const {title, value, onChange} = props;
+    const {title, value, updateValue, readOnly} = props;
+
+    const [internalValue, setInternalValue] = useState(value);
 
     return (
         <div style={{
@@ -13,16 +16,18 @@ const NumberInput = (props) => {
             <div>
                 {title}
             </div>
-            <div>
-                {value}
-            </div>
-            {/* <Input
+            <Input
                 type='number'
-                value={value}
-                onChange={onChange}
+                value={internalValue}
+                onChange={(ev) => setInternalValue(ev.target.value)}
                 sx={{backgroundColor: 'white', paddingLeft: '5px'}}
-                readOnly
-            /> */}
+                readOnly={readOnly}
+                onKeyDown={(ev) => {
+                    if (ev.key == 'Enter') {
+                        updateValue(Number(internalValue));
+                    }
+                }}
+            />
         </div>
     )
 }
