@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@mui/material';
 
 const NumberInput = (props) => {
     const {title, value, updateValue, readOnly} = props;
 
     const [internalValue, setInternalValue] = useState(value);
+
+    useEffect(() => {
+        setInternalValue(value);
+    }, [value])
 
     return (
         <div style={{
