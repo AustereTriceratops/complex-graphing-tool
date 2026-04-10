@@ -3,9 +3,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import glManager from './shader/glManager';
-import InputSlider from './InputSlider';
-import NumberInput from './NumberInput';
-import NumberDisplay from './NumberDisplay';
+import InputSlider from './components/InputSlider';
+import NumberInput from './components/NumberInput';
+import NumberDisplay from './components/NumberDisplay';
 
 // TODO: User input
 // TODO: More display options
