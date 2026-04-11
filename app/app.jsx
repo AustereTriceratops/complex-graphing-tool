@@ -6,6 +6,8 @@ import glManager from './shader/glManager';
 import InputSlider from './components/InputSlider';
 import NumberInput from './components/NumberInput';
 import NumberDisplay from './components/NumberDisplay';
+import EquationInput from './components/EquationInput';
+import { Input } from '@mui/material';
 
 // TODO: User input
 // TODO: More display options
@@ -105,6 +107,11 @@ const App = () => {
     }, [zoom, aspect, offsetY]);
 
     //
+    // EQUATION INPUT
+    //
+    const [equation, setEquation] = useState("eisenstein_series_4(x)")
+
+    //
     // SHADER CONTROLS
     //
     const [shaderParameter1, setShaderParameter1] = useState(0.3);
@@ -119,7 +126,10 @@ const App = () => {
 
     return (
         <div>
-            <p>Eisenstein series E_4</p>
+            <EquationInput
+                value={equation}
+                updateValue={setEquation}
+            />
             <div style={{
                 display: 'flex',
                 flexDirection: 'row',
