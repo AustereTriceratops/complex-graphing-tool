@@ -1,17 +1,14 @@
 "use client"; // allows next.js to use useState, useRef, etc.
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import glManager from './shader/glManager';
 import InputSlider from './components/InputSlider';
 import NumberInput from './components/NumberInput';
 import NumberDisplay from './components/NumberDisplay';
 import EquationInput from './components/EquationInput';
-import { Input } from '@mui/material';
 
-// TODO: User input
 // TODO: More display options
-// TODO: resizing the canvas with the browser window
 const App = () => {
     //
     // CANVAS AND SHADER SETUP
@@ -30,7 +27,21 @@ const App = () => {
 
             setCanvasWidth(canvas.width);
             setCanvasHeight(canvas.height);
+
+            const observer = new ResizeObserver((entries) => {
+                for (let entry of entries) {
+                    const {width, height} = entry.contentRect;
+                    setCanvasWidth(width);
+                    setCanvasHeight(height);
+                    programRef.current.updateDims(canvas);
+                }
+            })
+
+            observer.observe(canvas);
         }
+
+        // cleanup
+        return () => observer.disconnect();
     }, [])
 
     const aspect = useMemo(() => {
@@ -56,7 +67,6 @@ const App = () => {
         const biasY = mouseY/canvasHeight;
         setOffsetX(offsetX - (2.0 * biasX - 1) * dZoom);
         setOffsetY(offsetY + (2.0 * biasY - 1) * dZoom);
-
     }
 
     // dragging
@@ -85,25 +95,25 @@ const App = () => {
     const xMin = useMemo(() => {
         const xMin = (aspect < 1) ? offsetX - zoom/aspect : offsetX - zoom;
         
-        return xMin
+        return xMin;
     }, [zoom, aspect, offsetX]);
 
     const xMax = useMemo(() => {
         const xMax = (aspect < 1) ? offsetX + zoom/aspect : offsetX + zoom;
         
-        return xMax
+        return xMax;
     }, [zoom, aspect, offsetX]);
 
     const yMin = useMemo(() => {
         const yMin = (aspect < 1) ? offsetY - zoom : offsetY - zoom/aspect;
         
-        return yMin
+        return yMin;
     }, [zoom, aspect, offsetY]);
 
     const yMax = useMemo(() => {
         const yMax = (aspect < 1) ? offsetY + zoom : offsetY + zoom/aspect;
         
-        return yMax
+        return yMax;
     }, [zoom, aspect, offsetY]);
 
     //
@@ -122,7 +132,7 @@ const App = () => {
     //
     useEffect(() => {
         programRef.current.render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2)
-    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2]);
+    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight]);
 
     return (
         <div>

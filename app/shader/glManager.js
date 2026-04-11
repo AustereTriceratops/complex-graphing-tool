@@ -31,6 +31,15 @@ export default class glManager {
         this.gl = gl
     }
 
+    updateDims(canvas) {
+        this.width = canvas.width;
+        this.height = canvas.height;
+
+        this.gl.viewport(0, 0, this.width, this.height);
+        this.gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
+        this.gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width);
+    }
+
     render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2) {
         this.gl.uniform1f(this.shaderAttribs.zoom, zoom);
         this.gl.uniform2fv(this.shaderAttribs.offset, [offsetX, offsetY]);
