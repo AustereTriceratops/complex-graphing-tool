@@ -31,8 +31,6 @@ class Lexer {
                 console.log("END");
                 break;
             } else {
-                console.log(input[i])
-
                 if (char == 'x') {
                     tokens.push(new Token('X'));
                 } else if (char == 'z') {
@@ -48,11 +46,26 @@ class Lexer {
                 } else if (char == '^') {
                     tokens.push(new Token('POW'));
                 } else if (/[0-9]/.test(char)) {
-                    tokens.push(new Token('INT', char));
+                    let lookAheadIndex = i;
+                    let lookAheadChar = char;
+
+                    while (/[0-9]/.test(lookAheadChar)) {
+                        lookAheadIndex += 1;
+                        lookAheadChar = input[lookAheadIndex];
+                    }
+
+                    tokens.push(new Token('INT', input.slice(i, lookAheadIndex)));
+
+                    // lookAheadIndex - i is the length of the integer's string
+                    // we don't want to re-analyze the characters of this string
+                    // since they have already been accounted for in the while loop above
+                    // so we increment i by that value minus 1 (becuase it will be 
+                    // incremented again at the start of the outer for loop)
+                    i += lookAheadIndex - i - 1;
                 } else {
                     tokens.push(new Token('<?>'));
                 }
-                
+
             }
         }
 
