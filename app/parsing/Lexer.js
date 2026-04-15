@@ -5,9 +5,13 @@ const TOKENS = [
     'Q',
     'I',
     'PLUS',
+    'MINUS',
     'TIMES',
+    'DIVIDE',
     'POW',
-    'INT'
+    'INT',
+    'LPAREN',
+    'RPAREN',
 ]
 
 class Token {
@@ -41,10 +45,18 @@ class Lexer {
                     tokens.push(new Token('I'));
                 } else if (char == '+') {
                     tokens.push(new Token('PLUS'));
+                } else if (char == '-') {
+                    tokens.push(new Token('MINUS'));
                 } else if (char == '*') {
                     tokens.push(new Token('TIMES'));
+                } else if (char == '/') {
+                    tokens.push(new Token('DIVIDE'));
                 } else if (char == '^') {
                     tokens.push(new Token('POW'));
+                } else if (char == '(') {
+                    tokens.push(new Token('LPAREN'));
+                } else if (char == ')') {
+                    tokens.push(new Token('RPAREN'));
                 } else if (/[0-9]/.test(char)) {
                     let lookAheadIndex = i;
                     let lookAheadChar = char;
@@ -65,7 +77,6 @@ class Lexer {
                 } else {
                     tokens.push(new Token('<?>'));
                 }
-
             }
         }
 
