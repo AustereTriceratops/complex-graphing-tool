@@ -32,8 +32,7 @@ class Lexer {
             if (char == ' ') {
                 continue;
             } else if (char == undefined) {
-                console.log("END");
-                break;
+                throw Error("undefined character in input string");
             } else {
                 if (char == 'x') {
                     tokens.push(new Token('X'));
@@ -80,7 +79,8 @@ class Lexer {
             }
         }
 
-        return tokens
+        tokens.push(new Token('END'));
+        return tokens;
     }
 }
 
