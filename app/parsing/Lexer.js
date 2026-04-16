@@ -1,4 +1,4 @@
-const TOKENS = [
+export const TERMINALS = new Set([
     '<?>',
     'X',
     'Z',
@@ -12,9 +12,9 @@ const TOKENS = [
     'INT',
     'LPAREN',
     'RPAREN',
-]
+])
 
-class Token {
+export class Token {
     constructor(name, value=null) {
         this.name = name;
         this.value = value;

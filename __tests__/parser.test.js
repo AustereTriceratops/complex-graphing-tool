@@ -1,10 +1,38 @@
-import Lexer from '../app/parsing/Lexer';
+import Lexer, {Token} from '../app/parsing/Lexer';
 import Parser from '../app/parsing/Parser';
 
-test('simple malformed expressions', () => {
-    const tokens = Lexer.scan("1+");
-    const {AST, accept} = Parser.parse(tokens);
+test('parsing end token', () => {
+    const tokens = [new Token('END')];
+    const {ast, accept} = Parser.parse(tokens);
 
-    expect(typeof(accept)).toBe('boolean');
+    expect(accept).toBeTruthy();
+})
+
+test('unknown token', () => {
+    const tokens = [new Token('<?>')];
+    const {ast, accept} = Parser.parse(tokens);
+
+    expect(accept).toBeFalsy();
+})
+
+test('simple malformed expressions', () => {
+    let tokens = Lexer.scan("1+");
+    let {ast, accept} = Parser.parse(tokens);
+    expect(accept).toBeFalsy();
+
+    tokens = Lexer.scan("1 1");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeFalsy();
+
+    tokens = Lexer.scan("*2");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeFalsy();
+
+    tokens = Lexer.scan("x++i");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeFalsy();
+
+    tokens = Lexer.scan("((()");
+    ({ast, accept} = Parser.parse(tokens));
     expect(accept).toBeFalsy();
 })

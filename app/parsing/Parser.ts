@@ -1,8 +1,9 @@
 import * as AST from './AST/AST';
-import Token from './Lexer';
+import {Token, TERMINALS} from './Lexer';
 
-const nonterminals = new Set(["E", "EPrime", "T", "TPrime", "F"]);
+const NONTERMINALS = new Set(["E", "EPrime", "T", "TPrime", "F"]);
 
+// TODO: make another file with all these constants separated from this file and Lexer.ts
 const rules = [
     ['E', ['T', 'EPrime']],
     ['EPrime', ['PLUS', 'T', 'EPrime']],
@@ -21,7 +22,7 @@ const rules = [
 ] as const;
 
 class Parser {
-    parsingTable = {
+    static parsingTable: Record<string, Record<string, string[]>> = {
         'E': {
             'INT': ['T', 'EPrime'],
             'LPAREN': ['T', 'EPrime'],
@@ -29,6 +30,7 @@ class Parser {
             'Z': ['T', 'EPrime'],
             'Q': ['T', 'EPrime'],
             'I': ['T', 'EPrime'],
+            'END': []
         },
         'EPrime': {
             'RPAREN': [],
@@ -54,7 +56,7 @@ class Parser {
         },
         'F': {
             'INT': ['INT'],
-            'LPAREN': ['LPAREN'],
+            'LPAREN': ['LPAREN', 'E', 'RPAREN'],
             'X': ['X'],
             'Z': ['Z'],
             'Q': ['Q'],
@@ -64,11 +66,80 @@ class Parser {
 
     static parse(tokens: Token[]) {
         let accept = true;
+        const ast = new AST.ASTNode();
 
-        accept = true;
+        const stackFinal = [];
+        const stack = ['E'];
+
+        for (const token of tokens) {
+            if (accept == false) break;
+
+            if (token.name == '<?>') {
+                console.log('parsing ERROR: attempting to parse unknown token');
+                accept = false;
+                break;
+            }
+            
+            let continueLoop = true;
+
+            // NOTE: the extra breaks and continues are intentional
+            while (continueLoop) {
+                const symbol = stack.pop();
+                
+                if (symbol == undefined) {
+                    console.log('parsing: stack is empty');
+                    console.log(`parsed tokens: ${stackFinal}`);
+
+                    // unsure how to test this, or how to create this fail condition
+                    // but this is here just in case it causes an unsuccessful parse
+                    if (token.name != 'END')  {
+                        console.log(`parsing ERROR: stack empty, cannot proceed with token ${token}`)
+                        accept = false;
+                    }
+
+                    continueLoop = false;
+                    break;
+                } else {
+                    if (TERMINALS.has(symbol)) {
+                        // if the token being looked at is on the stack, then 
+                        // continue onto the next token in the outer loop
+                        // else, something might be wrong with the production rules or parse table
+                        if (symbol == token.name) {
+                            stackFinal.push(symbol);
+                        } else {
+                            // unsure how to test this case, but this is here just in case
+                            console.log(
+                                `parsing ERROR: symbol on the stack (${symbol}) does not match the terminal being looked at (${token.name}). Check the parse table.`
+                            )
+                            accept = false;
+                        }
+
+                        continueLoop = false;
+                        break;
+                    } else if (NONTERMINALS.has(symbol)) {
+                        const production = this.parsingTable[symbol][token.name];
+
+                        if (production == undefined) {
+                            console.log(
+                                `parsing ERROR: symbol on the stack (${symbol}) has no productions for the terminal (${token.name})`
+                            )
+                            accept = false;
+                            continueLoop = false;
+                            break;
+                        }
+        
+                        // this is the only case in which the while loop continues running
+                        for (let i = production.length - 1; i >= 0; i--) {
+                            const producedSymbol = production[i];
+                            stack.push(producedSymbol);
+                        }
+                    }
+                }
+            }
+        }
 
         return {
-            AST: new AST.ASTNode(), accept: accept
+            ast: ast, accept: accept
         };
     }
 }
