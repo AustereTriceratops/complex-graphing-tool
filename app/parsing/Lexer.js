@@ -1,25 +1,4 @@
-export const TERMINALS = new Set([
-    '<?>',
-    'X',
-    'Z',
-    'Q',
-    'I',
-    'PLUS',
-    'MINUS',
-    'TIMES',
-    'DIVIDE',
-    'POW',
-    'INT',
-    'LPAREN',
-    'RPAREN',
-])
-
-export class Token {
-    constructor(name, value=null) {
-        this.name = name;
-        this.value = value;
-    }
-}
+import { Token } from "./grammar";
 
 class Lexer {
     static scan(input) {

@@ -1,25 +1,5 @@
 import * as AST from './AST/AST';
-import {Token, TERMINALS} from './Lexer';
-
-const NONTERMINALS = new Set(["E", "EPrime", "T", "TPrime", "F"]);
-
-// TODO: make another file with all these constants separated from this file and Lexer.ts
-const rules = [
-    ['E', ['T', 'EPrime']],
-    ['EPrime', ['PLUS', 'T', 'EPrime']],
-    ['EPrime', ['MINUS', 'T', 'EPrime']],
-    ['EPrime', []],
-    ['T', ['F', 'TPrime']],
-    ['TPrime', ['TIMES', 'F', 'TPrime']],
-    ['TPrime', ['DIVIDE', 'F', 'TPrime']],
-    ['TPrime', []],
-    ['F', ['LPAREN', 'E', 'RPAREN']],
-    ['F', ['INT']],
-    ['F', ['X']],
-    ['F', ['Z']],
-    ['F', ['Q']],
-    ['F', ['I']],
-] as const;
+import { TERMINALS, NONTERMINALS, Token } from './grammar';
 
 class Parser {
     static parsingTable: Record<string, Record<string, string[]>> = {

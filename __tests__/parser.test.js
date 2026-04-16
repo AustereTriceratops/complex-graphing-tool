@@ -1,5 +1,6 @@
-import Lexer, {Token} from '../app/parsing/Lexer';
+import Lexer from '../app/parsing/Lexer';
 import Parser from '../app/parsing/Parser';
+import { Token } from '../app/parsing/grammar';
 
 test('parsing end token', () => {
     const tokens = [new Token('END')];
