@@ -1,7 +1,7 @@
 import { Token } from "./grammar";
 
 class Lexer {
-    static scan(input) {
+    static scan(input: string) {
         const n = input.length;
         const tokens = [];
 
