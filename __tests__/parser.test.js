@@ -1,4 +1,4 @@
-import Lexer from '../app/parsing/Lexer';
+import Lexer from '../app/parsing/Lexer.ts';
 import Parser from '../app/parsing/Parser';
 import { Token } from '../app/parsing/grammar';
 

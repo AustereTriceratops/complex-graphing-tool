@@ -1,4 +1,4 @@
-import Lexer from '../app/parsing/Lexer';
+import Lexer from '../app/parsing/Lexer.ts';
 
 test('tokenizing single characters', () => {
     const tokens = Lexer.scan("+-*/()^xiqz1");
