@@ -1,5 +1,26 @@
 import { Token } from "./grammar";
 
+function lookAhead(inputString: string, startIndex: number, regex: RegExp, tokenType: string) {
+    let lookAheadIndex = startIndex;
+    let lookAheadChar = inputString[startIndex];
+    
+    while (regex.test(lookAheadChar)) {
+        lookAheadIndex += 1;
+        lookAheadChar = inputString[lookAheadIndex];
+    }
+    
+    const token = new Token(tokenType, inputString.slice(startIndex, lookAheadIndex));
+    
+    // lookAheadIndex - i is the length of the integer's string
+    // we don't want to re-analyze the characters of this string
+    // since they have already been accounted for in the while loop above
+    // so we increment i by that value minus 1 (becuase it will be 
+    // incremented again at the start of the outer for loop)
+    const indexIncrement = lookAheadIndex - startIndex - 1;
+
+    return {token: token, indexIncrement: indexIncrement};
+}
+
 class Lexer {
     static scan(input: string) {
         const n = input.length;
@@ -13,14 +34,22 @@ class Lexer {
             } else if (char == undefined) {
                 throw Error("undefined character in input string");
             } else {
-                if (char == 'x') {
-                    tokens.push(new Token('X'));
-                } else if (char == 'z') {
-                    tokens.push(new Token('Z'));
-                } else if (char == 'q') {
-                    tokens.push(new Token('Q'));
-                } else if (char == 'i') {
-                    tokens.push(new Token('I'));
+                if (/[a-zA-Z]/.test(char)) {
+                    // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
+                    if (char == 'x') {
+                        tokens.push(new Token('X'));
+                    } else if (char == 'z') {
+                        tokens.push(new Token('Z'));
+                    } else if (char == 'q') {
+                        tokens.push(new Token('Q'));
+                    } else if (char == 'i') {
+                        tokens.push(new Token('I'));
+                    } else {
+                        const {token, indexIncrement} = lookAhead(input, i, /[a-zA-Z]/, '<?>')
+
+                        tokens.push(token);
+                        i += indexIncrement;
+                    }
                 } else if (char == '+') {
                     tokens.push(new Token('PLUS'));
                 } else if (char == '-') {
@@ -36,22 +65,10 @@ class Lexer {
                 } else if (char == ')') {
                     tokens.push(new Token('RPAREN'));
                 } else if (/[0-9]/.test(char)) {
-                    let lookAheadIndex = i;
-                    let lookAheadChar = char;
+                    const {token, indexIncrement} = lookAhead(input, i, /[0-9]/, 'INT')
 
-                    while (/[0-9]/.test(lookAheadChar)) {
-                        lookAheadIndex += 1;
-                        lookAheadChar = input[lookAheadIndex];
-                    }
-
-                    tokens.push(new Token('INT', input.slice(i, lookAheadIndex)));
-
-                    // lookAheadIndex - i is the length of the integer's string
-                    // we don't want to re-analyze the characters of this string
-                    // since they have already been accounted for in the while loop above
-                    // so we increment i by that value minus 1 (becuase it will be 
-                    // incremented again at the start of the outer for loop)
-                    i += lookAheadIndex - i - 1;
+                    tokens.push(token);
+                    i += indexIncrement;
                 } else {
                     tokens.push(new Token('<?>'));
                 }

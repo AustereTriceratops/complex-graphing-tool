@@ -1,5 +1,36 @@
 import Lexer from '../app/parsing/Lexer.ts';
 
+test('scanning empty string', () => {
+    const tokens = Lexer.scan("");
+    const expectedTokens = [
+        "END"
+    ];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+});
+
+test('scanning unknown tokens', () => {
+    const tokens = Lexer.scan("ke ] <=> x");
+    const expectedTokens = [
+        "<?>", "<?>", "<?>", "<?>", "<?>", "X", "END"
+    ];
+    const expectedValues = [
+        "ke", null, null, null, null, null, null
+    ];
+    
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    tokens.map((t, i) => expect(t.value).toEqual(expectedValues[i]));
+});
+
+test('scanning with no spaces', () => {
+    const tokens = Lexer.scan("2x");
+    const expectedTokens = [
+        "INT", "X", "END"
+    ];
+});
+
 test('tokenizing single characters', () => {
     const tokens = Lexer.scan("+-*/()^xiqz1");
     const expectedTokens = [
