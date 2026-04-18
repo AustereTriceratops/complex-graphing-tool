@@ -7,6 +7,8 @@ function lookAhead(inputString: string, startIndex: number, regex: RegExp, token
     while (regex.test(lookAheadChar)) {
         lookAheadIndex += 1;
         lookAheadChar = inputString[lookAheadIndex];
+
+        if (lookAheadChar == undefined) break;
     }
     
     const token = new Token(tokenType, inputString.slice(startIndex, lookAheadIndex));
@@ -35,18 +37,20 @@ class Lexer {
                 throw Error("undefined character in input string");
             } else {
                 if (/[a-zA-Z]/.test(char)) {
-                    // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
-                    if (char == 'x') {
-                        tokens.push(new Token('X'));
-                    } else if (char == 'z') {
-                        tokens.push(new Token('Z'));
-                    } else if (char == 'q') {
-                        tokens.push(new Token('Q'));
-                    } else if (char == 'i') {
-                        tokens.push(new Token('I'));
-                    } else {
-                        const {token, indexIncrement} = lookAhead(input, i, /[a-zA-Z]/, '<?>')
+                    const {token, indexIncrement} = lookAhead(input, i, /[a-zA-Z]/, '<?>')
 
+                    // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
+                    if (indexIncrement == 0) { // single-character reserved names
+                        if (char == 'x') {
+                            tokens.push(new Token('X'));
+                        } else if (char == 'z') {
+                            tokens.push(new Token('Z'));
+                        } else if (char == 'q') {
+                            tokens.push(new Token('Q'));
+                        } else if (char == 'i') {
+                            tokens.push(new Token('I'));
+                        }
+                    } else {
                         tokens.push(token);
                         i += indexIncrement;
                     }

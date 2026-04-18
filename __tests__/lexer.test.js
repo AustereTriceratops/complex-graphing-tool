@@ -24,17 +24,41 @@ test('scanning unknown tokens', () => {
     tokens.map((t, i) => expect(t.value).toEqual(expectedValues[i]));
 });
 
+test('scanning to the longest match', () => {
+    tokens = Lexer.scan("xerox printer ink");
+    expectedTokens = [
+        "<?>", "<?>", "<?>", "END"
+    ];
+    expectedValues = [
+        "xerox", "printer", "ink", null,
+    ];
+    
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    tokens.map((t, i) => expect(t.value).toEqual(expectedValues[i]));
+})
+
 test('scanning with no spaces', () => {
     const tokens = Lexer.scan("2x");
     const expectedTokens = [
         "INT", "X", "END"
     ];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 });
 
 test('tokenizing single characters', () => {
-    const tokens = Lexer.scan("+-*/()^xiqz1");
-    const expectedTokens = [
+    let tokens = Lexer.scan("+-*/()^x i q z 1");
+    let expectedTokens = [
         "PLUS", "MINUS", "TIMES", "DIVIDE", "LPAREN", "RPAREN", "POW", "X", "I", "Q", "Z", "INT", "END"
+    ];
+
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("+-*/()^xiqz1");
+    expectedTokens = [
+        "PLUS", "MINUS", "TIMES", "DIVIDE", "LPAREN", "RPAREN", "POW", "<?>", "INT", "END"
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
