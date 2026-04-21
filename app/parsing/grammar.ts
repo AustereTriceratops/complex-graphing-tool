@@ -33,6 +33,48 @@ export const PRODUCTIONS = [
     ['F', ['I']],
 ] as const;
 
+export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
+    'E': {
+        'INT': ['T', 'EPrime'],
+        'LPAREN': ['T', 'EPrime'],
+        'X': ['T', 'EPrime'],
+        'Z': ['T', 'EPrime'],
+        'Q': ['T', 'EPrime'],
+        'I': ['T', 'EPrime'],
+        'END': []
+    },
+    'EPrime': {
+        'RPAREN': [],
+        'END': [],
+        'PLUS': ['PLUS', 'T', 'EPrime'],
+        'MINUS': ['MINUS', 'T', 'EPrime']
+    },
+    'T': {
+        'INT': ['F', 'TPrime'],
+        'LPAREN': ['F', 'TPrime'],
+        'X': ['F', 'TPrime'],
+        'Z': ['F', 'TPrime'],
+        'Q': ['F', 'TPrime'],
+        'I': ['F', 'TPrime'],
+    },
+    'TPrime': {
+        'RPAREN': [],
+        'END': [],
+        'PLUS': [],
+        'MINUS': [],
+        'TIMES': ['TIMES', 'F', 'TPrime'],
+        'DIVIDE': ['DIVIDE', 'F', 'TPrime']
+    },
+    'F': {
+        'INT': ['INT'],
+        'LPAREN': ['LPAREN', 'E', 'RPAREN'],
+        'X': ['X'],
+        'Z': ['Z'],
+        'Q': ['Q'],
+        'I': ['I'],
+    }
+}
+
 type OptionalString = string | null
 
 export class Token {

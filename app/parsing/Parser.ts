@@ -1,52 +1,12 @@
 import * as AST from './AST/AST';
-import { TERMINALS, NONTERMINALS, Token } from './grammar';
+import { TERMINALS, NONTERMINALS, PARSING_TABLE, Token } from './grammar';
 
 class Parser {
-    static parsingTable: Record<string, Record<string, string[]>> = {
-        'E': {
-            'INT': ['T', 'EPrime'],
-            'LPAREN': ['T', 'EPrime'],
-            'X': ['T', 'EPrime'],
-            'Z': ['T', 'EPrime'],
-            'Q': ['T', 'EPrime'],
-            'I': ['T', 'EPrime'],
-            'END': []
-        },
-        'EPrime': {
-            'RPAREN': [],
-            'END': [],
-            'PLUS': ['PLUS', 'T', 'EPrime'],
-            'MINUS': ['MINUS', 'T', 'EPrime']
-        },
-        'T': {
-            'INT': ['F', 'TPrime'],
-            'LPAREN': ['F', 'TPrime'],
-            'X': ['F', 'TPrime'],
-            'Z': ['F', 'TPrime'],
-            'Q': ['F', 'TPrime'],
-            'I': ['F', 'TPrime'],
-        },
-        'TPrime': {
-            'RPAREN': [],
-            'END': [],
-            'PLUS': [],
-            'MINUS': [],
-            'TIMES': ['TIMES', 'F', 'TPrime'],
-            'DIVIDE': ['DIVIDE', 'F', 'TPrime']
-        },
-        'F': {
-            'INT': ['INT'],
-            'LPAREN': ['LPAREN', 'E', 'RPAREN'],
-            'X': ['X'],
-            'Z': ['Z'],
-            'Q': ['Q'],
-            'I': ['I'],
-        }
-    }
-
     static parse(tokens: Token[]) {
         let accept = true;
-        const ast = new AST.ASTNode();
+        const ast = new AST.E();
+        let headNode = ast;
+        const nodeStack: AST.ASTNode[] = [];
 
         const stackFinal = [];
         const stack = ['E'];
@@ -62,7 +22,7 @@ class Parser {
             
             let continueLoop = true;
 
-            // NOTE: the extra breaks and continues are intentional
+            // NOTE: the break statements shouldn't be necessary, and are really just there to signal intent
             while (continueLoop) {
                 const symbol = stack.pop();
                 
@@ -97,7 +57,7 @@ class Parser {
                         continueLoop = false;
                         break;
                     } else if (NONTERMINALS.has(symbol)) {
-                        const production = this.parsingTable[symbol][token.name];
+                        const production = PARSING_TABLE[symbol][token.name];
 
                         if (production == undefined) {
                             console.log(
@@ -106,12 +66,12 @@ class Parser {
                             accept = false;
                             continueLoop = false;
                             break;
-                        }
-        
-                        // this is the only case in which the while loop continues running
-                        for (let i = production.length - 1; i >= 0; i--) {
-                            const producedSymbol = production[i];
-                            stack.push(producedSymbol);
+                        } else {
+                            // this is the only case in which the while loop continues running
+                            for (let i = production.length - 1; i >= 0; i--) {
+                                const producedSymbol = production[i];
+                                stack.push(producedSymbol);
+                            }
                         }
                     }
                 }

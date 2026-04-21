@@ -37,3 +37,22 @@ test('simple malformed expressions', () => {
     ({ast, accept} = Parser.parse(tokens));
     expect(accept).toBeFalsy();
 })
+
+test('accepts simple expressions', () => {
+    tokens = Lexer.scan("1 + 1");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("1 * x + 6");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("(x / 4)");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    // TODO
+    // tokens = Lexer.scan("2x + 5i");
+    // ({ast, accept} = Parser.parse(tokens));
+    // expect(accept).toBeTruthy();
+})
