@@ -12,9 +12,11 @@ export const TERMINALS = new Set([
     'INT',
     'LPAREN',
     'RPAREN',
-])
+]) // should END be in here?
 
 export const NONTERMINALS = new Set(["E", "EPrime", "T", "TPrime", "F"]);
+
+export const NULLABLE_NONTERMINALS = new Set(['EPrime', 'TPrime']);
 
 export const PRODUCTIONS = [
     ['E', ['T', 'EPrime']],

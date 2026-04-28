@@ -5,14 +5,14 @@ export class ASTNode{
 }
 
 export class E extends ASTNode {
-    t: T | null = null;
-    e_prime: EPrime | null = null;
+    t?: T;
+    e_prime?: EPrime;
 
     get incomplete() {
-        return (this.t == null || this.e_prime == null);
+        return (this.t == undefined || this.e_prime == undefined);
     }
 
-    // constructor(t: T, e_prime: EPrime) {
+    // constructor(t?: T, e_prime?: EPrime) {
     //     super();
     //     this.t = t;
     //     this.e_prime = e_prime;
@@ -24,10 +24,15 @@ export class E extends ASTNode {
 }
 
 export class EPrime extends ASTNode {
-    t: T;
-    e_prime: EPrime;
+    t?: T;
+    e_prime?: EPrime;
+    op?: string;
 
-    constructor(t: T, e_prime: EPrime) {
+    get incomplete() {
+        return (this.t == undefined || this.e_prime == undefined || this.op == undefined);
+    }
+
+    constructor(t?: T, e_prime?: EPrime) {
         super();
         this.t = t;
         this.e_prime = e_prime;
@@ -39,10 +44,14 @@ export class EPrime extends ASTNode {
 }
 
 export class T extends ASTNode {
-    f: F;
-    t_prime: TPrime;
+    f?: F;
+    t_prime?: TPrime;
 
-    constructor(f: F, t_prime: TPrime) {
+    get incomplete() {
+        return (this.f == undefined || this.t_prime == undefined);
+    }
+
+    constructor(f?: F, t_prime?: TPrime) {
         super();
         this.f = f;
         this.t_prime = t_prime;
@@ -50,10 +59,15 @@ export class T extends ASTNode {
 }
 
 export class TPrime extends ASTNode {
-    f: F;
-    t_prime: TPrime;
+    f?: F;
+    t_prime?: TPrime;
+    op?: string;
 
-    constructor(f: F, t_prime: TPrime) {
+    get incomplete() {
+        return (this.f == undefined || this.t_prime == undefined || this.op == undefined);
+    }
+
+    constructor(f?: F, t_prime?: TPrime) {
         super();
         this.f = f;
         this.t_prime = t_prime;

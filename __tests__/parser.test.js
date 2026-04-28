@@ -6,7 +6,7 @@ test('parsing end token', () => {
     const tokens = [new Token('END')];
     const {ast, accept} = Parser.parse(tokens);
 
-    expect(accept).toBeTruthy();
+    expect(accept).toBeFalsy();
 })
 
 test('unknown token', () => {
@@ -16,30 +16,48 @@ test('unknown token', () => {
     expect(accept).toBeFalsy();
 })
 
+test('parser rejects empty string', () => {
+    const tokens = Lexer.scan('');
+    const {ast, accept} = Parser.parse(tokens);
+    expect(accept).toBeFalsy();
+})
+
 test('simple malformed expressions', () => {
     let tokens = Lexer.scan("1+");
-    let {ast, accept} = Parser.parse(tokens);
+    let {_, accept} = Parser.parse(tokens);
     expect(accept).toBeFalsy();
 
     tokens = Lexer.scan("1 1");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeFalsy();
 
     tokens = Lexer.scan("*2");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeFalsy();
 
     tokens = Lexer.scan("x++i");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeFalsy();
 
     tokens = Lexer.scan("((()");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeFalsy();
+
+    tokens = Lexer.scan(")))))");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeFalsy();
+    
+    tokens = Lexer.scan("++++");
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeFalsy();
 })
 
 test('accepts simple expressions', () => {
     tokens = Lexer.scan("1 + 1");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("(50)");
     ({ast, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 

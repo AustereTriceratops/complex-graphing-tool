@@ -1,16 +1,16 @@
 import * as AST from './AST/AST';
-import { TERMINALS, NONTERMINALS, PARSING_TABLE, Token } from './grammar';
+import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } from './grammar';
 
 class Parser {
     static parse(tokens: Token[]) {
         let accept = true;
         const ast = new AST.E();
-        let headNode = ast;
-        const nodeStack: AST.ASTNode[] = [];
+        const nodeStack: AST.ASTNode[] = [ast];
 
-        const stackFinal = [];
-        const stack = ['E'];
+        const stackFinal = []; // will have only terminal symbols
+        const stack = ['E']; // will have a mix of terminal and nonterminals
 
+        // NOTE: every token is a terminal symbol in the grammar
         for (const token of tokens) {
             if (accept == false) break;
 
@@ -19,6 +19,23 @@ class Parser {
                 accept = false;
                 break;
             }
+
+            if (token.name == 'END') {
+                let breakLoop = false;
+                
+                for (const symbol of stack) {
+                    if (NONTERMINALS.has(symbol) && !NULLABLE_NONTERMINALS.has(symbol)) {
+                        console.log('parsing ERROR: reached END token while stack has non-nullable nonterminal symbols');
+                        accept = false;
+                        breakLoop = true;
+                        break;
+                    }
+                }
+
+                if (breakLoop) break;
+            }
+
+            // TODO: check that token is in TERMINALS?
             
             let continueLoop = true;
 
