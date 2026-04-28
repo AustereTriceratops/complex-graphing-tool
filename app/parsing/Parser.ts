@@ -6,6 +6,7 @@ class Parser {
         let accept = true;
         const ast = new AST.E();
         const nodeStack: AST.ASTNode[] = [ast];
+        const nodeStack2: [AST.ASTNode, string][] = [[ast, '']];
 
         const stackFinal = []; // will have only terminal symbols
         const stack = ['E']; // will have a mix of terminal and nonterminals
@@ -88,6 +89,70 @@ class Parser {
                             for (let i = production.length - 1; i >= 0; i--) {
                                 const producedSymbol = production[i];
                                 stack.push(producedSymbol);
+                            }
+
+                            const node = nodeStack.pop();
+
+                            if (node == undefined) break;
+
+                            if (symbol == 'E') {
+                                if (token.name == 'END') continue;
+                                
+                                nodeStack.push(ast);
+                                nodeStack.push(ast);
+                            } else if (symbol == 'EPrime') {
+                                // for a given symbol on the stack, check that the corresponding node on the stack
+                                // can produce that symbol (i.e. there's an appropriate production rule in the grammar)
+                                if (!(node instanceof AST.EPrime || node instanceof AST.E)) continue;
+                                if (token.name == 'END') continue;
+                                if (token.name == 'RPAREN') continue;
+
+                                if (token.name == 'PLUS') {
+                                    node.e_prime = new AST.Plus();
+                                    nodeStack.push(node.e_prime)
+                                    nodeStack.push(node.e_prime)
+                                }
+                                if (token.name == 'MINUS') {
+                                    node.e_prime = new AST.Minus();
+                                    nodeStack.push(node.e_prime)
+                                    nodeStack.push(node.e_prime)
+                                }
+                            } else if (symbol == 'T') {
+                                if (!(node instanceof AST.EPrime || node instanceof AST.E)) continue;
+                                
+                                node.t = new AST.T();
+
+                                nodeStack.push(node.t);
+                                nodeStack.push(node.t);
+                            } else if (symbol == 'TPrime') {
+                                if (!(node instanceof AST.TPrime || node instanceof AST.T)) continue;
+                                if (token.name == 'END') continue;
+                                if (token.name == 'RPAREN') continue;
+                                if (token.name == 'PLUS') continue;
+                                if (token.name == 'MINUS') continue;
+
+                                if (token.name == 'TIMES') {
+                                    node.t_prime = new AST.Plus();
+                                    nodeStack.push(node.t_prime)
+                                    nodeStack.push(node.t_prime)
+                                }
+                                if (token.name == 'DIVIDE') {
+                                    node.t_prime = new AST.Minus();
+                                    nodeStack.push(node.t_prime)
+                                    nodeStack.push(node.t_prime)
+                                }
+                            } else if (symbol == 'F') {
+                                if (!(node instanceof AST.TPrime || node instanceof AST.T)) continue;
+
+                                if (token.name == 'INT') {
+                                    if (!token.value) continue;
+                                    node.f = new AST.Int(parseInt(token.value));
+                                } else if (token.name == 'LPAREN') {
+                                    node.f = new AST.Paren();
+                                    nodeStack.push(node.f);
+                                } else if (token.name == 'X') {
+                                    node.f = new AST.X();
+                                }
                             }
                         }
                     }

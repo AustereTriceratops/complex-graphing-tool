@@ -26,10 +26,9 @@ export class E extends ASTNode {
 export class EPrime extends ASTNode {
     t?: T;
     e_prime?: EPrime;
-    op?: string;
 
-    get incomplete() {
-        return (this.t == undefined || this.e_prime == undefined || this.op == undefined);
+    get isNull() {
+        return (this.t == undefined || this.e_prime == undefined);
     }
 
     constructor(t?: T, e_prime?: EPrime) {
@@ -37,9 +36,17 @@ export class EPrime extends ASTNode {
         this.t = t;
         this.e_prime = e_prime;
     }
+}
 
+export class Plus extends EPrime {
     accept(visitor: Visitor){
-        visitor.visitEPrime(this);
+        visitor.visitPlus(this);
+    }
+}
+
+export class Minus extends EPrime {
+    accept(visitor: Visitor){
+        visitor.visitMinus(this);
     }
 }
 
@@ -61,10 +68,9 @@ export class T extends ASTNode {
 export class TPrime extends ASTNode {
     f?: F;
     t_prime?: TPrime;
-    op?: string;
 
-    get incomplete() {
-        return (this.f == undefined || this.t_prime == undefined || this.op == undefined);
+    get isNull() {
+        return (this.f == undefined || this.t_prime == undefined);
     }
 
     constructor(f?: F, t_prime?: TPrime) {
@@ -74,6 +80,17 @@ export class TPrime extends ASTNode {
     }
 }
 
+export class Times extends TPrime {
+    accept(visitor: Visitor) {
+        visitor.visitTimes(this);
+    }
+}
+
+export class Divide extends TPrime {
+    accept(visitor: Visitor) {
+        visitor.visitDivide(this);
+    }
+}
 
 export  class F extends ASTNode {}
 
@@ -93,5 +110,13 @@ export class Int extends F {
 export class X extends F {
     accept(visitor: Visitor) {
         visitor.visitX(this);
+    }
+}
+
+export class Paren extends F {
+    e?: E;
+
+    accept(visitor: Visitor) {
+        visitor.visitParen(this)
     }
 }
