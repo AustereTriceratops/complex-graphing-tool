@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Input } from "@mui/material";
 import Lexer from '../parsing/Lexer';
 import Parser from '../parsing/Parser';
+import {PrintVisitor} from '../parsing/AST/Visitor';
 
 const EquationInput = (props) => {
     const {value, updateValue} = props;
@@ -26,7 +27,11 @@ const EquationInput = (props) => {
                         console.log(tokens.map((t) => t.name));
                         console.log(tokens.map((t) => t.value));
 
-                        const AST = Parser.parse(tokens);
+                        const {ast, accept} = Parser.parse(tokens);
+                        const printVisitor = new PrintVisitor();
+
+                        console.log(ast)
+                        ast.accept(printVisitor);
                     } else if (!/[A-Za-z0-9\(\)\-\+\*\^/\. _]/.test(ev.key)) {
                         ev.preventDefault();
                     }

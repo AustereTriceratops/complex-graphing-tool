@@ -1,6 +1,15 @@
 import * as AST from './AST/AST';
 import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } from './grammar';
 
+// this parsing method buils the abstract syntax tree (AST) top-down
+// this means that, given a production A -> BC, an AST Node for A is created with the fields for B and C uninitialized
+// as a consequence, the field of every AST node must be marked with a '?' in typescript
+// (representing the union type between an ASTNode type and undefined)
+
+// Maybe I can switch to bottom-up parsing so that I won't have to deal with nodes 
+// being potentially undefined
+
+
 class Parser {
     static parse(tokens: Token[]) {
         let accept = true;
@@ -96,10 +105,21 @@ class Parser {
                             if (node == undefined) break;
 
                             if (symbol == 'E') {
+                                // TODO: this case has a lot of "special code" because we
+                                // create the base of the AST ahead of time instead of
+                                // through productions.
+                                // Could maybe add the usual "starter" production that compilers use
                                 if (token.name == 'END') continue;
+
+                                if (node instanceof AST.Paren) {
+                                    node.e = new AST.E();
+                                    nodeStack.push(node.e);
+                                    nodeStack.push(node.e);
+                                } else if (node instanceof AST.E) {
+                                    nodeStack.push(node);
+                                    nodeStack.push(node);
+                                }
                                 
-                                nodeStack.push(ast);
-                                nodeStack.push(ast);
                             } else if (symbol == 'EPrime') {
                                 // for a given symbol on the stack, check that the corresponding node on the stack
                                 // can produce that symbol (i.e. there's an appropriate production rule in the grammar)
@@ -132,12 +152,12 @@ class Parser {
                                 if (token.name == 'MINUS') continue;
 
                                 if (token.name == 'TIMES') {
-                                    node.t_prime = new AST.Plus();
+                                    node.t_prime = new AST.Times();
                                     nodeStack.push(node.t_prime)
                                     nodeStack.push(node.t_prime)
                                 }
                                 if (token.name == 'DIVIDE') {
-                                    node.t_prime = new AST.Minus();
+                                    node.t_prime = new AST.Divide();
                                     nodeStack.push(node.t_prime)
                                     nodeStack.push(node.t_prime)
                                 }
@@ -152,6 +172,12 @@ class Parser {
                                     nodeStack.push(node.f);
                                 } else if (token.name == 'X') {
                                     node.f = new AST.X();
+                                } else if (token.name == 'Z') {
+                                    node.f = new AST.Z();
+                                } else if (token.name == 'Q') {
+                                    node.f = new AST.Q();
+                                } else if (token.name == 'I') {
+                                    node.f = new AST.I();
                                 }
                             }
                         }

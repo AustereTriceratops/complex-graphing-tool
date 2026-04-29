@@ -12,12 +12,6 @@ export class E extends ASTNode {
         return (this.t == undefined || this.e_prime == undefined);
     }
 
-    // constructor(t?: T, e_prime?: EPrime) {
-    //     super();
-    //     this.t = t;
-    //     this.e_prime = e_prime;
-    // }
-
     accept(visitor: Visitor){
         visitor.visitE(this);
     }
@@ -35,6 +29,10 @@ export class EPrime extends ASTNode {
         super();
         this.t = t;
         this.e_prime = e_prime;
+    }
+
+    accept(visitor: Visitor) {
+        throw new Error('EPrime.accept() is an abstract method');
     }
 }
 
@@ -58,10 +56,8 @@ export class T extends ASTNode {
         return (this.f == undefined || this.t_prime == undefined);
     }
 
-    constructor(f?: F, t_prime?: TPrime) {
-        super();
-        this.f = f;
-        this.t_prime = t_prime;
+    accept(visitor: Visitor) {
+        visitor.visitT(this);
     }
 }
 
@@ -78,6 +74,10 @@ export class TPrime extends ASTNode {
         this.f = f;
         this.t_prime = t_prime;
     }
+
+    accept(visitor: Visitor) {
+        throw new Error('TPrime.accept() is an abstract method');
+    }
 }
 
 export class Times extends TPrime {
@@ -92,7 +92,9 @@ export class Divide extends TPrime {
     }
 }
 
-export  class F extends ASTNode {}
+export  class F extends ASTNode {
+    accept(visitor: Visitor) { throw new Error("F.accept() is an abstract method")};
+}
 
 export class Int extends F {
     value: number;
@@ -107,16 +109,34 @@ export class Int extends F {
     }
 }
 
+export class Paren extends F {
+    e?: E;
+    
+    accept(visitor: Visitor) {
+        visitor.visitParen(this)
+    }
+}
+
 export class X extends F {
     accept(visitor: Visitor) {
         visitor.visitX(this);
     }
 }
 
-export class Paren extends F {
-    e?: E;
-
+export class Z extends F {
     accept(visitor: Visitor) {
-        visitor.visitParen(this)
+        visitor.visitX(this);
+    }
+}
+
+export class Q extends F {
+    accept(visitor: Visitor) {
+        visitor.visitX(this);
+    }
+}
+
+export class I extends F {
+    accept(visitor: Visitor) {
+        visitor.visitX(this);
     }
 }
