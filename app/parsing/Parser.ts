@@ -54,9 +54,6 @@ class Parser {
                 const symbol = stack.pop();
                 
                 if (symbol == undefined) {
-                    console.log('parsing: stack is empty');
-                    console.log(`parsed tokens: ${stackFinal}`);
-
                     // unsure how to test this, or how to create this fail condition
                     // but this is here just in case it causes an unsuccessful parse
                     if (token.name != 'END')  {
