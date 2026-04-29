@@ -9,7 +9,8 @@ import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } 
 // Maybe I can switch to bottom-up parsing so that I won't have to deal with nodes 
 // being potentially undefined
 
-
+// TODO: error reporting
+// TODO: refactor chunks of code into smaller methods
 class Parser {
     static parse(tokens: Token[]) {
         let accept = true;
