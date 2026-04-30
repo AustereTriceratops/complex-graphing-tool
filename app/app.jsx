@@ -7,6 +7,7 @@ import InputSlider from './components/InputSlider';
 import NumberInput from './components/NumberInput';
 import NumberDisplay from './components/NumberDisplay';
 import EquationInput from './components/EquationInput';
+import { createFragmentShader } from './shader/shaders';
 
 // TODO: More display options
 const App = () => {
@@ -47,6 +48,19 @@ const App = () => {
     const aspect = useMemo(() => {
         return canvasHeight/canvasWidth;
     }, [canvasWidth, canvasHeight])
+
+    const updateShader = (function_source) => {
+        // const GLSLVisitor = new GLSLVisitor();
+        // function_source = ast.accept(GLSLVisitor);
+        const fragmentShader = createFragmentShader(function_source)
+
+        const glManager = programRef.current;
+
+        if (glManager) {
+            glManager.updateFragmentShader(fragmentShader);
+            setZoom(zoom + 0.000001);
+        }
+    }
 
     //
     // INTERACTIVITY
@@ -121,6 +135,18 @@ const App = () => {
     //
     const [equation, setEquation] = useState("eisenstein_series_4(x)")
 
+    // useEffect(() => {
+    //     // const GLSLVisitor = new GLSLVisitor();
+    //     // function_source = ast.accept(GLSLVisitor);
+    //     const fragmentShader = createFragmentShader(function_source)
+
+    //     const glManager = programRef.current;
+
+    //     if (glManager) {
+    //         glManager.updateFragmentShader(fragmentShader)
+    //     }
+    // }, [equation])
+
     //
     // SHADER CONTROLS
     //
@@ -132,13 +158,14 @@ const App = () => {
     //
     useEffect(() => {
         programRef.current.render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2)
-    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight]);
+    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight, equation]);
 
     return (
         <div>
             <EquationInput
                 value={equation}
                 updateValue={setEquation}
+                updateShader={updateShader}
             />
             <div style={{
                 display: 'flex',

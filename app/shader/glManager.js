@@ -10,23 +10,7 @@ export default class glManager {
         const gl = canvas.getContext('webgl');
         gl.clearColor(0.5, 0.6, 0.1, 1.0);
 
-        this.shaderProgram = initProgram(gl, vertexShader, fragmentShader);
-        gl.useProgram(this.shaderProgram);
-
-        this.shaderAttribs = {
-            vertexPosition: gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
-            resolution: gl.getUniformLocation(this.shaderProgram, 'resolution'),
-            aspect: gl.getUniformLocation(this.shaderProgram, 'aspect'),
-            zoom: gl.getUniformLocation(this.shaderProgram, 'zoom'),
-            offset: gl.getUniformLocation(this.shaderProgram, 'offset'),
-            param_1: gl.getUniformLocation(this.shaderProgram, 'param_1'),
-            param_2: gl.getUniformLocation(this.shaderProgram, 'param_2')
-        };
-        
-        gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
-        gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width)
-
-        this.positionBuffer = initPositionBuffer(gl, this.shaderAttribs.vertexPosition);
+        this.updateFragmentShader(fragmentShader);
 
         this.gl = gl
     }
@@ -38,6 +22,26 @@ export default class glManager {
         this.gl.viewport(0, 0, this.width, this.height);
         this.gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
         this.gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width);
+    }
+
+    updateFragmentShader(fragmentShader) {
+        this.shaderProgram = initProgram(this.gl, vertexShader, fragmentShader);
+        this.gl.useProgram(this.shaderProgram);
+
+        this.shaderAttribs = {
+            vertexPosition: this.gl.getAttribLocation(this.shaderProgram, 'aVertexPosition'),
+            resolution: this.gl.getUniformLocation(this.shaderProgram, 'resolution'),
+            aspect: this.gl.getUniformLocation(this.shaderProgram, 'aspect'),
+            zoom: this.gl.getUniformLocation(this.shaderProgram, 'zoom'),
+            offset: this.gl.getUniformLocation(this.shaderProgram, 'offset'),
+            param_1: this.gl.getUniformLocation(this.shaderProgram, 'param_1'),
+            param_2: this.gl.getUniformLocation(this.shaderProgram, 'param_2')
+        };
+        
+        this.gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
+        this.gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width)
+
+        this.positionBuffer = initPositionBuffer(this.gl, this.shaderAttribs.vertexPosition);
     }
 
     render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2) {

@@ -80,14 +80,6 @@ vec2 c_exp(vec2 a) {
 `
 
 const functions = `
-vec2 function(vec2 x) {
-  // vec2 y = c_multiply(x, c_pow4(x)) - vec2(0.5, 0.0);
-  // vec2 y = c_exp(x);
-  vec2 y = c_pow(x, 5.0) - vec2(1.0, 0.0);
-
-  return y;
-}
-
 // the basic term q in q expansions
 vec2 q(vec2 x) {
   vec2 y = c_exp(2.0*PI*c_multiply(i, x));
@@ -174,8 +166,8 @@ void main() {
   vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
   vec2 coords = zoom * normalized_coords + offset;
 
-  vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
-  // vec2 val = function(coords);
+  // vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
+  vec2 val = function(coords);
 
   float angle = complex_angle(val);
   float radius = complex_radius(val);
@@ -195,6 +187,22 @@ void main() {
 }
 `
 
-const fragmentShader = fragmentShaderSetup + complexNumbers + functions + fragmentShaderMain
+const user_function = `
+vec2 function(vec2 x) {
+  // vec2 y = c_multiply(x, c_pow4(x)) - vec2(0.5, 0.0);
+  // vec2 y = c_exp(x);
+  vec2 y = c_pow(x, 5.0) - vec2(1.0, 0.0);
+
+  return y;
+}
+`
+
+const fragmentShader = fragmentShaderSetup + complexNumbers + functions + user_function + fragmentShaderMain
+
+export function createFragmentShader(user_function) {
+  const shader = fragmentShaderSetup + complexNumbers + functions + user_function + fragmentShaderMain;
+
+  return shader;
+}
 
 export {vertexShader, fragmentShader}
