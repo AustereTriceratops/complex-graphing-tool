@@ -49,6 +49,7 @@ const App = () => {
         return canvasHeight/canvasWidth;
     }, [canvasWidth, canvasHeight])
 
+    // TODO: get rid of this
     const updateShader = (function_source) => {
         // const GLSLVisitor = new GLSLVisitor();
         // function_source = ast.accept(GLSLVisitor);
