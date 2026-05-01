@@ -13,7 +13,7 @@ export class E extends ASTNode {
     }
 
     accept(visitor: Visitor){
-        visitor.visitE(this);
+        return visitor.visitE(this);
     }
 }
 
@@ -38,13 +38,13 @@ export class EPrime extends ASTNode {
 
 export class Plus extends EPrime {
     accept(visitor: Visitor){
-        visitor.visitPlus(this);
+        return visitor.visitPlus(this);
     }
 }
 
 export class Minus extends EPrime {
     accept(visitor: Visitor){
-        visitor.visitMinus(this);
+        return visitor.visitMinus(this);
     }
 }
 
@@ -57,7 +57,7 @@ export class T extends ASTNode {
     }
 
     accept(visitor: Visitor) {
-        visitor.visitT(this);
+        return visitor.visitT(this);
     }
 }
 
@@ -82,13 +82,13 @@ export class TPrime extends ASTNode {
 
 export class Times extends TPrime {
     accept(visitor: Visitor) {
-        visitor.visitTimes(this);
+        return visitor.visitTimes(this);
     }
 }
 
 export class Divide extends TPrime {
     accept(visitor: Visitor) {
-        visitor.visitDivide(this);
+        return visitor.visitDivide(this);
     }
 }
 
@@ -105,7 +105,7 @@ export class Int extends F {
     }
 
     accept(visitor: Visitor) {
-        visitor.visitInt(this);
+        return visitor.visitInt(this);
     }
 }
 
@@ -113,30 +113,30 @@ export class Paren extends F {
     e?: E;
     
     accept(visitor: Visitor) {
-        visitor.visitParen(this)
+        return visitor.visitParen(this)
     }
 }
 
 export class X extends F {
     accept(visitor: Visitor) {
-        visitor.visitX(this);
+        return visitor.visitX(this);
     }
 }
 
 export class Z extends F {
     accept(visitor: Visitor) {
-        visitor.visitX(this);
+        return visitor.visitZ(this);
     }
 }
 
 export class Q extends F {
     accept(visitor: Visitor) {
-        visitor.visitX(this);
+        return visitor.visitQ(this);
     }
 }
 
 export class I extends F {
     accept(visitor: Visitor) {
-        visitor.visitX(this);
+        return visitor.visitI(this);
     }
 }

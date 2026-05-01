@@ -8,7 +8,7 @@ export default class glManager {
         this.height = canvas.height;
 
         const gl = canvas.getContext('webgl');
-        this.gl = gl
+        this.gl = gl;
 
         this.gl.clearColor(0.5, 0.6, 0.1, 1.0);
 

@@ -8,6 +8,7 @@ import NumberInput from './components/NumberInput';
 import NumberDisplay from './components/NumberDisplay';
 import EquationInput from './components/EquationInput';
 import { createFragmentShader } from './shader/shaders';
+import GLSLVisitor from './parsing/AST/GLSLVisitor';
 
 // TODO: More display options
 const App = () => {
@@ -48,20 +49,6 @@ const App = () => {
     const aspect = useMemo(() => {
         return canvasHeight/canvasWidth;
     }, [canvasWidth, canvasHeight])
-
-    // TODO: get rid of this
-    const updateShader = (function_source) => {
-        // const GLSLVisitor = new GLSLVisitor();
-        // function_source = ast.accept(GLSLVisitor);
-        const fragmentShader = createFragmentShader(function_source)
-
-        const glManager = programRef.current;
-
-        if (glManager) {
-            glManager.updateFragmentShader(fragmentShader);
-            setZoom(zoom + 0.000001);
-        }
-    }
 
     //
     // INTERACTIVITY
@@ -135,18 +122,22 @@ const App = () => {
     // EQUATION INPUT
     //
     const [equation, setEquation] = useState("eisenstein_series_4(x)")
+    const [ast, setAst] = useState(undefined);
 
-    // useEffect(() => {
-    //     // const GLSLVisitor = new GLSLVisitor();
-    //     // function_source = ast.accept(GLSLVisitor);
-    //     const fragmentShader = createFragmentShader(function_source)
-
-    //     const glManager = programRef.current;
-
-    //     if (glManager) {
-    //         glManager.updateFragmentShader(fragmentShader)
-    //     }
-    // }, [equation])
+    useEffect(() => {
+        if (ast != undefined) {
+            const visitor = new GLSLVisitor();
+            const function_source = ast.accept(visitor);
+            console.log(function_source)
+            const fragmentShader = createFragmentShader(function_source)
+    
+            const glManager = programRef.current;
+    
+            if (glManager) {
+                glManager.updateFragmentShader(fragmentShader)
+            }
+        }
+    }, [ast])
 
     //
     // SHADER CONTROLS
@@ -165,8 +156,8 @@ const App = () => {
         <div>
             <EquationInput
                 value={equation}
-                updateValue={setEquation}
-                updateShader={updateShader}
+                setEquation={setEquation}
+                setAst={setAst}
             />
             <div style={{
                 display: 'flex',
