@@ -63,7 +63,7 @@ export class PrintVisitor extends Visitor {
         this.indent_level -= 1;
     }
 
-    visitInt(node: AST.Int): void {
+    visitNum(node: AST.Num): void {
         console.log(`${this.spacing}${node.value}`);
     }
     

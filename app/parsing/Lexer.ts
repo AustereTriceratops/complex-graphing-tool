@@ -1,6 +1,6 @@
 import { Token } from "./grammar";
 
-function lookAhead(inputString: string, startIndex: number, regex: RegExp, tokenType: string) {
+export function lookAhead(inputString: string, startIndex: number, regex: RegExp) {
     let lookAheadIndex = startIndex;
     let lookAheadChar = inputString[startIndex];
     
@@ -11,7 +11,7 @@ function lookAhead(inputString: string, startIndex: number, regex: RegExp, token
         if (lookAheadChar == undefined) break;
     }
     
-    const token = new Token(tokenType, inputString.slice(startIndex, lookAheadIndex));
+    const txt = inputString.slice(startIndex, lookAheadIndex);
     
     // lookAheadIndex - i is the length of the integer's string
     // we don't want to re-analyze the characters of this string
@@ -20,7 +20,7 @@ function lookAhead(inputString: string, startIndex: number, regex: RegExp, token
     // incremented again at the start of the outer for loop)
     const indexIncrement = lookAheadIndex - startIndex - 1;
 
-    return {token: token, indexIncrement: indexIncrement};
+    return {txt: txt, indexIncrement: indexIncrement};
 }
 
 class Lexer {
@@ -37,7 +37,8 @@ class Lexer {
                 throw Error("undefined character in input string");
             } else {
                 if (/[a-zA-Z]/.test(char)) {
-                    const {token, indexIncrement} = lookAhead(input, i, /[a-zA-Z]/, '<?>')
+                    const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z]/)
+                    const token = new Token('<?>', txt)
 
                     // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
                     if (indexIncrement == 0) { // single-character reserved names
@@ -69,10 +70,16 @@ class Lexer {
                 } else if (char == ')') {
                     tokens.push(new Token('RPAREN'));
                 } else if (/[0-9]/.test(char)) {
-                    const {token, indexIncrement} = lookAhead(input, i, /[0-9]/, 'INT')
-
-                    tokens.push(token);
+                    const {txt, indexIncrement} = lookAhead(input, i, /[0-9]/);
                     i += indexIncrement;
+
+                    // if (input[i] == '.') {
+                    //     const {txt2, indexIncrement2} = lookAhead(input, i + 1, /[0-9]/);
+                    //     i += indexIncrement + 1;
+                    // }
+
+                    const token = new Token('NUM', txt);
+                    tokens.push(token);
                 } else {
                     tokens.push(new Token('<?>'));
                 }

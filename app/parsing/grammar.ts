@@ -9,7 +9,7 @@ export const TERMINALS = new Set([
     'TIMES',
     'DIVIDE',
     'POW',
-    'INT',
+    'NUM',
     'LPAREN',
     'RPAREN',
 ]) // should END be in here?
@@ -18,7 +18,7 @@ export const NONTERMINALS = new Set(["E", "EPrime", "T", "TPrime", "F"]);
 
 export const NULLABLE_NONTERMINALS = new Set(['EPrime', 'TPrime']);
 
-export const PRODUCTIONS = [
+export const PRODUCTIONS: [string, string[]][]  = [
     ['E', ['T', 'EPrime']],
     ['EPrime', ['PLUS', 'T', 'EPrime']],
     ['EPrime', ['MINUS', 'T', 'EPrime']],
@@ -28,7 +28,7 @@ export const PRODUCTIONS = [
     ['TPrime', ['DIVIDE', 'F', 'TPrime']],
     ['TPrime', []],
     ['F', ['LPAREN', 'E', 'RPAREN']],
-    ['F', ['INT']],
+    ['F', ['NUM']],
     ['F', ['X']],
     ['F', ['Z']],
     ['F', ['Q']],
@@ -37,43 +37,43 @@ export const PRODUCTIONS = [
 
 export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     'E': {
-        'INT': ['T', 'EPrime'],
-        'LPAREN': ['T', 'EPrime'],
-        'X': ['T', 'EPrime'],
-        'Z': ['T', 'EPrime'],
-        'Q': ['T', 'EPrime'],
-        'I': ['T', 'EPrime'],
+        'NUM': PRODUCTIONS[0][1], //['T', 'EPrime']
+        'LPAREN': PRODUCTIONS[0][1], //['T', 'EPrime']
+        'X': PRODUCTIONS[0][1], //['T', 'EPrime']
+        'Z': PRODUCTIONS[0][1], //['T', 'EPrime']
+        'Q': PRODUCTIONS[0][1], //['T', 'EPrime']
+        'I': PRODUCTIONS[0][1], //['T', 'EPrime']
         'END': []
     },
     'EPrime': {
-        'RPAREN': [],
-        'END': [],
-        'PLUS': ['PLUS', 'T', 'EPrime'],
-        'MINUS': ['MINUS', 'T', 'EPrime']
+        'PLUS': PRODUCTIONS[1][1], //['PLUS', 'T', 'EPrime'],
+        'MINUS': PRODUCTIONS[2][1], //['MINUS', 'T', 'EPrime']
+        'RPAREN': PRODUCTIONS[3][1], //[],
+        'END': PRODUCTIONS[3][1], //[],
     },
     'T': {
-        'INT': ['F', 'TPrime'],
-        'LPAREN': ['F', 'TPrime'],
-        'X': ['F', 'TPrime'],
-        'Z': ['F', 'TPrime'],
-        'Q': ['F', 'TPrime'],
-        'I': ['F', 'TPrime'],
+        'NUM': PRODUCTIONS[4][1], //['F', 'TPrime'],
+        'LPAREN': PRODUCTIONS[4][1], //['F', 'TPrime'],
+        'X': PRODUCTIONS[4][1], //['F', 'TPrime'],
+        'Z': PRODUCTIONS[4][1], //['F', 'TPrime'],
+        'Q': PRODUCTIONS[4][1], //['F', 'TPrime'],
+        'I': PRODUCTIONS[4][1], //['F', 'TPrime'],
     },
     'TPrime': {
-        'RPAREN': [],
-        'END': [],
-        'PLUS': [],
-        'MINUS': [],
-        'TIMES': ['TIMES', 'F', 'TPrime'],
-        'DIVIDE': ['DIVIDE', 'F', 'TPrime']
+        'RPAREN': PRODUCTIONS[7][1], //[],
+        'END': PRODUCTIONS[7][1], //[],
+        'PLUS': PRODUCTIONS[7][1], //[],
+        'MINUS': PRODUCTIONS[7][1], //[],
+        'TIMES': PRODUCTIONS[5][1], //['TIMES', 'F', 'TPrime'],
+        'DIVIDE': PRODUCTIONS[6][1], //['DIVIDE', 'F', 'TPrime']
     },
     'F': {
-        'INT': ['INT'],
-        'LPAREN': ['LPAREN', 'E', 'RPAREN'],
-        'X': ['X'],
-        'Z': ['Z'],
-        'Q': ['Q'],
-        'I': ['I'],
+        'LPAREN': PRODUCTIONS[8][1], //['LPAREN', 'E', 'RPAREN'],
+        'NUM': PRODUCTIONS[9][1], //['NUM'],
+        'X': PRODUCTIONS[10][1], //['X'],
+        'Z': PRODUCTIONS[11][1], //['Z'],
+        'Q': PRODUCTIONS[12][1], //['Q'],
+        'I': PRODUCTIONS[13][1], //['I'],
     }
 }
 

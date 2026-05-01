@@ -96,7 +96,7 @@ export  class F extends ASTNode {
     accept(visitor: Visitor) { throw new Error("F.accept() is an abstract method")};
 }
 
-export class Int extends F {
+export class Num extends F {
     value: number;
 
     constructor(value: number) {

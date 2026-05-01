@@ -85,7 +85,7 @@ class GLSLVisitor extends Visitor {
         return result;
     };
 
-    visitInt(node: AST.Int): string {
+    visitNum(node: AST.Num): string {
         return `vec2(${node.value.toFixed(1)}, 0.0)`;
     };
 

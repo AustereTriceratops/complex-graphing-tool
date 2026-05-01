@@ -162,9 +162,9 @@ class Parser {
                             } else if (symbol == 'F') {
                                 if (!(node instanceof AST.TPrime || node instanceof AST.T)) continue;
 
-                                if (token.name == 'INT') {
+                                if (token.name == 'NUM') {
                                     if (!token.value) continue;
-                                    node.f = new AST.Int(parseInt(token.value));
+                                    node.f = new AST.Num(parseFloat(token.value));
                                 } else if (token.name == 'LPAREN') {
                                     node.f = new AST.Paren();
                                     nodeStack.push(node.f);
