@@ -105,7 +105,7 @@ export class Num extends F {
     }
 
     accept(visitor: Visitor) {
-        return visitor.visitInt(this);
+        return visitor.visitNum(this);
     }
 }
 

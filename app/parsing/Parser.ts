@@ -10,13 +10,11 @@ import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } 
 // being potentially undefined
 
 // TODO: error reporting
-// TODO: refactor chunks of code into smaller methods
 class Parser {
     static parse(tokens: Token[]) {
         let accept = true;
         const ast = new AST.E();
         const nodeStack: AST.ASTNode[] = [ast];
-        const nodeStack2: [AST.ASTNode, string][] = [[ast, '']];
 
         const stackFinal = []; // will have only terminal symbols
         const stack = ['E']; // will have a mix of terminal and nonterminals
@@ -98,86 +96,7 @@ class Parser {
                                 stack.push(producedSymbol);
                             }
 
-                            const node = nodeStack.pop();
-
-                            if (node == undefined) break;
-
-                            if (symbol == 'E') {
-                                // TODO: this case has a lot of "special code" because we
-                                // create the base of the AST ahead of time instead of
-                                // through productions.
-                                // Could maybe add the usual "starter" production that compilers use
-                                if (token.name == 'END') continue;
-
-                                if (node instanceof AST.Paren) {
-                                    node.e = new AST.E();
-                                    nodeStack.push(node.e);
-                                    nodeStack.push(node.e);
-                                } else if (node instanceof AST.E) {
-                                    nodeStack.push(node);
-                                    nodeStack.push(node);
-                                }
-                                
-                            } else if (symbol == 'EPrime') {
-                                // for a given symbol on the stack, check that the corresponding node on the stack
-                                // can produce that symbol (i.e. there's an appropriate production rule in the grammar)
-                                if (!(node instanceof AST.EPrime || node instanceof AST.E)) continue;
-                                if (token.name == 'END') continue;
-                                if (token.name == 'RPAREN') continue;
-
-                                if (token.name == 'PLUS') {
-                                    node.e_prime = new AST.Plus();
-                                    nodeStack.push(node.e_prime)
-                                    nodeStack.push(node.e_prime)
-                                }
-                                if (token.name == 'MINUS') {
-                                    node.e_prime = new AST.Minus();
-                                    nodeStack.push(node.e_prime)
-                                    nodeStack.push(node.e_prime)
-                                }
-                            } else if (symbol == 'T') {
-                                if (!(node instanceof AST.EPrime || node instanceof AST.E)) continue;
-                                
-                                node.t = new AST.T();
-
-                                nodeStack.push(node.t);
-                                nodeStack.push(node.t);
-                            } else if (symbol == 'TPrime') {
-                                if (!(node instanceof AST.TPrime || node instanceof AST.T)) continue;
-                                if (token.name == 'END') continue;
-                                if (token.name == 'RPAREN') continue;
-                                if (token.name == 'PLUS') continue;
-                                if (token.name == 'MINUS') continue;
-
-                                if (token.name == 'TIMES') {
-                                    node.t_prime = new AST.Times();
-                                    nodeStack.push(node.t_prime)
-                                    nodeStack.push(node.t_prime)
-                                }
-                                if (token.name == 'DIVIDE') {
-                                    node.t_prime = new AST.Divide();
-                                    nodeStack.push(node.t_prime)
-                                    nodeStack.push(node.t_prime)
-                                }
-                            } else if (symbol == 'F') {
-                                if (!(node instanceof AST.TPrime || node instanceof AST.T)) continue;
-
-                                if (token.name == 'NUM') {
-                                    if (!token.value) continue;
-                                    node.f = new AST.Num(parseFloat(token.value));
-                                } else if (token.name == 'LPAREN') {
-                                    node.f = new AST.Paren();
-                                    nodeStack.push(node.f);
-                                } else if (token.name == 'X') {
-                                    node.f = new AST.X();
-                                } else if (token.name == 'Z') {
-                                    node.f = new AST.Z();
-                                } else if (token.name == 'Q') {
-                                    node.f = new AST.Q();
-                                } else if (token.name == 'I') {
-                                    node.f = new AST.I();
-                                }
-                            }
+                            Parser.buildASTNode(nodeStack, token, symbol);
                         }
                     }
                 }
@@ -187,6 +106,83 @@ class Parser {
         return {
             ast: ast, accept: accept
         };
+    }
+
+    static buildASTNode(nodeStack: AST.ASTNode[], token: Token,  symbol: string) {
+        const node = nodeStack.pop();
+
+        if (node != undefined) {
+            if (symbol == 'E') {
+                // TODO: this case has a lot of "special code" because we
+                // create the base of the AST ahead of time instead of
+                // through productions.
+                // Could maybe add the usual "starter" production that compilers use
+                if (token.name != 'END') {
+                    if (node instanceof AST.Paren) {
+                        node.e = new AST.E();
+                        nodeStack.push(node.e);
+                        nodeStack.push(node.e);
+                    } else if (node instanceof AST.E) {
+                        nodeStack.push(node);
+                        nodeStack.push(node);
+                    }
+                }
+            } else if (symbol == 'EPrime') {
+                // for a given symbol on the stack, check that the corresponding node on the stack
+                // can produce that symbol (i.e. there's an appropriate production rule in the grammar)
+                if ((node instanceof AST.EPrime || node instanceof AST.E)) {
+                    if (token.name == 'PLUS') {
+                        node.e_prime = new AST.Plus();
+                        nodeStack.push(node.e_prime);
+                        nodeStack.push(node.e_prime);
+                    } else if (token.name == 'MINUS') {
+                        node.e_prime = new AST.Minus();
+                        nodeStack.push(node.e_prime);
+                        nodeStack.push(node.e_prime);
+                    }
+                }
+            } else if (symbol == 'T') {
+                if ((node instanceof AST.EPrime || node instanceof AST.E)) {
+                    node.t = new AST.T();
+        
+                    nodeStack.push(node.t);
+                    nodeStack.push(node.t);
+                }
+                
+            } else if (symbol == 'TPrime') {
+                if ((node instanceof AST.TPrime || node instanceof AST.T)) {
+                    if (token.name == 'TIMES') {
+                        node.t_prime = new AST.Times();
+                        nodeStack.push(node.t_prime)
+                        nodeStack.push(node.t_prime)
+                    } else if (token.name == 'DIVIDE') {
+                        node.t_prime = new AST.Divide();
+                        nodeStack.push(node.t_prime)
+                        nodeStack.push(node.t_prime)
+                    }
+                }
+    
+            } else if (symbol == 'F') {
+                if ((node instanceof AST.TPrime || node instanceof AST.T)) {
+                    if (token.name == 'NUM') {
+                        if (token.value != null) {
+                            node.f = new AST.Num(parseFloat(token.value));
+                        }
+                    } else if (token.name == 'LPAREN') {
+                        node.f = new AST.Paren();
+                        nodeStack.push(node.f);
+                    } else if (token.name == 'X') {
+                        node.f = new AST.X();
+                    } else if (token.name == 'Z') {
+                        node.f = new AST.Z();
+                    } else if (token.name == 'Q') {
+                        node.f = new AST.Q();
+                    } else if (token.name == 'I') {
+                        node.f = new AST.I();
+                    }
+                }
+            }
+        }
     }
 }
 

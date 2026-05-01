@@ -1,4 +1,4 @@
-export const TERMINALS = new Set([
+export const TERMINALS = Object.freeze(new Set([
     '<?>',
     'X',
     'Z',
@@ -12,7 +12,8 @@ export const TERMINALS = new Set([
     'NUM',
     'LPAREN',
     'RPAREN',
-]) // should END be in here?
+    'END'
+]))
 
 export const NONTERMINALS = new Set(["E", "EPrime", "T", "TPrime", "F"]);
 
@@ -77,13 +78,11 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     }
 }
 
-type OptionalString = string | null
-
 export class Token {
     name: string
-    value: OptionalString
+    value: string | null
 
-    constructor(name: string, value: OptionalString=null) {
+    constructor(name: string, value: string | null = null) {
         this.name = name;
         this.value = value;
     }
