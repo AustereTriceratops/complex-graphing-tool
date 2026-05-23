@@ -15,9 +15,9 @@ export const TERMINALS = Object.freeze(new Set([
     'END'
 ]))
 
-export const NONTERMINALS = new Set(["E", "EPrime", "T", "TPrime", "F"]);
+export const NONTERMINALS = Object.freeze(new Set(["E", "EPrime", "T", "TPrime", "F"]));
 
-export const NULLABLE_NONTERMINALS = new Set(['EPrime', 'TPrime']);
+export const NULLABLE_NONTERMINALS = Object.freeze(new Set(['EPrime', 'TPrime']));
 
 export const PRODUCTIONS: [string, string[]][]  = [
     ['E', ['T', 'EPrime']],
@@ -61,12 +61,12 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         'I': PRODUCTIONS[4][1], //['F', 'TPrime'],
     },
     'TPrime': {
-        'RPAREN': PRODUCTIONS[7][1], //[],
-        'END': PRODUCTIONS[7][1], //[],
-        'PLUS': PRODUCTIONS[7][1], //[],
-        'MINUS': PRODUCTIONS[7][1], //[],
         'TIMES': PRODUCTIONS[5][1], //['TIMES', 'F', 'TPrime'],
         'DIVIDE': PRODUCTIONS[6][1], //['DIVIDE', 'F', 'TPrime']
+        'PLUS': PRODUCTIONS[7][1], //[],
+        'MINUS': PRODUCTIONS[7][1], //[],
+        'RPAREN': PRODUCTIONS[7][1], //[],
+        'END': PRODUCTIONS[7][1], //[],
     },
     'F': {
         'LPAREN': PRODUCTIONS[8][1], //['LPAREN', 'E', 'RPAREN'],

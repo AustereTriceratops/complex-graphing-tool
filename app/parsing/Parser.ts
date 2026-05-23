@@ -148,7 +148,6 @@ class Parser {
                     nodeStack.push(node.t);
                     nodeStack.push(node.t);
                 }
-                
             } else if (symbol == 'TPrime') {
                 if ((node instanceof AST.TPrime || node instanceof AST.T)) {
                     if (token.name == 'TIMES') {
@@ -161,7 +160,6 @@ class Parser {
                         nodeStack.push(node.t_prime)
                     }
                 }
-    
             } else if (symbol == 'F') {
                 if ((node instanceof AST.TPrime || node instanceof AST.T)) {
                     if (token.name == 'NUM') {
