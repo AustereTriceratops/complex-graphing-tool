@@ -3,7 +3,6 @@ import * as AST from './AST';
 
 export class PrintVisitor extends Visitor {
     indent_level = 0;
-    output = ``;
 
     get spacing() {
         return ' '.repeat(2*this.indent_level);

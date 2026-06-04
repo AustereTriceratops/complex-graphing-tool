@@ -9,6 +9,7 @@ import NumberDisplay from './components/NumberDisplay';
 import EquationInput from './components/EquationInput';
 import { createFragmentShader } from './shader/shaders';
 import GLSLVisitor from './parsing/AST/GLSLVisitor';
+import EquationVisitor from "./parsing/AST/EquationVisitor";
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
 
@@ -148,7 +149,11 @@ const App = () => {
             const visitor = new GLSLVisitor();
             const function_source = ast.accept(visitor);
             const fragmentShader = createFragmentShader(function_source)
-    
+            
+            const equationVisitor = new EquationVisitor();
+            const equation_string = ast.accept(equationVisitor);
+            console.log(equation_string)
+
             const glManager = programRef.current;
     
             if (glManager) {
@@ -156,6 +161,14 @@ const App = () => {
             }
         }
     }, [ast])
+
+    ///
+    /// EQUATION CONTROLS
+    ///
+    const [equationParameter1, setEquationParameter1] = useState(0)
+    // const [equationParameter2, setEquationParameter2] = useState(0)
+    // const [equationParameter3, setEquationParameter3] = useState(0)
+    // const [equationParameter4, setEquationParameter4] = useState(0)
 
     //
     // SHADER CONTROLS
@@ -189,6 +202,15 @@ const App = () => {
                     width: '15%',
                     gap: '5px'
                 }}>
+                    <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
+                    <InputSlider
+                        title="parameter 1"
+                        value={equationParameter1}
+                        step={0.01}
+                        min={-10}
+                        max={10}
+                        setValue={setEquationParameter1}
+                    />
                     <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
                     <InputSlider
                         title="Color intensity"
