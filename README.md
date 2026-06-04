@@ -6,11 +6,6 @@ First, run the development server:
 
 ```bash
 nvm use # read .nvmrc and set node version to >25.8.0
+npm test
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```

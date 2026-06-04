@@ -13,7 +13,7 @@ export function lookAhead(inputString: string, startIndex: number, regex: RegExp
     
     const txt = inputString.slice(startIndex, lookAheadIndex);
     
-    // lookAheadIndex - i is the length of the integer's string
+    // lookAheadIndex - startIndex is the length of the integer's string
     // we don't want to re-analyze the characters of this string
     // since they have already been accounted for in the while loop above
     // so we increment i by that value minus 1 (becuase it will be 
@@ -70,13 +70,14 @@ class Lexer {
                 } else if (char == ')') {
                     tokens.push(new Token('RPAREN'));
                 } else if (/[0-9]/.test(char)) {
-                    const {txt, indexIncrement} = lookAhead(input, i, /[0-9]/);
+                    let {txt, indexIncrement} = lookAhead(input, i, /[0-9]/);
                     i += indexIncrement;
 
-                    // if (input[i] == '.') {
-                    //     const {txt2, indexIncrement2} = lookAhead(input, i + 1, /[0-9]/);
-                    //     i += indexIncrement + 1;
-                    // }
+                    if (input[i+1] == '.') {
+                        const {txt: txt2, indexIncrement} = lookAhead(input, i + 2, /[0-9]/);
+                        i += indexIncrement + 2;
+                        txt += "." + txt2
+                    }
 
                     const token = new Token('NUM', txt);
                     tokens.push(token);
