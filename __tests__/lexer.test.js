@@ -149,26 +149,20 @@ test('tokenizing integers', () => {
 
 test('tokenizing floats', () => {
     let tokens = Lexer.scan("1.0");
-    let expectedTokens = ["NUM", "END"];
     let expectedValue = "1.0";
 
-    console.log(tokens)
-    expect(tokens.length).toEqual(expectedTokens.length);
+    expect(tokens.length).toEqual(2);
     expect(tokens[0].value).toEqual(expectedValue)
     
     tokens = Lexer.scan("1.");
-    expectedTokens = ["NUM", "END"];
     expectedValue = "1.";
 
-    console.log(tokens)
-    expect(tokens.length).toEqual(expectedTokens.length);
+    expect(tokens.length).toEqual(2);
     expect(tokens[0].value).toEqual(expectedValue)
 
     tokens = Lexer.scan("3.14159265");
-    expectedTokens = ["NUM", "END"];
     expectedValue = "3.14159265";
 
-    console.log(tokens)
-    expect(tokens.length).toEqual(expectedTokens.length);
+    expect(tokens.length).toEqual(2);
     expect(tokens[0].value).toEqual(expectedValue)
 })

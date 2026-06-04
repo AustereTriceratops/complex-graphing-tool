@@ -9,11 +9,13 @@ import NumberDisplay from './components/NumberDisplay';
 import EquationInput from './components/EquationInput';
 import { createFragmentShader } from './shader/shaders';
 import GLSLVisitor from './parsing/AST/GLSLVisitor';
+import Parser from './parsing/Parser';
+import Lexer from './parsing/Lexer';
 
 // TODO: More display options
 const App = () => {
     //
-    // CANVAS AND SHADER SETUP
+    // CANVAS AND SHADER STATE
     //
     const canvasRef = useRef(null);
     const programRef = useRef(null);
@@ -21,6 +23,13 @@ const App = () => {
     const [canvasWidth, setCanvasWidth] = useState(0);
     const [canvasHeight, setCanvasHeight] = useState(0);
 
+    const aspect = useMemo(() => {
+        return canvasHeight/canvasWidth;
+    }, [canvasWidth, canvasHeight])
+
+    ///
+    /// INITIALIZE CANVAS
+    ///
     useEffect(() => {
         const canvas = canvasRef.current;
 
@@ -45,10 +54,6 @@ const App = () => {
         // cleanup
         return () => observer.disconnect();
     }, [])
-
-    const aspect = useMemo(() => {
-        return canvasHeight/canvasWidth;
-    }, [canvasWidth, canvasHeight])
 
     //
     // INTERACTIVITY
@@ -121,14 +126,27 @@ const App = () => {
     //
     // EQUATION INPUT
     //
-    const [equation, setEquation] = useState("eisenstein_series_4(x)")
+    const [equation, setEquation] = useState("x*x + 1.5")
     const [ast, setAst] = useState(undefined);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        const tokens = Lexer.scan(equation);
+                        
+        const {ast, accept} = Parser.parse(tokens);
+        
+        if (!accept) {
+            setError(true);
+        } else {
+            setAst(ast);
+            setError(false);
+        }
+    }, [equation])
 
     useEffect(() => {
         if (ast != undefined) {
             const visitor = new GLSLVisitor();
             const function_source = ast.accept(visitor);
-            console.log(function_source)
             const fragmentShader = createFragmentShader(function_source)
     
             const glManager = programRef.current;
@@ -150,14 +168,14 @@ const App = () => {
     //
     useEffect(() => {
         programRef.current.render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2)
-    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight, equation]);
+    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight, ast]);
 
     return (
         <div>
             <EquationInput
                 value={equation}
                 setEquation={setEquation}
-                setAst={setAst}
+                error={error}
             />
             <div style={{
                 display: 'flex',
