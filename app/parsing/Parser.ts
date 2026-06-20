@@ -1,8 +1,8 @@
 import * as AST from './AST/AST';
 import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, PRODUCTIONS, Token } from './grammar';
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, NUM, LPAREN, END,
-    E, EPrime, T, TPrime, F
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, END,
+    E, EPrime, T, TPrime, P, PPrime, F
 } from "./constants"
 
 // this parsing method buils the abstract syntax tree (AST) top-down
@@ -148,7 +148,6 @@ class Parser {
             } else if (symbol == T) {
                 if ((node instanceof AST.EPrime || node instanceof AST.E)) {
                     node.t = new AST.T();
-        
                     nodeStack.push(node.t);
                     nodeStack.push(node.t);
                 }
@@ -164,8 +163,22 @@ class Parser {
                         nodeStack.push(node.t_prime)
                     }
                 }
-            } else if (symbol == F) {
+            } else if (symbol == P) {
                 if ((node instanceof AST.TPrime || node instanceof AST.T)) {
+                    node.p = new AST.P();
+                    nodeStack.push(node.p);
+                    nodeStack.push(node.p);
+                }
+            } else if (symbol == PPrime) {
+                if ((node instanceof AST.PPrime || node instanceof AST.P)) {
+                    if (token.name == POW) {
+                        node.p_prime = new AST.Pow();
+                        nodeStack.push(node.p_prime)
+                        nodeStack.push(node.p_prime)
+                    }
+                }
+            } else if (symbol == F) {
+                if ((node instanceof AST.PPrime || node instanceof AST.P)) {
                     if (token.name == NUM) {
                         if (token.value != null) {
                             node.f = new AST.Num(parseFloat(token.value));

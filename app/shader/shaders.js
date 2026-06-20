@@ -70,6 +70,13 @@ vec2 c_pow(vec2 a, float p) {
   
   return pow(radius, p) * vec2(cos(p * angle), sin(p * angle));
 }
+
+vec2 c_pow_full(vec2 a, vec2 p) {
+  float radius = complex_radius(a);
+  float angle = complex_angle(a);
+  
+  return pow(radius, p.x) * vec2(cos(p.x * angle), sin(p.x * angle));
+}
   
 // implementation of complex exponentiation
 // e^(a + ib) = e^a * e^(ib) = e^a * (cos(b) + i*sin(b))
@@ -173,8 +180,9 @@ void main() {
   float radius = complex_radius(val);
 
   // modulate the brightness by complex magnitude
-  // float fac = 1.0/(pow(radius, 0.2) + 1.0);
-  float fac = 1.0;
+  float fac = 1.0/(0.2*pow(radius, 0.2) + 1.0);
+  // float fac = radius; // cool visual effect
+  // float fac = 1.0 - 1.0/(radius + 1.0);
 
   // color by complex angle
   vec3 color = vec3(sin(angle + param_2), sin(angle + param_2 - 2.0*PI/3.0), sin(angle + param_2 - 4.0*PI/3.0));

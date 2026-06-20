@@ -3,6 +3,8 @@ export const E = 'E'
 export const EPrime = "EPrime"
 export const T = 'T'
 export const TPrime = "TPrime"
+export const P = 'P'
+export const PPrime = "PPrime"
 export const F = "F"
 
 /// TERMINALS

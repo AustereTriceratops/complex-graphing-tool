@@ -12,6 +12,7 @@ import GLSLVisitor from './parsing/AST/GLSLVisitor';
 import EquationVisitor from "./parsing/AST/EquationVisitor";
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
+import PrintVisitor from './parsing/AST/PrintVisitor';
 
 // TODO: More display options
 const App = () => {
@@ -127,7 +128,7 @@ const App = () => {
     //
     // EQUATION INPUT
     //
-    const [equation, setEquation] = useState("x*x + 1.5")
+    const [equation, setEquation] = useState("x^11 - x^8 + x^4 - x^3 - x^2 + x + 0.5")
     const [ast, setAst] = useState(undefined);
     const [error, setError] = useState(false);
 
@@ -149,10 +150,13 @@ const App = () => {
             const visitor = new GLSLVisitor();
             const function_source = ast.accept(visitor);
             const fragmentShader = createFragmentShader(function_source)
+            console.log(function_source)
             
-            const equationVisitor = new EquationVisitor();
-            const equation_string = ast.accept(equationVisitor);
-            console.log(equation_string)
+            // const equationVisitor = new EquationVisitor();
+            // const equation_string = ast.accept(equationVisitor);
+
+            // const printVisitor = new PrintVisitor();
+            // ast.accept(printVisitor);
 
             const glManager = programRef.current;
     

@@ -7,6 +7,8 @@ class Visitor{
     visitT(node: AST.T) { throw Error('visitT not implemented') };
     visitTimes(node: AST.Times) { throw Error('visitTimes not implemented') };
     visitDivide(node: AST.Divide) { throw Error('visitDivide not implemented') };
+    visitP(node: AST.P) { throw Error('visitP not implemented') };
+    visitPow(node: AST.Pow) { throw Error('visitPow not implemented') };
     visitNum(node: AST.Num) { throw Error('visitNum not implemented')};
     visitParen(node: AST.Paren) { throw Error('visitParen not implemented')};
     visitX(node: AST.X) { throw Error('visitX not implemented') };

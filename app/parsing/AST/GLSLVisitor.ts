@@ -8,15 +8,19 @@ class GLSLVisitor extends Visitor {
     entering = true;
 
     visitE(node: AST.E): string {
-        const txt1 = node.t?.accept(this) ?? '';
-        const txt2 = node.e_prime?.accept(this) ?? '';
-        let result = txt1 + txt2;
+        let result = ''
 
         if (this.entering) {
-            result = this.function_start + result + this.function_end
-        }
+            this.entering = false;
 
-        this.entering = false;
+            const txt1 = node.t?.accept(this) ?? '';
+            const txt2 = node.e_prime?.accept(this) ?? '';
+            result = this.function_start + txt1 + txt2 + this.function_end
+        } else {
+            const txt1 = node.t?.accept(this) ?? '';
+            const txt2 = node.e_prime?.accept(this) ?? '';
+            result = txt1 + txt2;
+        }
         return result;
     }
         
@@ -35,10 +39,10 @@ class GLSLVisitor extends Visitor {
     };
 
     visitT(node: AST.T): string {
-        const txt1 = node.f?.accept(this) ?? '';
+        const txt1 = node.p?.accept(this) ?? '';
         let result = txt1;
 
-        if (node.f != undefined && node.t_prime != undefined) {
+        if (node.p != undefined && node.t_prime != undefined) {
             const txt2  = node.t_prime.accept(this);
 
             if (node.t_prime instanceof AST.Times) {
@@ -52,10 +56,10 @@ class GLSLVisitor extends Visitor {
     };
 
     visitTimes(node: AST.Times): string {
-        const txt1 = node.f?.accept(this) ?? '';
+        const txt1 = node.p?.accept(this) ?? '';
         let result = txt1;
 
-        if (node.f != undefined && node.t_prime != undefined) {
+        if (node.p != undefined && node.t_prime != undefined) {
             const txt2  = node.t_prime.accept(this);
 
             if (node.t_prime instanceof AST.Times) {
@@ -69,16 +73,46 @@ class GLSLVisitor extends Visitor {
     };
 
     visitDivide(node: AST.Divide): string {
-        const txt1 = node.f?.accept(this) ?? '';
+        const txt1 = node.p?.accept(this) ?? '';
         let result = txt1;
 
-        if (node.f != undefined && node.t_prime != undefined) {
+        if (node.p != undefined && node.t_prime != undefined) {
             const txt2  = node.t_prime.accept(this);
 
             if (node.t_prime instanceof AST.Times) {
                 result = `c_multiply(${txt1}, ${txt2})`;
             } else if (node.t_prime instanceof AST.Divide) {
                 result = `c_divide(${txt1}, ${txt2})`;
+            }
+        }
+
+        return result;
+    };
+
+    visitP(node: AST.P): string {
+        const txt1 = node.f?.accept(this) ?? '';
+        let result = txt1;
+
+        if (node.f != undefined && node.p_prime != undefined) {
+            const txt2  = node.p_prime.accept(this);
+
+            if (node.p_prime instanceof AST.Pow) {
+                result = `c_pow_full(${txt1}, ${txt2})`;
+            }
+        }
+
+        return result;
+    };
+
+    visitPow(node: AST.Pow): string {
+        const txt1 = node.f?.accept(this) ?? '';
+        let result = txt1;
+
+        if (node.f != undefined && node.p_prime != undefined) {
+            const txt2  = node.p_prime.accept(this);
+
+            if (node.p_prime instanceof AST.Pow) {
+                result = `c_pow_full(${txt1}, ${txt2})`;
             }
         }
 

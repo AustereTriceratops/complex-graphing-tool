@@ -49,11 +49,11 @@ export class Minus extends EPrime {
 }
 
 export class T extends ASTNode {
-    f?: F;
+    p?: P;
     t_prime?: TPrime;
 
     get incomplete() {
-        return (this.f == undefined || this.t_prime == undefined);
+        return (this.p == undefined || this.t_prime == undefined);
     }
 
     accept(visitor: Visitor) {
@@ -62,16 +62,16 @@ export class T extends ASTNode {
 }
 
 export class TPrime extends ASTNode {
-    f?: F;
+    p?: P;
     t_prime?: TPrime;
 
     get isNull() {
-        return (this.f == undefined || this.t_prime == undefined);
+        return (this.p == undefined || this.t_prime == undefined);
     }
 
-    constructor(f?: F, t_prime?: TPrime) {
+    constructor(p?: P, t_prime?: TPrime) {
         super();
-        this.f = f;
+        this.p = p;
         this.t_prime = t_prime;
     }
 
@@ -89,6 +89,44 @@ export class Times extends TPrime {
 export class Divide extends TPrime {
     accept(visitor: Visitor) {
         return visitor.visitDivide(this);
+    }
+}
+
+export class P extends ASTNode {
+    f?: F;
+    p_prime?: PPrime;
+
+    get incomplete() {
+        return (this.f == undefined || this.p_prime == undefined);
+    }
+
+    accept(visitor: Visitor) {
+        return visitor.visitP(this);
+    }
+}
+
+export class PPrime extends ASTNode {
+    f?: F;
+    p_prime?: PPrime;
+
+    get isNull() {
+        return (this.f == undefined || this.p_prime == undefined);
+    }
+
+    constructor(f?: F, p_prime?: PPrime) {
+        super();
+        this.f = f;
+        this.p_prime = p_prime;
+    }
+
+    accept(visitor: Visitor) {
+        throw new Error('PPrime.accept() is an abstract method');
+    }
+}
+
+export class Pow extends PPrime {
+    accept(visitor: Visitor) {
+        return visitor.visitPow(this);
     }
 }
 

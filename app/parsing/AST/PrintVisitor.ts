@@ -36,7 +36,7 @@ export class PrintVisitor extends Visitor {
     }
 
     visitT(node: AST.T): void {
-        node.f?.accept(this);
+        node.p?.accept(this);
         node.t_prime?.accept(this);
     }
 
@@ -45,7 +45,7 @@ export class PrintVisitor extends Visitor {
         
         this.indent_level += 1;
 
-        node.f?.accept(this);
+        node.p?.accept(this);
         node.t_prime?.accept(this);
 
         this.indent_level -= 1;
@@ -56,8 +56,24 @@ export class PrintVisitor extends Visitor {
         
         this.indent_level += 1;
 
-        node.f?.accept(this);
+        node.p?.accept(this);
         node.t_prime?.accept(this);
+
+        this.indent_level -= 1;
+    }
+
+    visitP(node: AST.P): void {
+        node.f?.accept(this);
+        node.p_prime?.accept(this);
+    }
+
+    visitPow(node: AST.Pow): void {
+        console.log(`${this.spacing}^`);
+        
+        this.indent_level += 1;
+
+        node.f?.accept(this);
+        node.p_prime?.accept(this);
 
         this.indent_level -= 1;
     }

@@ -24,24 +24,38 @@ export class EquationVisitor extends Visitor {
     }
 
     visitT(node: AST.T): string {
-        const f = node.f?.accept(this);
+        const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? '';
 
-        return `${f}${t_prime}`;
+        return `${p}${t_prime}`;
     }
 
     visitTimes(node: AST.Times): string {
-        const f = node.f?.accept(this);
+        const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? '';
 
-        return `*${f}${t_prime}`;
+        return `*${p}${t_prime}`;
     }
     
     visitDivide(node: AST.Divide): string {
-        const f = node.f?.accept(this);
+        const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? '';
 
-        return `/${f}${t_prime}`;
+        return `/${p}${t_prime}`;
+    }
+
+    visitP(node: AST.P): string {
+        const f = node.f?.accept(this);
+        const p_prime = node.p_prime?.accept(this) ?? '';
+
+        return `${f}${p_prime}`;
+    }
+
+    visitPow(node: AST.Pow): string {
+        const f = node.f?.accept(this);
+        const p_prime = node.p_prime?.accept(this) ?? '';
+
+        return `^${f}${p_prime}`;
     }
 
     visitNum(node: AST.Num): string {
