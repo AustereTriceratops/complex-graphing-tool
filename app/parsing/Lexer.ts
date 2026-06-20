@@ -1,4 +1,7 @@
 import { Token } from "./grammar";
+import {
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, END
+} from "./constants"
 
 export function lookAhead(inputString: string, startIndex: number, regex: RegExp) {
     let lookAheadIndex = startIndex;
@@ -38,37 +41,37 @@ class Lexer {
             } else {
                 if (/[a-zA-Z]/.test(char)) {
                     const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z]/)
-                    const token = new Token('<?>', txt)
+                    const token = new Token(UNK, txt)
 
                     // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
                     if (indexIncrement == 0) { // single-character reserved names
                         if (char == 'x') {
-                            tokens.push(new Token('X'));
+                            tokens.push(new Token(X));
                         } else if (char == 'z') {
-                            tokens.push(new Token('Z'));
+                            tokens.push(new Token(Z));
                         } else if (char == 'q') {
-                            tokens.push(new Token('Q'));
+                            tokens.push(new Token(Q));
                         } else if (char == 'i') {
-                            tokens.push(new Token('I'));
+                            tokens.push(new Token(I));
                         }
                     } else {
                         tokens.push(token);
                         i += indexIncrement;
                     }
                 } else if (char == '+') {
-                    tokens.push(new Token('PLUS'));
+                    tokens.push(new Token(PLUS));
                 } else if (char == '-') {
-                    tokens.push(new Token('MINUS'));
+                    tokens.push(new Token(MINUS));
                 } else if (char == '*') {
-                    tokens.push(new Token('TIMES'));
+                    tokens.push(new Token(TIMES));
                 } else if (char == '/') {
-                    tokens.push(new Token('DIVIDE'));
+                    tokens.push(new Token(DIVIDE));
                 } else if (char == '^') {
-                    tokens.push(new Token('POW'));
+                    tokens.push(new Token(POW));
                 } else if (char == '(') {
-                    tokens.push(new Token('LPAREN'));
+                    tokens.push(new Token(LPAREN));
                 } else if (char == ')') {
-                    tokens.push(new Token('RPAREN'));
+                    tokens.push(new Token(RPAREN));
                 } else if (/[0-9]/.test(char)) {
                     let {txt, indexIncrement} = lookAhead(input, i, /[0-9]/);
                     i += indexIncrement;
@@ -79,15 +82,15 @@ class Lexer {
                         txt += "." + txt2
                     }
 
-                    const token = new Token('NUM', txt);
+                    const token = new Token(NUM, txt);
                     tokens.push(token);
                 } else {
-                    tokens.push(new Token('<?>'));
+                    tokens.push(new Token(UNK));
                 }
             }
         }
 
-        tokens.push(new Token('END'));
+        tokens.push(new Token(END));
         return tokens;
     }
 }

@@ -1,16 +1,17 @@
 import Lexer from '../app/parsing/Lexer.ts';
 import Parser from '../app/parsing/Parser';
 import { Token } from '../app/parsing/grammar';
+import { END, UNK } from '../app/parsing/constants';
 
 test('parsing end token', () => {
-    const tokens = [new Token('END')];
+    const tokens = [new Token(END)];
     const {ast, accept} = Parser.parse(tokens);
 
     expect(accept).toBeFalsy();
 })
 
 test('unknown token', () => {
-    const tokens = [new Token('<?>')];
+    const tokens = [new Token(UNK)];
     const {ast, accept} = Parser.parse(tokens);
 
     expect(accept).toBeFalsy();
