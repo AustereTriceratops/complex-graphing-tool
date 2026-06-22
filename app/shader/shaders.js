@@ -1,3 +1,5 @@
+// TODO: contour lines
+
 const vertexShader = `
 attribute vec4 aVertexPosition;
 
@@ -21,6 +23,7 @@ uniform vec2 offset;
 // display parameters
 uniform float param_1;
 uniform float param_2;
+uniform float degree;
 `
 
 const complexNumbers = `
@@ -71,6 +74,7 @@ vec2 c_pow(vec2 a, float p) {
   return pow(radius, p) * vec2(cos(p * angle), sin(p * angle));
 }
 
+// TODO: fully implement
 vec2 c_pow_full(vec2 a, vec2 p) {
   float radius = complex_radius(a);
   float angle = complex_angle(a);
@@ -179,19 +183,34 @@ void main() {
   float angle = complex_angle(val);
   float radius = complex_radius(val);
 
+  
   // modulate the brightness by complex magnitude
   float fac = 1.0/(0.2*pow(radius, 0.2) + 1.0);
   // float fac = radius; // cool visual effect
   // float fac = 1.0 - 1.0/(radius + 1.0);
+  
 
   // color by complex angle
-  vec3 color = vec3(sin(angle + param_2), sin(angle + param_2 - 2.0*PI/3.0), sin(angle + param_2 - 4.0*PI/3.0));
+  float phased_angle = angle + param_2;
+  vec3 color = vec3(sin(phased_angle), sin(phased_angle - 2.0*PI/3.0), sin(phased_angle - 4.0*PI/3.0));
+
+
+  // draw contour lines
+  float tightness_angular = 40.0*max(length(coords), 0.1);
+  float n_contours = 8.0;
+  float contour_mask_angular = min(tightness_angular * sin(n_contours * phased_angle) + tightness_angular, 1.0);
+
+  float tightness_radial = 40.0;
+  float contour_mask_radial = min(tightness_radial * cos(20.0*pow(radius, 1.0/degree)) + tightness_radial, 1.0);
+
+  float contour_mask = contour_mask_radial * contour_mask_angular;
   
+
   // extra parameters
   float inv_param_1 = 1.0 - param_1;
   color = vec3(inv_param_1, inv_param_1, inv_param_1) + param_1 * color;
 
-  gl_FragColor = vec4(fac*color, 1.0);
+  gl_FragColor = vec4(contour_mask*fac*color, 1.0);
 }
 `
 

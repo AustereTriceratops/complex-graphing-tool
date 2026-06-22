@@ -20,8 +20,8 @@ class Parser {
         const ast = new AST.E();
         const nodeStack: AST.ASTNode[] = [ast];
 
-        const stackFinal = []; // will have only terminal symbols
-        const stack = ['E']; // will have a mix of terminal and nonterminals
+        const stackFinal: string[] = []; // will have only terminal symbols
+        const stack: string[] = ['E']; // will have a mix of terminal and nonterminals
 
         // NOTE: every token is a terminal symbol in the grammar
         for (const token of tokens) {

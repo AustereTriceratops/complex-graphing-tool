@@ -13,6 +13,7 @@ import EquationVisitor from "./parsing/AST/EquationVisitor";
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
 import PrintVisitor from './parsing/AST/PrintVisitor';
+import DegreeVisitor from './parsing/AST/DegreeVisitor';
 
 // TODO: More display options
 const App = () => {
@@ -150,7 +151,7 @@ const App = () => {
             const visitor = new GLSLVisitor();
             const function_source = ast.accept(visitor);
             const fragmentShader = createFragmentShader(function_source)
-            console.log(function_source)
+            // console.log(function_source)
             
             // const equationVisitor = new EquationVisitor();
             // const equation_string = ast.accept(equationVisitor);
@@ -163,6 +164,13 @@ const App = () => {
             if (glManager) {
                 glManager.updateFragmentShader(fragmentShader)
             }
+        }
+    }, [ast])
+
+    var degree = useMemo(() => {
+        if (ast != undefined) {
+            const degreeVisitor = new DegreeVisitor();
+            return ast.accept(degreeVisitor)
         }
     }, [ast])
 
@@ -184,8 +192,8 @@ const App = () => {
     // CANVAS RE-RENDERING
     //
     useEffect(() => {
-        programRef.current.render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2)
-    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight, ast]);
+        programRef.current.render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, degree)
+    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight, ast, degree]);
 
     return (
         <div>
