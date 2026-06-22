@@ -201,7 +201,8 @@ void main() {
   float contour_mask_angular = min(tightness_angular * sin(n_contours * phased_angle) + tightness_angular, 1.0);
 
   float tightness_radial = 40.0;
-  float contour_mask_radial = min(tightness_radial * cos(20.0*pow(radius, 1.0/degree)) + tightness_radial, 1.0);
+  // float contour_mask_radial = min(tightness_radial * cos(20.0*pow(radius, 1.0/degree)) + tightness_radial, 1.0);
+  float contour_mask_radial = min(tightness_radial * cos(8.0*log(radius)) + tightness_radial, 1.0);
 
   float contour_mask = contour_mask_radial * contour_mask_angular;
   
