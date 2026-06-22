@@ -93,19 +93,19 @@ export class PrintVisitor extends Visitor {
         console.log(`${this.spacing})`);
     }
 
-    visitX(node: AST.X): void {
+    visitX(_node: AST.X): void {
         console.log(`${this.spacing}x`);
     }
     
-    visitZ(node: AST.Z): void {
+    visitZ(_node: AST.Z): void {
         console.log(`${this.spacing}z`);
     }
     
-    visitQ(node: AST.Q): void {
+    visitQ(_node: AST.Q): void {
         console.log(`${this.spacing}q`);
     }
     
-    visitI(node: AST.I): void {
+    visitI(_node: AST.I): void {
         console.log(`${this.spacing}i`);
     }
 }

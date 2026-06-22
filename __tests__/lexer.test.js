@@ -1,3 +1,5 @@
+import {expect, test} from '@jest/globals';
+
 import Lexer, {lookAhead} from '../app/parsing/Lexer.ts';
 
 test('test lookahead', () => {
@@ -51,11 +53,11 @@ test('scanning unknown tokens', () => {
 });
 
 test('scanning to the longest match', () => {
-    tokens = Lexer.scan("xerox printer ink");
-    expectedTokens = [
+    const tokens = Lexer.scan("xerox printer ink");
+    const expectedTokens = [
         "<?>", "<?>", "<?>", "END"
     ];
-    expectedValues = [
+    const expectedValues = [
         "xerox", "printer", "ink", null,
     ];
     

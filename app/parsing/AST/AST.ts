@@ -31,7 +31,7 @@ export class EPrime extends ASTNode {
         this.e_prime = e_prime;
     }
 
-    accept(visitor: Visitor) {
+    accept(_visitor: Visitor) {
         throw new Error('EPrime.accept() is an abstract method');
     }
 }
@@ -75,7 +75,7 @@ export class TPrime extends ASTNode {
         this.t_prime = t_prime;
     }
 
-    accept(visitor: Visitor) {
+    accept(_visitor: Visitor) {
         throw new Error('TPrime.accept() is an abstract method');
     }
 }
@@ -119,7 +119,7 @@ export class PPrime extends ASTNode {
         this.p_prime = p_prime;
     }
 
-    accept(visitor: Visitor) {
+    accept(_visitor: Visitor) {
         throw new Error('PPrime.accept() is an abstract method');
     }
 }
@@ -131,7 +131,7 @@ export class Pow extends PPrime {
 }
 
 export  class F extends ASTNode {
-    accept(visitor: Visitor) { throw new Error("F.accept() is an abstract method")};
+    accept(_visitor: Visitor) { throw new Error("F.accept() is an abstract method")};
 }
 
 export class Num extends F {

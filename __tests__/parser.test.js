@@ -1,3 +1,5 @@
+import {expect, test} from '@jest/globals';
+
 import Lexer from '../app/parsing/Lexer.ts';
 import Parser from '../app/parsing/Parser';
 import { Token } from '../app/parsing/grammar';
@@ -5,21 +7,21 @@ import { END, UNK } from '../app/parsing/constants';
 
 test('parsing end token', () => {
     const tokens = [new Token(END)];
-    const {ast, accept} = Parser.parse(tokens);
+    const {_, accept} = Parser.parse(tokens);
 
     expect(accept).toBeFalsy();
 })
 
 test('unknown token', () => {
     const tokens = [new Token(UNK)];
-    const {ast, accept} = Parser.parse(tokens);
+    const {_, accept} = Parser.parse(tokens);
 
     expect(accept).toBeFalsy();
 })
 
 test('parser rejects empty string', () => {
     const tokens = Lexer.scan('');
-    const {ast, accept} = Parser.parse(tokens);
+    const {_, accept} = Parser.parse(tokens);
     expect(accept).toBeFalsy();
 })
 
@@ -54,24 +56,24 @@ test('simple malformed expressions', () => {
 })
 
 test('accepts simple expressions', () => {
-    tokens = Lexer.scan("1 + 1");
-    ({ast, accept} = Parser.parse(tokens));
+    let tokens = Lexer.scan("1 + 1");
+    let {_, accept} = Parser.parse(tokens);
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("(50)");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("1 * x + 6");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("(x / 4)");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("6/(1 + x)");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 
     // TODO
@@ -81,11 +83,11 @@ test('accepts simple expressions', () => {
 })
 
 test('parses exponential expressions', () => {
-    tokens = Lexer.scan("x^2");
-    ({ast, accept} = Parser.parse(tokens));
+    let tokens = Lexer.scan("x^2");
+    let {_, accept} = Parser.parse(tokens);
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("x^(2)");
-    ({ast, accept} = Parser.parse(tokens));
+    ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 })

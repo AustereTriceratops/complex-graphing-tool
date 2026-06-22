@@ -29,7 +29,7 @@ export class EquationVisitor extends Visitor {
 
         return `${p}${t_prime}`;
     }
-
+_
     visitTimes(node: AST.Times): string {
         const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? '';
@@ -69,19 +69,19 @@ export class EquationVisitor extends Visitor {
         return `(${expr})`;
     }
 
-    visitX(node: AST.X): string {
+    visitX(_node: AST.X): string {
         return "x";
     }
     
-    visitZ(node: AST.Z): string {
+    visitZ(_node: AST.Z): string {
         return "z";
     }
     
-    visitQ(node: AST.Q): string {
+    visitQ(_node: AST.Q): string {
         return "q";
     }
     
-    visitI(node: AST.I): string {
+    visitI(_node: AST.I): string {
         return "i";
     }
 }

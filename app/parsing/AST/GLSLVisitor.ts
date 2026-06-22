@@ -128,19 +128,19 @@ class GLSLVisitor extends Visitor {
         return `(${txt})`;
     };
 
-    visitX(node: AST.X): string {
+    visitX(_node: AST.X): string {
         return 'x';
     };
 
-    visitZ(node: AST.Z): string {
+    visitZ(_node: AST.Z): string {
         return 'x';
     };
 
-    visitQ(node: AST.Q): string {
+    visitQ(_node: AST.Q): string {
         return 'q(x)';
     };
 
-    visitI(node: AST.I): string {
+    visitI(_node: AST.I): string {
         return 'vec2(0.0, 1.0)';
     };
 }

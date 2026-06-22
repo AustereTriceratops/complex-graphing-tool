@@ -1,5 +1,5 @@
 import * as AST from './AST/AST';
-import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, PRODUCTIONS, Token } from './grammar';
+import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } from './grammar';
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, END,
     E, EPrime, T, TPrime, P, PPrime, F

@@ -8,11 +8,12 @@ import NumberInput from './components/NumberInput';
 import NumberDisplay from './components/NumberDisplay';
 import EquationInput from './components/EquationInput';
 import { createFragmentShader } from './shader/shaders';
-import GLSLVisitor from './parsing/AST/GLSLVisitor';
-import EquationVisitor from "./parsing/AST/EquationVisitor";
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
-import PrintVisitor from './parsing/AST/PrintVisitor';
+
+import GLSLVisitor from './parsing/AST/GLSLVisitor';
+// import EquationVisitor from "./parsing/AST/EquationVisitor";
+// import PrintVisitor from './parsing/AST/PrintVisitor';
 import DegreeVisitor from './parsing/AST/DegreeVisitor';
 
 // TODO: More display options
@@ -43,7 +44,7 @@ const App = () => {
             setCanvasHeight(canvas.height);
 
             const observer = new ResizeObserver((entries) => {
-                for (let entry of entries) {
+                for (const entry of entries) {
                     const {width, height} = entry.contentRect;
                     setCanvasWidth(width);
                     setCanvasHeight(height);
@@ -52,10 +53,10 @@ const App = () => {
             })
 
             observer.observe(canvas);
-        }
 
-        // cleanup
-        return () => observer.disconnect();
+            // cleanup
+            return () => observer.disconnect();
+        }
     }, [])
 
     //
