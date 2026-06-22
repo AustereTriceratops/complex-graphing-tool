@@ -42,6 +42,7 @@ export class DegreeVisitor extends Visitor {
     visitDivide(node: AST.Divide): number {
         const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? 0;
+        
         return -(p - t_prime);
     }
 

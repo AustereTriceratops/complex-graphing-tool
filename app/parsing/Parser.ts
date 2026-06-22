@@ -1,5 +1,6 @@
 import * as AST from './AST/AST';
 import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } from './grammar';
+import preParse  from './PreParser';
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, END,
     E, EPrime, T, TPrime, P, PPrime, F
@@ -22,6 +23,8 @@ class Parser {
 
         const stackFinal: string[] = []; // will have only terminal symbols
         const stack: string[] = ['E']; // will have a mix of terminal and nonterminals
+
+        tokens = preParse(tokens);
 
         // NOTE: every token is a terminal symbol in the grammar
         for (const token of tokens) {

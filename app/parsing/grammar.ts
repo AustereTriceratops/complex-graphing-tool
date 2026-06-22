@@ -19,10 +19,11 @@ export const TERMINALS = Object.freeze(new Set([
     RPAREN,
     END
 ]))
+export const OPERATIONS = Object.freeze(new Set([PLUS, MINUS, TIMES, DIVIDE, POW]))
 
 export const NONTERMINALS = Object.freeze(new Set([E, EPrime, T, TPrime, P, PPrime, F]));
-
 export const NULLABLE_NONTERMINALS = Object.freeze(new Set([EPrime, TPrime, PPrime]));
+
 
 export const PRODUCTIONS: [string, string[]][]  = [
     [E, [T, EPrime]],
