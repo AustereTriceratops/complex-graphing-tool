@@ -18,8 +18,9 @@ export const TERMINALS = Object.freeze(new Set([
     LPAREN,
     RPAREN,
     END
-]))
-export const OPERATIONS = Object.freeze(new Set([PLUS, MINUS, TIMES, DIVIDE, POW]))
+]));
+export const OPERATIONS = Object.freeze(new Set([PLUS, MINUS, TIMES, DIVIDE, POW]));
+export const VARIABLES = Object.freeze(new Set([X, Z, Q]));
 
 export const NONTERMINALS = Object.freeze(new Set([E, EPrime, T, TPrime, P, PPrime, F]));
 export const NULLABLE_NONTERMINALS = Object.freeze(new Set([EPrime, TPrime, PPrime]));

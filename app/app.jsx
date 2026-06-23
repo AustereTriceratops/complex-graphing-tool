@@ -130,7 +130,7 @@ const App = () => {
     //
     // EQUATION INPUT
     //
-    const [equation, setEquation] = useState("x^11 - x^8 + x^4 - x^3 - x^2 + x + 0.5")
+    const [equation, setEquation] = useState("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5")
     const [ast, setAst] = useState(undefined);
     const [error, setError] = useState(false);
 

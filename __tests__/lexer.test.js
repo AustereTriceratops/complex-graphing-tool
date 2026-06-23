@@ -86,7 +86,7 @@ test('tokenizing single characters', () => {
 
     tokens = Lexer.scan("+-*/()^xiqz1");
     expectedTokens = [
-        "PLUS", "MINUS", "TIMES", "DIVIDE", "LPAREN", "RPAREN", "POW", "<?>", "NUM", "END"
+        "PLUS", "MINUS", "TIMES", "DIVIDE", "LPAREN", "RPAREN", "POW", "<?>", "END"
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));

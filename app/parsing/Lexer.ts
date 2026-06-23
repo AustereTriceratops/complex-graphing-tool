@@ -40,7 +40,7 @@ class Lexer {
                 throw Error("undefined character in input string");
             } else {
                 if (/[a-zA-Z]/.test(char)) {
-                    const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z]/)
+                    const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z_1-9]/)
                     const token = new Token(UNK, txt)
 
                     // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
