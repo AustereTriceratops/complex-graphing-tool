@@ -66,9 +66,9 @@ const App = () => {
     const [mouseY, setMouseY] = useState(0);
     
     // zoom & offset
-    const [zoom, setZoom] = useState(1);
+    const [zoom, setZoom] = useState(1.5);
     const [offsetX, setOffsetX] = useState(0);
-    const [offsetY, setOffsetY] = useState(1);
+    const [offsetY, setOffsetY] = useState(0);
 
     const onScroll = (ev) => {
         const dZoom = 0.002 * zoom * ev.deltaY
