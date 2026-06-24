@@ -1,5 +1,5 @@
-import * as AST from "./AST";
 import Visitor from "./Visitor";
+import * as AST from '../AST/AST';
 
 class GLSLVisitor extends Visitor {
     function_start = "vec2 function(vec2 x) { vec2 y = "

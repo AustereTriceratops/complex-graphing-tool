@@ -1,8 +1,8 @@
-import {expect, test} from '@jest/globals';
+import { expect, test } from '@jest/globals';
 
 import Lexer from '../app/parsing/Lexer.ts';
 import Parser from '../app/parsing/Parser';
-import DegreeVisitor from '../app/parsing/AST/DegreeVisitor';
+import { DegreeVisitor } from '../app/parsing/visitors';
 
 test('test degree visitor on multiplication', () => {
     const degreeVisitor = new DegreeVisitor();

@@ -1,5 +1,5 @@
 import Visitor from './Visitor';
-import * as AST from './AST';
+import * as AST from '../AST/AST';
 
 export class DegreeVisitor extends Visitor {
     inside_pow_expression = false;

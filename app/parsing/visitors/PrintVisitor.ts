@@ -1,5 +1,5 @@
 import Visitor from './Visitor';
-import * as AST from './AST';
+import * as AST from '../AST/AST';
 
 export class PrintVisitor extends Visitor {
     indent_level = 0;

@@ -3,18 +3,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import glManager from './shader/glManager';
-import InputSlider from './components/InputSlider';
-import NumberInput from './components/NumberInput';
-import NumberDisplay from './components/NumberDisplay';
-import EquationInput from './components/EquationInput';
+import {InputSlider, NumberInput, NumberDisplay, EquationInput} from './components';
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
-
-import GLSLVisitor from './parsing/AST/GLSLVisitor';
-// import EquationVisitor from "./parsing/AST/EquationVisitor";
-// import PrintVisitor from './parsing/AST/PrintVisitor';
-import DegreeVisitor from './parsing/AST/DegreeVisitor';
+import {GLSLVisitor, DegreeVisitor} from './parsing/visitors';
 
 // TODO: More display options
 const App = () => {

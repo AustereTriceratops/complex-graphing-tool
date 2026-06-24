@@ -1,4 +1,4 @@
-import * as AST from './AST';
+import * as AST from '../AST/AST';
 
 class Visitor{
     visitE(_node: AST.E) { throw Error('visitE not implemented') };
