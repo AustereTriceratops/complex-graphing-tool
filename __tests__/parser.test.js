@@ -116,9 +116,6 @@ test('test parsing negative numbers and variables', () => {
     
     tokens = Lexer.scan("x^-1");
     ({_, accept} = Parser.parse(tokens));
-    const {ast} = Parser.parse(tokens);
-    const equationVisitor = new EquationVisitor();
-    console.log(ast.accept(equationVisitor))
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("x * -1");

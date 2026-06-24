@@ -145,7 +145,7 @@ const App = () => {
             const visitor = new GLSLVisitor();
             const function_source = ast.accept(visitor);
             const fragmentShader = createFragmentShader(function_source)
-            // console.log(function_source)
+            console.log(function_source)
             
             const equationVisitor = new EquationVisitor();
             const equationString = ast.accept(equationVisitor);

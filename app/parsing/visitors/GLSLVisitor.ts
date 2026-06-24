@@ -146,7 +146,7 @@ class GLSLVisitor extends Visitor {
 
     visitNegation(node: AST.Negation): string {
         const txt = node.f?.accept(this) ?? '';
-        return `-${txt}`; // TODO: probably not right
+        return `vec2(0.0, 0.0) - ${txt}`;
     };
 }
 

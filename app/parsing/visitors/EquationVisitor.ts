@@ -88,7 +88,7 @@ _
     visitNegation(node: AST.Negation): string {
         const expr = node.f?.accept(this);
 
-        return `-${expr}`;
+        return `(-${expr})`;
     }
 }
 

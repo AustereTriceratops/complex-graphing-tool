@@ -4,7 +4,7 @@ import { NUM, LPAREN, RPAREN, PLUS, MINUS, DIVIDE, POW, TIMES, END } from "./con
 export function preParse(tokens: Token[]) {
     let new_tokens = scanImplicitMultiplication(tokens);
     new_tokens = scanFoldableMinus(new_tokens);
-    // new_tokens = scanInitialMinus(new_tokens);
+    new_tokens = scanInitialMinus(new_tokens);
     return new_tokens;
 }
 
