@@ -115,8 +115,6 @@ test('test parsing negative numbers and variables', () => {
     expect(accept).toBeTruthy();
     
     tokens = Lexer.scan("x^-1");
-    const tokens_ = preParser(tokens);
-    console.log(tokens_);
     ({_, accept} = Parser.parse(tokens));
     const {ast} = Parser.parse(tokens);
     const equationVisitor = new EquationVisitor();
@@ -128,6 +126,10 @@ test('test parsing negative numbers and variables', () => {
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("x / -1");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("x * -(x - 2i)");
     ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 })

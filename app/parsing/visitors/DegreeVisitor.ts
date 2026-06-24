@@ -89,6 +89,12 @@ export class DegreeVisitor extends Visitor {
     visitI(_node: AST.I): number {
         return 0;
     }
+
+    visitNegation(node: AST.Negation): number {
+        const expr = node.f?.accept(this);
+
+        return expr;
+    }
 }
 
 export default DegreeVisitor;

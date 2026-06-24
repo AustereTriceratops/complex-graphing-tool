@@ -84,6 +84,12 @@ _
     visitI(_node: AST.I): string {
         return "i";
     }
+
+    visitNegation(node: AST.Negation): string {
+        const expr = node.f?.accept(this);
+
+        return `-${expr}`;
+    }
 }
 
 export default EquationVisitor;

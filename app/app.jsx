@@ -7,7 +7,7 @@ import {InputSlider, NumberInput, NumberDisplay, EquationInput} from './componen
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
-import {GLSLVisitor, DegreeVisitor} from './parsing/visitors';
+import {GLSLVisitor, DegreeVisitor, EquationVisitor} from './parsing/visitors';
 
 // TODO: More display options
 const App = () => {
@@ -147,8 +147,9 @@ const App = () => {
             const fragmentShader = createFragmentShader(function_source)
             // console.log(function_source)
             
-            // const equationVisitor = new EquationVisitor();
-            // const equation_string = ast.accept(equationVisitor);
+            const equationVisitor = new EquationVisitor();
+            const equationString = ast.accept(equationVisitor);
+            console.log(equationString)
 
             // const printVisitor = new PrintVisitor();
             // ast.accept(printVisitor);

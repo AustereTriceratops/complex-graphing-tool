@@ -108,6 +108,11 @@ export class PrintVisitor extends Visitor {
     visitI(_node: AST.I): void {
         console.log(`${this.spacing}i`);
     }
+
+    visitNegation(node: AST.Negation): void {
+        console.log(`${this.spacing}-`);
+        node.f?.accept(this)
+    };
 }
 
 export default PrintVisitor;

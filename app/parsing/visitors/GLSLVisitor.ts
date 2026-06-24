@@ -143,6 +143,11 @@ class GLSLVisitor extends Visitor {
     visitI(_node: AST.I): string {
         return 'vec2(0.0, 1.0)';
     };
+
+    visitNegation(node: AST.Negation): string {
+        const txt = node.f?.accept(this) ?? '';
+        return `-${txt}`; // TODO: probably not right
+    };
 }
 
 export default GLSLVisitor;

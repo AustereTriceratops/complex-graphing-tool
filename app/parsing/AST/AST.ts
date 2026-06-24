@@ -178,3 +178,11 @@ export class I extends F {
         return visitor.visitI(this);
     }
 }
+
+export class Negation extends F {
+    f?: F;
+    
+    accept(visitor: Visitor) {
+        return visitor.visitNegation(this)
+    }
+}

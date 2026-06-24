@@ -181,7 +181,7 @@ class Parser {
                     }
                 }
             } else if (symbol == F) {
-                if ((node instanceof AST.PPrime || node instanceof AST.P)) {
+                if ((node instanceof AST.PPrime || node instanceof AST.P || node instanceof AST.Negation)) {
                     if (token.name == NUM) {
                         if (token.value != null) {
                             node.f = new AST.Num(parseFloat(token.value));
@@ -197,6 +197,9 @@ class Parser {
                         node.f = new AST.Q();
                     } else if (token.name == I) {
                         node.f = new AST.I();
+                    } else if (token.name == MINUS) {
+                        node.f = new AST.Negation();
+                        nodeStack.push(node.f);
                     }
                 }
             }
