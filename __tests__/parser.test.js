@@ -76,10 +76,9 @@ test('accepts simple expressions', () => {
     ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 
-    // TODO
-    // tokens = Lexer.scan("2x + 5i");
-    // ({ast, accept} = Parser.parse(tokens));
-    // expect(accept).toBeTruthy();
+    tokens = Lexer.scan("2x + 5i");
+    ({ast, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
 })
 
 test('parses exponential expressions', () => {

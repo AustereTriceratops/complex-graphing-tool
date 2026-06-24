@@ -199,5 +199,31 @@ test('test implicit multiplication with nums and vars', () => {
     ];
     
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+})
 
+test('test folding minus signs', () => {
+    let tokens = Lexer.scan("x - -2");
+    tokens = preParser(tokens);
+    let expectedTokens = [
+        X, PLUS, NUM, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("2 - -z");
+    tokens = preParser(tokens);
+    expectedTokens = [
+        NUM, PLUS, Z, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("(2000)--(q)");
+    tokens = preParser(tokens);
+    expectedTokens = [
+        LPAREN, NUM, RPAREN, PLUS, LPAREN, Q, RPAREN, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 })

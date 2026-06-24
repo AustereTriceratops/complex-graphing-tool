@@ -1,7 +1,33 @@
 import { OPERATIONS, VARIABLES, Token } from "./grammar";
-import { NUM, LPAREN, RPAREN, TIMES, END } from "./constants";
+import { NUM, LPAREN, RPAREN, PLUS, MINUS, TIMES, END } from "./constants";
 
 export function preParse(tokens: Token[]) {
+    let new_tokens = scanImplicitMultiplication(tokens);
+    new_tokens = scanDoubleMinus(new_tokens);
+    return new_tokens;
+}
+
+export function scanDoubleMinus(tokens: Token[]) {
+    const n_tokens = tokens.length;
+    const new_tokens = []
+
+    for (let i = 0; i < n_tokens - 1; i++) {
+        const t = tokens[i];
+        const t_next = tokens[i + 1];
+
+        if (t.name == MINUS && t_next.name == MINUS) {
+            new_tokens.push(new Token(PLUS));
+            i += 1;
+        } else {
+            new_tokens.push(t);
+        }
+    }
+
+    new_tokens.push(new Token(END));
+    return new_tokens;
+}
+
+export function scanImplicitMultiplication(tokens: Token[]) {
     const n_tokens = tokens.length;
     const new_tokens = [];
 
@@ -27,9 +53,8 @@ export function preParse(tokens: Token[]) {
         }
     }
 
-    new_tokens.push(tokens[n_tokens - 1]);
-
-    return new_tokens;
+    new_tokens.push(new Token(END));
+    return new_tokens
 }
 
 export default preParse;
