@@ -5,6 +5,7 @@ import preParser from '../app/parsing/PreParser';
 import Parser from '../app/parsing/Parser';
 import { Token } from '../app/parsing/grammar';
 import { END, UNK } from '../app/parsing/constants';
+import EquationVisitor from '../app/parsing/AST/EquationVisitor';
 
 test('parsing end token', () => {
     const tokens = [new Token(END)];
@@ -117,6 +118,9 @@ test('test parsing negative numbers and variables', () => {
     const tokens_ = preParser(tokens);
     console.log(tokens_);
     ({_, accept} = Parser.parse(tokens));
+    const {ast} = Parser.parse(tokens);
+    const equationVisitor = new EquationVisitor();
+    console.log(ast.accept(equationVisitor))
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("x * -1");

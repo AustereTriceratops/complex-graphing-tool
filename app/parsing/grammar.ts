@@ -44,6 +44,7 @@ export const PRODUCTIONS: [string, string[]][]  = [
     [F, [Z]],
     [F, [Q]],
     [F, [I]],
+    [F, [MINUS, F]]
 ] as const;
 
 type Nonterminal = E | EPrime | T | TPrime | F
@@ -57,6 +58,7 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         Z: PRODUCTIONS[0][1], //['T', 'EPrime']
         Q: PRODUCTIONS[0][1], //['T', 'EPrime']
         I: PRODUCTIONS[0][1], //['T', 'EPrime']
+        MINUS: PRODUCTIONS[0][1], //['T', 'EPrime']
         END: []
     },
     EPrime: {
@@ -72,6 +74,7 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         Z: PRODUCTIONS[4][1], //['P', 'TPrime'],
         Q: PRODUCTIONS[4][1], //['P', 'TPrime'],
         I: PRODUCTIONS[4][1], //['P', 'TPrime'],
+        MINUS: PRODUCTIONS[4][1], //['P', 'TPrime'],
     },
     TPrime: {
         TIMES: PRODUCTIONS[5][1], //['TIMES', 'P', 'TPrime'],
@@ -88,6 +91,7 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         Z: PRODUCTIONS[8][1], //['F', 'PPrime'],
         Q: PRODUCTIONS[8][1], //['F', 'PPrime'],
         I: PRODUCTIONS[8][1], //['F', 'PPrime'],
+        MINUS: PRODUCTIONS[8][1], //['F', 'PPrime'],
     },
     PPrime: {
         POW: PRODUCTIONS[9][1], //['POW', 'F', 'PPrime'],
@@ -99,20 +103,21 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         END: PRODUCTIONS[10][1], //[],
     },
     F: {
-        LPAREN: PRODUCTIONS[11][1], //['LPAREN', 'E', 'RPAREN'],
-        NUM: PRODUCTIONS[12][1], //['NUM'],
-        X: PRODUCTIONS[13][1], //['X'],
-        Z: PRODUCTIONS[14][1], //['Z'],
-        Q: PRODUCTIONS[15][1], //['Q'],
-        I: PRODUCTIONS[16][1], //['I'],
+        LPAREN: PRODUCTIONS[11][1], //[LPAREN, E, RPAREN],
+        NUM: PRODUCTIONS[12][1], //[NUM],
+        X: PRODUCTIONS[13][1], //[X],
+        Z: PRODUCTIONS[14][1], //[Z],
+        Q: PRODUCTIONS[15][1], //[Q],
+        I: PRODUCTIONS[16][1], //[I],
+        MINUS: PRODUCTIONS[17][1], //[MINUS, F],
     }
 }
 
 export class Token {
-    name: string
+    name: Terminal
     value: string | null
 
-    constructor(name: string, value: string | null = null) {
+    constructor(name: Terminal, value: string | null = null) {
         this.name = name;
         this.value = value;
     }
