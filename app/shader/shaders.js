@@ -196,13 +196,27 @@ void main() {
 
 
   // draw contour lines
-  float tightness_angular = 40.0*max(length(coords), 0.1);
+  float tightness_angular = 40.0;
   float n_contours = 8.0;
-  float contour_mask_angular = min(tightness_angular * sin(n_contours * phased_angle) + tightness_angular, 1.0);
+  float exponent = 2.0;
+
+  float contour_mask_angular = max(
+    0.0,
+    min(
+      1.0,
+      tightness_angular * (pow(2.0, exponent) - pow(1.0 + sin(n_contours * phased_angle), exponent)) - 1.0
+    )
+  );
 
   float tightness_radial = 40.0;
-  // float contour_mask_radial = min(tightness_radial * cos(20.0*pow(radius, 1.0/degree)) + tightness_radial, 1.0);
-  float contour_mask_radial = min(tightness_radial * cos(8.0*log(radius)) + tightness_radial, 1.0);
+  exponent = 2.0;
+  float contour_mask_radial = max(
+    0.0,
+    min(
+      1.0,
+      tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(10.0*log(radius)), exponent)) - 1.0
+    )
+  );
 
   float contour_mask = contour_mask_radial * contour_mask_angular;
   
