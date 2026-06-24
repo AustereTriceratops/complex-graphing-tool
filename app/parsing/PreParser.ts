@@ -17,20 +17,24 @@ export function scanInitialMinus(tokens: Token[]) {
         const t_next = tokens[i + 1];
 
         if (
-            (i == 0 && t.name == MINUS) ||
-            (t.name == LPAREN && t_next.name == MINUS)
+            (i == 0 && t.name == MINUS)
         ) {
+            new_tokens.push(new Token(NUM, '0'));
+            new_tokens.push(t);
+        } else if (t.name == LPAREN && t_next.name == MINUS) {
+            new_tokens.push(t);
             new_tokens.push(new Token(NUM, '0'));
         } else if (
             (t.name == TIMES || t.name == DIVIDE || t.name == POW) &&
             t_next.name == MINUS
         ) {
+            new_tokens.push(t);
             // new_tokens.push(new Token(LPAREN));
             // new_tokens.push(new Token(NUM, '0'));
             // new_tokens.push(new Token(LPAREN));
+        } else {
+            new_tokens.push(t);
         }
-
-        new_tokens.push(t)
     }
 
     new_tokens.push(new Token(END));

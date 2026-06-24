@@ -1,6 +1,7 @@
 import {expect, test} from '@jest/globals';
 
 import Lexer from '../app/parsing/Lexer.ts';
+import preParser from '../app/parsing/PreParser';
 import Parser from '../app/parsing/Parser';
 import { Token } from '../app/parsing/grammar';
 import { END, UNK } from '../app/parsing/constants';
@@ -95,6 +96,34 @@ test('parses exponential expressions', () => {
     expect(accept).toBeTruthy();
 })
 
-test('test parsing sugared expressions', () => {
+test('test parsing negative numbers and variables', () => {
+    let tokens = Lexer.scan("-x");
+    let {_, accept} = Parser.parse(tokens);
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("-75");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("-(-q)");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
     
+    tokens = Lexer.scan("(-q - -4)");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+    
+    tokens = Lexer.scan("x^-1");
+    const tokens_ = preParser(tokens);
+    console.log(tokens_);
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("x * -1");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("x / -1");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
 })
