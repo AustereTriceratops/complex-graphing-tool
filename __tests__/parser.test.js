@@ -1,11 +1,10 @@
 import {expect, test} from '@jest/globals';
 
 import Lexer from '../app/parsing/Lexer.ts';
-import preParser from '../app/parsing/PreParser';
 import Parser from '../app/parsing/Parser';
 import { Token } from '../app/parsing/grammar';
 import { END, UNK } from '../app/parsing/constants';
-import EquationVisitor from '../app/parsing/AST/EquationVisitor';
+// import { EquationVisitor } from '../app/parsing/visitors';
 
 test('parsing end token', () => {
     const tokens = [new Token(END)];
