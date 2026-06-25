@@ -1,6 +1,6 @@
 import { Token } from "./grammar";
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, END
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END
 } from "./constants"
 
 export function lookAhead(inputString: string, startIndex: number, regex: RegExp) {

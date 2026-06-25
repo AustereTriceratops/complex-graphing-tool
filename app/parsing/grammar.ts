@@ -1,5 +1,5 @@
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, END,
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END,
     E, EPrime, T, TPrime, P, PPrime, F
 } from "./constants"
 
@@ -17,7 +17,8 @@ export const TERMINALS = Object.freeze(new Set([
     NUM,
     LPAREN,
     RPAREN,
-    END
+    FUNC,
+    END,
 ]));
 export const OPERATIONS = Object.freeze(new Set([PLUS, MINUS, TIMES, DIVIDE, POW]));
 export const VARIABLES = Object.freeze(new Set([X, Z, Q]));
@@ -44,13 +45,13 @@ export const PRODUCTIONS: [string, string[]][]  = [
     [F, [Z]],
     [F, [Q]],
     [F, [I]],
-    [F, [MINUS, F]]
+    [F, [MINUS, F]],
+    [F, [FUNC, LPAREN, E, RPAREN]],
 ] as const;
 
-type Nonterminal = E | EPrime | T | TPrime | F
-type Terminal = X | Z | Q | I | PLUS | MINUS | TIMES | DIVIDE | POW | NUM | LPAREN | RPAREN | END
 
-export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
+// Record<Nonterminal, Record<Terminal, string[]>>
+export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     E: {
         NUM: PRODUCTIONS[0][1], //['T', 'EPrime']
         LPAREN: PRODUCTIONS[0][1], //['T', 'EPrime']
@@ -59,6 +60,7 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         Q: PRODUCTIONS[0][1], //['T', 'EPrime']
         I: PRODUCTIONS[0][1], //['T', 'EPrime']
         MINUS: PRODUCTIONS[0][1], //['T', 'EPrime']
+        FUNC: PRODUCTIONS[0][1], //[T, EPrime]
         END: []
     },
     EPrime: {
@@ -68,13 +70,14 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         END: PRODUCTIONS[3][1], //[],
     },
     T: {
-        NUM: PRODUCTIONS[4][1], //['P', 'TPrime'],
-        LPAREN: PRODUCTIONS[4][1], //['P', 'TPrime'],
-        X: PRODUCTIONS[4][1], //['P', 'TPrime'],
-        Z: PRODUCTIONS[4][1], //['P', 'TPrime'],
-        Q: PRODUCTIONS[4][1], //['P', 'TPrime'],
-        I: PRODUCTIONS[4][1], //['P', 'TPrime'],
-        MINUS: PRODUCTIONS[4][1], //['P', 'TPrime'],
+        NUM: PRODUCTIONS[4][1], //[P, TPrime],
+        LPAREN: PRODUCTIONS[4][1], //[P, TPrime],
+        X: PRODUCTIONS[4][1], //[P, TPrime],
+        Z: PRODUCTIONS[4][1], //[P, TPrime],
+        Q: PRODUCTIONS[4][1], //[P, TPrime],
+        I: PRODUCTIONS[4][1], //[P, TPrime],
+        MINUS: PRODUCTIONS[4][1], //[P, TPrime],
+        FUNC: PRODUCTIONS[4][1], //[P, TPrime],
     },
     TPrime: {
         TIMES: PRODUCTIONS[5][1], //['TIMES', 'P', 'TPrime'],
@@ -85,16 +88,17 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         END: PRODUCTIONS[7][1], //[],
     },
     P: {
-        NUM: PRODUCTIONS[8][1], //['F', 'PPrime'],
-        LPAREN: PRODUCTIONS[8][1], //['F', 'PPrime'],
-        X: PRODUCTIONS[8][1], //['F', 'PPrime'],
-        Z: PRODUCTIONS[8][1], //['F', 'PPrime'],
-        Q: PRODUCTIONS[8][1], //['F', 'PPrime'],
-        I: PRODUCTIONS[8][1], //['F', 'PPrime'],
-        MINUS: PRODUCTIONS[8][1], //['F', 'PPrime'],
+        NUM: PRODUCTIONS[8][1], //[F, PPrime],
+        LPAREN: PRODUCTIONS[8][1], //[F, PPrime],
+        X: PRODUCTIONS[8][1], //[F, PPrime],
+        Z: PRODUCTIONS[8][1], //[F, PPrime],
+        Q: PRODUCTIONS[8][1], //[F, PPrime],
+        I: PRODUCTIONS[8][1], //[F, PPrime],
+        MINUS: PRODUCTIONS[8][1], //[F, PPrime],
+        FUNC: PRODUCTIONS[8][1], //[F, PPrime],
     },
     PPrime: {
-        POW: PRODUCTIONS[9][1], //['POW', 'F', 'PPrime'],
+        POW: PRODUCTIONS[9][1], //[POW, F, PPrime],
         TIMES: PRODUCTIONS[10][1], //[],
         DIVIDE: PRODUCTIONS[10][1], //[]
         PLUS: PRODUCTIONS[10][1], //[],
@@ -110,14 +114,15 @@ export const PARSING_TABLE: Record<Nonterminal, Record<Terminal, string[]>> = {
         Q: PRODUCTIONS[15][1], //[Q],
         I: PRODUCTIONS[16][1], //[I],
         MINUS: PRODUCTIONS[17][1], //[MINUS, F],
+        FUNC: PRODUCTIONS[18][1], //[FUNC, LPAREN, E, RPAREN],
     }
 }
 
 export class Token {
-    name: Terminal
+    name: string // terminal symbol
     value: string | null
 
-    constructor(name: Terminal, value: string | null = null) {
+    constructor(name: string, value: string | null = null) {
         this.name = name;
         this.value = value;
     }

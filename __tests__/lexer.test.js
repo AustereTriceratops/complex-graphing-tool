@@ -1,6 +1,9 @@
 import {expect, test} from '@jest/globals';
 
 import Lexer, {lookAhead} from '../app/parsing/Lexer.ts';
+import {
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END
+} from "../app/parsing/constants"
 
 test('test lookahead', () => {
     let input = '444.0'
@@ -31,7 +34,7 @@ test('test lookahead', () => {
 test('scanning empty string', () => {
     const tokens = Lexer.scan("");
     const expectedTokens = [
-        "END"
+        END
     ];
 
     expect(tokens.length).toEqual(expectedTokens.length);
@@ -41,7 +44,7 @@ test('scanning empty string', () => {
 test('scanning unknown tokens', () => {
     const tokens = Lexer.scan("ke ] <=> x");
     const expectedTokens = [
-        "<?>", "<?>", "<?>", "<?>", "<?>", "X", "END"
+        UNK, UNK, UNK, UNK, UNK, X, END
     ];
     const expectedValues = [
         "ke", null, null, null, null, null, null
@@ -55,7 +58,7 @@ test('scanning unknown tokens', () => {
 test('scanning to the longest match', () => {
     const tokens = Lexer.scan("xerox printer ink");
     const expectedTokens = [
-        "<?>", "<?>", "<?>", "END"
+       UNK, UNK, UNK, END
     ];
     const expectedValues = [
         "xerox", "printer", "ink", null,
@@ -69,7 +72,7 @@ test('scanning to the longest match', () => {
 test('scanning with no spaces', () => {
     const tokens = Lexer.scan("2x");
     const expectedTokens = [
-        "NUM", "X", "END"
+        NUM, X, END
     ];
 
     expect(tokens.length).toEqual(expectedTokens.length);
@@ -79,7 +82,7 @@ test('scanning with no spaces', () => {
 test('tokenizing single characters', () => {
     let tokens = Lexer.scan("+-*/()^x i q z 1");
     let expectedTokens = [
-        "PLUS", "MINUS", "TIMES", "DIVIDE", "LPAREN", "RPAREN", "POW", "X", "I", "Q", "Z", "NUM", "END"
+        PLUS, MINUS, TIMES, DIVIDE, LPAREN, RPAREN, POW, X, I, Q, Z, NUM, END
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
@@ -167,4 +170,24 @@ test('tokenizing floats', () => {
 
     expect(tokens.length).toEqual(2);
     expect(tokens[0].value).toEqual(expectedValue)
+})
+
+test('tokenizing special functions', () => {
+    let tokens = Lexer.scan("cos(x)");
+    let expectedValue = "cos";
+    let expectedTokens = [FUNC, LPAREN, X, RPAREN, END]
+
+    expect(tokens.length).toEqual(5);
+    expect(tokens[0].value).toEqual(expectedValue)
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    
+    tokens = Lexer.scan("sin(x)");
+    expectedValue = "sin";
+    expectedTokens = [FUNC, LPAREN, X, RPAREN, END]
+
+    expect(tokens.length).toEqual(5);
+    expect(tokens[0].value).toEqual(expectedValue)
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
 })
