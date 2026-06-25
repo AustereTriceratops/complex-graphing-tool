@@ -41,7 +41,6 @@ class Lexer {
             } else {
                 if (/[a-zA-Z]/.test(char)) {
                     const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z_1-9]/)
-                    const token = new Token(UNK, txt)
 
                     // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
                     if (indexIncrement == 0) { // single-character reserved names
@@ -54,8 +53,11 @@ class Lexer {
                         } else if (char == 'i') {
                             tokens.push(new Token(I));
                         }
+                    } else if (txt == 'exp' || txt == 'sin' || txt == 'cos') {
+                        tokens.push(new Token(FUNC, txt));
+                        i += indexIncrement;
                     } else {
-                        tokens.push(token);
+                        tokens.push(new Token(UNK, txt));
                         i += indexIncrement;
                     }
                 } else if (char == '+') {

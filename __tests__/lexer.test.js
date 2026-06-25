@@ -173,21 +173,53 @@ test('tokenizing floats', () => {
 })
 
 test('tokenizing special functions', () => {
-    let tokens = Lexer.scan("cos(x)");
-    let expectedValue = "cos";
-    let expectedTokens = [FUNC, LPAREN, X, RPAREN, END]
+    let tokens = Lexer.scan("exp(x)");
+    let expectedValue = "exp";
+    let expectedTokens = [FUNC, LPAREN, X, RPAREN, END];
 
     expect(tokens.length).toEqual(5);
-    expect(tokens[0].value).toEqual(expectedValue)
+    expect(tokens[0].value).toEqual(expectedValue);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
-    
+    tokens = Lexer.scan("cos(x)");
+    expectedValue = "cos";
+    expectedTokens = [FUNC, LPAREN, X, RPAREN, END];
+
+    expect(tokens.length).toEqual(5);
+    expect(tokens[0].value).toEqual(expectedValue);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
     tokens = Lexer.scan("sin(x)");
     expectedValue = "sin";
-    expectedTokens = [FUNC, LPAREN, X, RPAREN, END]
+    expectedTokens = [FUNC, LPAREN, X, RPAREN, END];
 
     expect(tokens.length).toEqual(5);
+    expect(tokens[0].value).toEqual(expectedValue);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("sin(x^2)");
+    expectedValue = "sin";
+    expectedTokens = [FUNC, LPAREN, X, POW, NUM, RPAREN, END];
+
+    expect(tokens.length).toEqual(7);
     expect(tokens[0].value).toEqual(expectedValue)
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
+    tokens = Lexer.scan("sin(sin(x))");
+    expectedValue = "sin";
+    expectedTokens = [FUNC, LPAREN, FUNC, LPAREN, X, RPAREN, RPAREN, END];
+
+    expect(tokens.length).toEqual(8);
+    expect(tokens[0].value).toEqual(expectedValue);
+    expect(tokens[2].value).toEqual(expectedValue);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+
+    tokens = Lexer.scan("sink()");
+    expectedValue = "sink";
+    expectedTokens = [UNK, LPAREN, RPAREN, END];
+
+    expect(tokens.length).toEqual(4);
+    expect(tokens[0].value).toEqual(expectedValue);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 })
