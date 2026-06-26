@@ -16,6 +16,7 @@ class Visitor{
     visitQ(_node: AST.Q) { throw Error('visitQ not implemented') };
     visitI(_node: AST.I) { throw Error('visitI not implemented') };
     visitNegation(_node: AST.Negation) { throw Error('visitNegation not implemented') };
+    visitFunc(_node: AST.Func) { throw Error('visitNegation not implemented') };
 }
 
 export default Visitor;

@@ -90,8 +90,16 @@ export class DegreeVisitor extends Visitor {
         return 0;
     }
 
+    // not correct, but this visitor is also not being used anyway
     visitNegation(node: AST.Negation): number {
         const expr = node.f?.accept(this);
+
+        return expr;
+    }
+
+    // not correct at all: degree isn't actually well-defined here
+    visitFunc(node: AST.Func): number {
+        const expr = node.e?.accept(this);
 
         return expr;
     }

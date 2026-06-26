@@ -2,7 +2,7 @@ import * as AST from './AST/AST';
 import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } from './grammar';
 import preParse  from './PreParser';
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, END,
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, FUNC, END,
     E, EPrime, T, TPrime, P, PPrime, F
 } from "./constants"
 
@@ -129,6 +129,10 @@ class Parser {
                         node.e = new AST.E();
                         nodeStack.push(node.e);
                         nodeStack.push(node.e);
+                    } else if (node instanceof AST.Func) {
+                        node.e = new AST.E();
+                        nodeStack.push(node.e);
+                        nodeStack.push(node.e);
                     } else if (node instanceof AST.E) {
                         nodeStack.push(node);
                         nodeStack.push(node);
@@ -199,6 +203,14 @@ class Parser {
                         node.f = new AST.I();
                     } else if (token.name == MINUS) {
                         node.f = new AST.Negation();
+                        nodeStack.push(node.f);
+                    } else if (token.name == FUNC) {
+                        node.f = new AST.Func();
+
+                        if (node.f instanceof AST.Func) {
+                            node.f.name = token.value
+                        }
+
                         nodeStack.push(node.f);
                     }
                 }

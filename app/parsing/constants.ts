@@ -23,3 +23,8 @@ export const LPAREN = 'LPAREN'
 export const RPAREN = 'RPAREN'
 export const FUNC = 'FUNC'
 export const END = 'END'
+
+// named functions
+export const EXP = 'exp'
+export const SIN = 'sin'
+export const COS = 'cos'

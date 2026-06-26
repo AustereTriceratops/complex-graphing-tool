@@ -186,3 +186,12 @@ export class Negation extends F {
         return visitor.visitNegation(this)
     }
 }
+
+export class Func extends F {
+    e?: E;
+    name = ''
+    
+    accept(visitor: Visitor) {
+        return visitor.visitFunc(this)
+    }
+}

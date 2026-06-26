@@ -148,6 +148,12 @@ class GLSLVisitor extends Visitor {
         const txt = node.f?.accept(this) ?? '';
         return `vec2(0.0, 0.0) - ${txt}`;
     };
+
+    visitFunc(node: AST.Func): string {
+        const txt = node.e?.accept(this) ?? '';
+
+        return `c_${node.name}(${txt})`;
+    }
 }
 
 export default GLSLVisitor;

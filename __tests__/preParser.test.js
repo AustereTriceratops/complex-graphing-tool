@@ -3,7 +3,7 @@ import {expect, test} from '@jest/globals';
 import Lexer from '../app/parsing/Lexer.ts';
 import preParser from '../app/parsing/PreParser';
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, END
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END
 } from "../app/parsing/constants"
 
 
@@ -200,6 +200,24 @@ test('test implicit multiplication with nums and vars', () => {
     
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
     
+})
+
+test(('implicit multiplication w/ special functions'), () => {
+    let tokens = Lexer.scan("(2 + i)sin(x)");
+    tokens = preParser(tokens);
+    let expectedTokens = [
+        LPAREN, NUM, PLUS, I, RPAREN, TIMES, FUNC, LPAREN, X, RPAREN, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("2sin(x)");
+    tokens = preParser(tokens);
+    expectedTokens = [
+        NUM, TIMES, FUNC, LPAREN, X, RPAREN, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 })
 
 test('test folding minus signs', () => {

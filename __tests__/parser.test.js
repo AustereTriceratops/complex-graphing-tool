@@ -4,7 +4,19 @@ import Lexer from '../app/parsing/Lexer.ts';
 import Parser from '../app/parsing/Parser';
 import { Token } from '../app/parsing/grammar';
 import { END, UNK } from '../app/parsing/constants';
-// import { EquationVisitor } from '../app/parsing/visitors';
+import { EquationVisitor } from '../app/parsing/visitors';
+
+function printParsedEquation(tokens) {
+    const {ast, accept} = Parser.parse(tokens);
+
+    if (accept) {
+        const equationVisitor = new EquationVisitor();
+        const result = ast.accept(equationVisitor);
+        console.log(result)
+    } else {
+        console.log('equation failed to parse');
+    }
+}
 
 test('parsing end token', () => {
     const tokens = [new Token(END)];
@@ -126,6 +138,24 @@ test('test parsing negative numbers and variables', () => {
     expect(accept).toBeTruthy();
 
     tokens = Lexer.scan("x * -(x - 2i)");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+})
+
+test('parsing special functions', () => {
+    let tokens = Lexer.scan("2exp(x)");
+    let {_, accept} = Parser.parse(tokens);
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("sin(x) + cos(2x)");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("1.3/exp(exp(-x))");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("(1 + cos(1/(1 + 2z)))z^3 / (z + 6i - z^2)");
     ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 })

@@ -55,7 +55,7 @@ _
         const f = node.f?.accept(this);
         const p_prime = node.p_prime?.accept(this) ?? '';
 
-        return `^${f}${p_prime}`;
+        return `^(${f}${p_prime})`;
     }
 
     visitNum(node: AST.Num): string {
@@ -86,9 +86,15 @@ _
     }
 
     visitNegation(node: AST.Negation): string {
-        const expr = node.f?.accept(this);
+        const expr = node.f?.accept(this) ?? '';
 
         return `(-${expr})`;
+    }
+
+    visitFunc(node: AST.Func): string {
+        const e = node.e?.accept(this) ?? '';
+
+        return `${node.name}(${e})`;
     }
 }
 

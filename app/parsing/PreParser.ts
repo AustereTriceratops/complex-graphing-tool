@@ -1,5 +1,5 @@
 import { OPERATIONS, VARIABLES, Token } from "./grammar";
-import { NUM, LPAREN, RPAREN, PLUS, MINUS, DIVIDE, POW, TIMES, END } from "./constants";
+import { NUM, LPAREN, RPAREN, PLUS, MINUS,TIMES, END } from "./constants";
 
 export function preParse(tokens: Token[]) {
     let new_tokens = scanImplicitMultiplication(tokens);
@@ -24,14 +24,6 @@ export function scanInitialMinus(tokens: Token[]) {
         } else if (t.name == LPAREN && t_next.name == MINUS) {
             new_tokens.push(t);
             new_tokens.push(new Token(NUM, '0'));
-        } else if (
-            (t.name == TIMES || t.name == DIVIDE || t.name == POW) &&
-            t_next.name == MINUS
-        ) {
-            new_tokens.push(t);
-            // new_tokens.push(new Token(LPAREN));
-            // new_tokens.push(new Token(NUM, '0'));
-            // new_tokens.push(new Token(LPAREN));
         } else {
             new_tokens.push(t);
         }
