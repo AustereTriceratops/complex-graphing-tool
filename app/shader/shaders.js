@@ -73,20 +73,49 @@ vec2 c_pow(vec2 a, float p) {
   
   return pow(radius, p) * vec2(cos(p * angle), sin(p * angle));
 }
-
-// TODO: fully implement
-vec2 c_pow_full(vec2 a, vec2 p) {
-  float radius = complex_radius(a);
-  float angle = complex_angle(a);
-  
-  return pow(radius, p.x) * vec2(cos(p.x * angle), sin(p.x * angle));
-}
   
 // implementation of complex exponentiation
 // e^(a + ib) = e^a * e^(ib) = e^a * (cos(b) + i*sin(b))
 ///////////////////////////////////////////////////////////////////////
-vec2 c_exp(vec2 a) {
-  return exp(a.x) * vec2(cos(a.y), sin(a.y));
+vec2 c_exp(vec2 z) {
+  return exp(z.x) * vec2(cos(z.y), sin(z.y));
+}
+
+// implementation of the complex logarithm
+// ln(z) = ln(r * e^(i * a)) = ln(r) + i(a + 2pi*n)
+// n depends on branch cut
+///////////////////////////////////////////////////////////////////////
+vec2 c_log(vec2 z) {
+  float radius = complex_radius(z);
+  float angle = complex_angle(z);
+  return vec2(log(radius), angle);
+}
+
+vec2 c_pow_full(vec2 a, vec2 p) {
+  float radius = complex_radius(a);
+  float angle = complex_angle(a);
+  
+  return c_multiply(
+    c_exp(p * log(radius)),
+    c_exp(vec2(-p.y, p.x) * angle)
+  );
+}
+
+// implementation of complex sin
+// sin(z) = (e^(iz) - e^(-iz)) / (2i)
+///////////////////////////////////////////////////////////////////////
+vec2 c_sin(vec2 z) {
+  return c_divide(
+    (c_exp(c_multiply(i, z)) - c_exp(-c_multiply(i, z))),
+    c_multiply(vec2(2.0, 0.0), i)
+  );
+}
+
+// implementation of complex cos
+// cos(z) = (e^(iz) + e^(-iz)) / 2
+///////////////////////////////////////////////////////////////////////
+vec2 c_cos(vec2 z) {
+  return (c_exp(c_multiply(i, z)) + c_exp(-c_multiply(i, z))) / 2.0;
 }
 `
 

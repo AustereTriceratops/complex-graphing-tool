@@ -28,3 +28,6 @@ export const END = 'END'
 export const EXP = 'exp'
 export const SIN = 'sin'
 export const COS = 'cos'
+export const LOG = 'log'
+
+export const FUNCTIONS = Object.freeze(new Set([EXP, LOG, SIN, COS]));
