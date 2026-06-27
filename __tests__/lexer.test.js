@@ -2,7 +2,7 @@ import {expect, test} from '@jest/globals';
 
 import Lexer, {lookAhead} from '../app/parsing/Lexer.ts';
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END
 } from "../app/parsing/constants"
 
 test('test lookahead', () => {
@@ -80,9 +80,9 @@ test('scanning with no spaces', () => {
 });
 
 test('tokenizing single characters', () => {
-    let tokens = Lexer.scan("+-*/()^x i q z 1");
+    let tokens = Lexer.scan("+-*/()^x i q z 1 |");
     let expectedTokens = [
-        PLUS, MINUS, TIMES, DIVIDE, LPAREN, RPAREN, POW, X, I, Q, Z, NUM, END
+        PLUS, MINUS, TIMES, DIVIDE, LPAREN, RPAREN, POW, X, I, Q, Z, NUM, BAR, END
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
@@ -150,6 +150,29 @@ test('tokenizing integers', () => {
     expectedValues = ["201", null, null, null, "450", null];
 
     tokens.map((t, i) => expect(t.value).toEqual(expectedValues[i]));
+})
+
+test('tokenizing delimiters', () => {
+    let tokens = Lexer.scan("|||");
+    let expectedTokens = [BAR, BAR, BAR, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("()()");
+    expectedTokens = [
+        LPAREN, RPAREN, LPAREN, RPAREN, END
+    ];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+
+    tokens = Lexer.scan("(    (");
+    expectedTokens = [LPAREN, LPAREN, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 })
 
 test('tokenizing floats', () => {

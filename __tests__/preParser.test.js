@@ -3,7 +3,7 @@ import {expect, test} from '@jest/globals';
 import Lexer from '../app/parsing/Lexer.ts';
 import preParser from '../app/parsing/PreParser';
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END
 } from "../app/parsing/constants"
 
 
@@ -273,26 +273,74 @@ test('test folding minus signs', () => {
 test('test initial minus signs', () => {
     let tokens = Lexer.scan("-x");
     tokens = preParser(tokens);
-    let expectedTokens = [NUM, MINUS, X, END]
+    let expectedTokens = [NUM, MINUS, X, END];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
     expect(tokens[0].value).toEqual('0')
 
     tokens = Lexer.scan("-75");
     tokens = preParser(tokens);
-    expectedTokens = [NUM, MINUS, NUM, END]
+    expectedTokens = [NUM, MINUS, NUM, END];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
     tokens = Lexer.scan("-(-q)");
     tokens = preParser(tokens);
-    expectedTokens = [NUM, MINUS, LPAREN, NUM, MINUS, Q, RPAREN, END]
+    expectedTokens = [NUM, MINUS, LPAREN, NUM, MINUS, Q, RPAREN, END];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
     tokens = Lexer.scan("(-q - -4)");
     tokens = preParser(tokens);
-    expectedTokens = [LPAREN, NUM, MINUS, Q, PLUS, NUM, RPAREN, END]
+    expectedTokens = [LPAREN, NUM, MINUS, Q, PLUS, NUM, RPAREN, END];
 
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("|-z|");
+    tokens = preParser(tokens);
+    expectedTokens = [BAR, NUM, MINUS, Z, BAR, END];
+
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+})
+
+test('implicit multiplication around conjugation bars', () => {
+    let tokens = Lexer.scan("2|z|");
+    tokens = preParser(tokens);
+    let expectedTokens = [
+        NUM, TIMES, BAR, Z, BAR, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("z|z|");
+    tokens = preParser(tokens);
+    expectedTokens = [
+        Z, TIMES, BAR, Z, BAR, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("|z|z");
+    tokens = preParser(tokens);
+    expectedTokens = [
+        BAR, Z, BAR, TIMES, Z, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("|z|sin(z)");
+    tokens = preParser(tokens);
+    expectedTokens = [
+        BAR, Z, BAR, TIMES, FUNC, LPAREN, Z, RPAREN, END
+    ];
+    
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+
+    tokens = Lexer.scan("|z||z|");
+    tokens = preParser(tokens);
+    expectedTokens = [
+        BAR, Z, BAR, TIMES, BAR, Z, BAR, END
+    ];
+    
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 })

@@ -159,3 +159,29 @@ test('parsing special functions', () => {
     ({_, accept} = Parser.parse(tokens));
     expect(accept).toBeTruthy();
 })
+
+test('parsing conjugation', () => {
+    let tokens = Lexer.scan("|x|");
+    let {_, accept} = Parser.parse(tokens);
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("-|x|");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("-|-x|");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("z|-z|");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("|-x|sin(x)");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("z/-|z|");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+})

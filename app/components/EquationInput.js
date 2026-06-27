@@ -22,7 +22,7 @@ const EquationInput = (props) => {
                 onKeyDown={(ev) => {
                     if (ev.key == 'Enter') {
                         setEquation(internalValue)
-                    } else if (!/[A-Za-z0-9\(\)\-\+\*\^/\. _]/.test(ev.key)) {
+                    } else if (!/[A-Za-z0-9\(\)\-\+\*\^/\.| _]/.test(ev.key)) {
                         ev.preventDefault();
                     }
                 }}

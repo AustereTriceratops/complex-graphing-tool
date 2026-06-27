@@ -21,6 +21,7 @@ export const POW = 'POW'
 export const NUM = 'NUM'
 export const LPAREN = 'LPAREN'
 export const RPAREN = 'RPAREN'
+export const BAR = 'BAR'
 export const FUNC = 'FUNC'
 export const END = 'END'
 

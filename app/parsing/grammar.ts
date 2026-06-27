@@ -1,5 +1,5 @@
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END,
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END,
     E, EPrime, T, TPrime, P, PPrime, F
 } from "./constants"
 
@@ -17,6 +17,7 @@ export const TERMINALS = Object.freeze(new Set([
     NUM,
     LPAREN,
     RPAREN,
+    BAR,
     FUNC,
     END,
 ]));
@@ -47,25 +48,27 @@ export const PRODUCTIONS: [string, string[]][]  = [
     [F, [I]],
     [F, [MINUS, F]],
     [F, [FUNC, LPAREN, E, RPAREN]],
+    [F, [BAR, E, BAR]],
 ] as const;
 
 
 // Record<Nonterminal, Record<Terminal, string[]>>
 export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     E: {
-        NUM: PRODUCTIONS[0][1], //['T', 'EPrime']
-        LPAREN: PRODUCTIONS[0][1], //['T', 'EPrime']
-        X: PRODUCTIONS[0][1], //['T', 'EPrime']
-        Z: PRODUCTIONS[0][1], //['T', 'EPrime']
-        Q: PRODUCTIONS[0][1], //['T', 'EPrime']
-        I: PRODUCTIONS[0][1], //['T', 'EPrime']
-        MINUS: PRODUCTIONS[0][1], //['T', 'EPrime']
+        NUM: PRODUCTIONS[0][1], //[T, EPrime]
+        LPAREN: PRODUCTIONS[0][1], //[T, EPrime]
+        X: PRODUCTIONS[0][1], //[T, EPrime]
+        Z: PRODUCTIONS[0][1], //[T, EPrime]
+        Q: PRODUCTIONS[0][1], //[T, EPrime]
+        I: PRODUCTIONS[0][1], //[T, EPrime]
+        MINUS: PRODUCTIONS[0][1], //[T, EPrime]
         FUNC: PRODUCTIONS[0][1], //[T, EPrime]
+        BAR: PRODUCTIONS[0][1], //[T, EPrime]
         END: []
     },
     EPrime: {
-        PLUS: PRODUCTIONS[1][1], //['PLUS', 'T', 'EPrime'],
-        MINUS: PRODUCTIONS[2][1], //['MINUS', 'T', 'EPrime']
+        PLUS: PRODUCTIONS[1][1], //[PLUS, T, EPrime],
+        MINUS: PRODUCTIONS[2][1], //[MINUS, T, EPrime]
         RPAREN: PRODUCTIONS[3][1], //[],
         END: PRODUCTIONS[3][1], //[],
     },
@@ -77,11 +80,12 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         Q: PRODUCTIONS[4][1], //[P, TPrime],
         I: PRODUCTIONS[4][1], //[P, TPrime],
         MINUS: PRODUCTIONS[4][1], //[P, TPrime],
+        BAR: PRODUCTIONS[4][1], //[P, TPrime],
         FUNC: PRODUCTIONS[4][1], //[P, TPrime],
     },
     TPrime: {
-        TIMES: PRODUCTIONS[5][1], //['TIMES', 'P', 'TPrime'],
-        DIVIDE: PRODUCTIONS[6][1], //['DIVIDE', 'P', 'TPrime']
+        TIMES: PRODUCTIONS[5][1], //[TIMES, P, TPrime],
+        DIVIDE: PRODUCTIONS[6][1], //[DIVIDE, P, 'TPrime]
         PLUS: PRODUCTIONS[7][1], //[],
         MINUS: PRODUCTIONS[7][1], //[],
         RPAREN: PRODUCTIONS[7][1], //[],
@@ -95,6 +99,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         Q: PRODUCTIONS[8][1], //[F, PPrime],
         I: PRODUCTIONS[8][1], //[F, PPrime],
         MINUS: PRODUCTIONS[8][1], //[F, PPrime],
+        BAR: PRODUCTIONS[8][1], //[F, PPrime],
         FUNC: PRODUCTIONS[8][1], //[F, PPrime],
     },
     PPrime: {
@@ -115,6 +120,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         I: PRODUCTIONS[16][1], //[I],
         MINUS: PRODUCTIONS[17][1], //[MINUS, F],
         FUNC: PRODUCTIONS[18][1], //[FUNC, LPAREN, E, RPAREN],
+        BAR: PRODUCTIONS[19][1], //[BAR, E, BAR],
     }
 }
 

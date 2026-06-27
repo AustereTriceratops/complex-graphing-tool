@@ -1,6 +1,6 @@
 import { Token } from "./grammar";
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, FUNC, END, FUNCTIONS
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END, FUNCTIONS
 } from "./constants"
 
 export function lookAhead(inputString: string, startIndex: number, regex: RegExp) {
@@ -76,6 +76,8 @@ class Lexer {
                     tokens.push(new Token(LPAREN));
                 } else if (char == ')') {
                     tokens.push(new Token(RPAREN));
+                } else if (char == '|') {
+                    tokens.push(new Token(BAR));
                 } else if (/[0-9]/.test(char)) {
                     let {txt, indexIncrement} = lookAhead(input, i, /[0-9]/);
                     i += indexIncrement;
