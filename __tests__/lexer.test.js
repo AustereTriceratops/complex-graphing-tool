@@ -157,16 +157,28 @@ test('tokenizing floats', () => {
     let expectedValue = "1.0";
 
     expect(tokens.length).toEqual(2);
-    expect(tokens[0].value).toEqual(expectedValue)
+    expect(tokens[0].value).toEqual(expectedValue);
     
     tokens = Lexer.scan("1.");
     expectedValue = "1.";
 
     expect(tokens.length).toEqual(2);
-    expect(tokens[0].value).toEqual(expectedValue)
+    expect(tokens[0].value).toEqual(expectedValue);
 
     tokens = Lexer.scan("3.14159265");
     expectedValue = "3.14159265";
+
+    expect(tokens.length).toEqual(2);
+    expect(tokens[0].value).toEqual(expectedValue);
+
+    tokens = Lexer.scan("pi");
+    expectedValue = "3.141592653589793";
+
+    expect(tokens.length).toEqual(2);
+    expect(tokens[0].value).toEqual(expectedValue)
+
+    tokens = Lexer.scan("e");
+    expectedValue = "2.718281828459045";
 
     expect(tokens.length).toEqual(2);
     expect(tokens[0].value).toEqual(expectedValue)
@@ -214,6 +226,11 @@ test('tokenizing special functions', () => {
     expect(tokens[2].value).toEqual(expectedValue);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
+    tokens = Lexer.scan("sin(pi*x)");
+    expectedTokens = [FUNC, LPAREN, NUM, TIMES, X, RPAREN, END];
+
+    expect(tokens.length).toEqual(7);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
     tokens = Lexer.scan("sink()");
     expectedValue = "sink";

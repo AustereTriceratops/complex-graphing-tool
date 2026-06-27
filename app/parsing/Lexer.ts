@@ -42,17 +42,19 @@ class Lexer {
                 if (/[a-zA-Z]/.test(char)) {
                     const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z_1-9]/)
 
-                    // TODO:  attempt to recognize sequences like exp, sin, cos. etc.
-                    if (indexIncrement == 0) { // single-character reserved names
-                        if (char == 'x') {
-                            tokens.push(new Token(X));
-                        } else if (char == 'z') {
-                            tokens.push(new Token(Z));
-                        } else if (char == 'q') {
-                            tokens.push(new Token(Q));
-                        } else if (char == 'i') {
-                            tokens.push(new Token(I));
-                        }
+                    if (txt == 'x') {
+                        tokens.push(new Token(X));
+                    } else if (txt == 'z') {
+                        tokens.push(new Token(Z));
+                    } else if (txt == 'q') {
+                        tokens.push(new Token(Q));
+                    } else if (txt == 'i') {
+                        tokens.push(new Token(I));
+                    } else if (txt == 'e') {
+                        tokens.push(new Token(NUM, "2.718281828459045"));
+                    } else if (txt == 'pi') {
+                        tokens.push(new Token(NUM, "3.141592653589793"));
+                        i += indexIncrement;
                     } else if (FUNCTIONS.has(txt)) {
                         tokens.push(new Token(FUNC, txt));
                         i += indexIncrement;

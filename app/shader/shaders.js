@@ -203,58 +203,66 @@ void main() {
   
   // all coords will be in the range [-1, 1] and [-aspect, aspect]
 
-  vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
-  vec2 coords = zoom * normalized_coords + offset;
+  vec3 pixel_color = vec3(0.0, 0.0, 0.0);
 
-  // vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
-  vec2 val = function(coords);
+  for (float i = 0.0; i < 4.0; i += 1.0) {
+    float i_mod_2 = mod(i, 2.0);
+    vec2 sample_coord = gl_FragCoord.xy + 0.5*vec2((i - i_mod_2) / 2.0, i_mod_2);
+    vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
+    vec2 coords = zoom * normalized_coords + offset;
 
-  float angle = complex_angle(val);
-  float radius = complex_radius(val);
-
+    // vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
+    vec2 val = function(coords);
   
-  // modulate the brightness by complex magnitude
-  float fac = 1.0/(0.2*pow(radius, 0.2) + 1.0);
-  // float fac = radius; // cool visual effect
-  // float fac = 1.0 - 1.0/(radius + 1.0);
+    float angle = complex_angle(val);
+    float radius = complex_radius(val);
   
-
-  // color by complex angle
-  float phased_angle = angle + param_2;
-  vec3 color = vec3(sin(phased_angle), sin(phased_angle - 2.0*PI/3.0), sin(phased_angle - 4.0*PI/3.0));
-
-
-  // draw contour lines
-  float tightness_angular = 40.0;
-  float n_contours = 8.0;
-  float exponent = 2.0;
-
-  float contour_mask_angular = max(
-    0.0,
-    min(
-      1.0,
-      tightness_angular * (pow(2.0, exponent) - pow(1.0 + sin(n_contours * phased_angle), exponent)) - 1.0
-    )
-  );
-
-  float tightness_radial = 40.0;
-  exponent = 2.0;
-  float contour_mask_radial = max(
-    0.0,
-    min(
-      1.0,
-      tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(10.0*log(radius)), exponent)) - 1.0
-    )
-  );
-
-  float contour_mask = contour_mask_radial * contour_mask_angular;
+    
+    // modulate the brightness by complex magnitude
+    float fac = 1.0/(0.2*pow(radius, 0.2) + 1.0);
+    // float fac = radius; // cool visual effect
+    // float fac = 1.0 - 1.0/(radius + 1.0);
+    
   
+    // color by complex angle
+    float phased_angle = angle + param_2;
+    vec3 color = vec3(sin(phased_angle), sin(phased_angle - 2.0*PI/3.0), sin(phased_angle - 4.0*PI/3.0));
+  
+  
+    // draw contour lines
+    float tightness_angular = 40.0;
+    float n_contours = 8.0;
+    float exponent = 2.0;
+  
+    float contour_mask_angular = max(
+      0.0,
+      min(
+        1.0,
+        tightness_angular * (pow(2.0, exponent) - pow(1.0 + sin(n_contours * phased_angle), exponent)) - 1.0
+      )
+    );
+  
+    float tightness_radial = 40.0;
+    exponent = 2.0;
+    float contour_mask_radial = max(
+      0.0,
+      min(
+        1.0,
+        tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(10.0*log(radius)), exponent)) - 1.0
+      )
+    );
+  
+    float contour_mask = contour_mask_radial * contour_mask_angular;
+    
+  
+    // extra parameters
+    float inv_param_1 = 1.0 - param_1;
+    color = vec3(inv_param_1, inv_param_1, inv_param_1) + param_1 * color;
 
-  // extra parameters
-  float inv_param_1 = 1.0 - param_1;
-  color = vec3(inv_param_1, inv_param_1, inv_param_1) + param_1 * color;
+    pixel_color += contour_mask * fac * color / 4.0;
+  }
 
-  gl_FragColor = vec4(contour_mask*fac*color, 1.0);
+  gl_FragColor = vec4(pixel_color, 1.0);
 }
 `
 
