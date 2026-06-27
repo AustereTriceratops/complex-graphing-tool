@@ -30,5 +30,7 @@ export const EXP = 'exp'
 export const SIN = 'sin'
 export const COS = 'cos'
 export const LOG = 'log'
+export const SQRT = 'sqrt'
+export const CONJ = 'conj'
 
-export const FUNCTIONS = Object.freeze(new Set([EXP, LOG, SIN, COS]));
+export const FUNCTIONS = Object.freeze(new Set([EXP, LOG, SIN, COS, SQRT, CONJ]));

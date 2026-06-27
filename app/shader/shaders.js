@@ -31,6 +31,10 @@ vec2 conj(vec2 a) {
   return vec2(a.x, -a.y);
 }
 
+vec2 c_conj(vec2 a) {
+  return conj(a);
+}
+
 float len_sq(vec2 a) {
   return a.x*a.x + a.y*a.y;
 }
@@ -99,6 +103,10 @@ vec2 c_pow_full(vec2 a, vec2 p) {
     c_exp(p * log(radius)),
     c_exp(vec2(-p.y, p.x) * angle)
   );
+}
+
+vec2 c_sqrt(vec2 x) {
+  return c_pow_full(x, vec2(0.5, 0.0));
 }
 
 // implementation of complex sin
