@@ -9,7 +9,7 @@ import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
 import {GLSLVisitor, DegreeVisitor, EquationVisitor} from './parsing/visitors';
 
-// TODO: More display options
+
 const App = () => {
     //
     // CANVAS AND SHADER STATE

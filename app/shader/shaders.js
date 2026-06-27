@@ -1,5 +1,3 @@
-// TODO: contour lines
-
 const vertexShader = `
 attribute vec4 aVertexPosition;
 
