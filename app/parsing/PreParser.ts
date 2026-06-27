@@ -71,7 +71,8 @@ export function scanImplicitMultiplication(tokens: Token[]) {
             !OPERATIONS.has(t_next.name) &&
             t_next.name != RPAREN &&
             t_next.name != END &&
-            t_next.name != NUM
+            t_next.name != NUM &&
+            t_next.name != BAR
         );
 
         if (

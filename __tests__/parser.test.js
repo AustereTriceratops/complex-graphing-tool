@@ -160,14 +160,34 @@ test('parsing special functions', () => {
     expect(accept).toBeTruthy();
 })
 
-// test('parsing conjugation', () => {
-//     let tokens = Lexer.scan("|x|");
-//     let {_, accept} = Parser.parse(tokens);
-//     expect(accept).toBeTruthy();
+test('parsing conjugation', () => {
+    let tokens = Lexer.scan("|x|");
+    let {_, accept} = Parser.parse(tokens);
+    expect(accept).toBeTruthy();
 
-//     tokens = Lexer.scan("-|x|");
-//     ({_, accept} = Parser.parse(tokens));
-//     expect(accept).toBeTruthy();
+    tokens = Lexer.scan("3 * |x|");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("1 - |x|");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("|||x|||");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("|x + 3|");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    tokens = Lexer.scan("|2|*|||x| + 3||");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
+    // tokens = Lexer.scan("-|x|");
+    // ({_, accept} = Parser.parse(tokens));
+    // expect(accept).toBeTruthy();
 
 //     tokens = Lexer.scan("-|-x|");
 //     ({_, accept} = Parser.parse(tokens));
@@ -177,6 +197,10 @@ test('parsing special functions', () => {
 //     ({_, accept} = Parser.parse(tokens));
 //     expect(accept).toBeTruthy();
 
+    tokens = Lexer.scan("|x| * sin(x)");
+    ({_, accept} = Parser.parse(tokens));
+    expect(accept).toBeTruthy();
+
 //     tokens = Lexer.scan("|-x|sin(x)");
 //     ({_, accept} = Parser.parse(tokens));
 //     expect(accept).toBeTruthy();
@@ -184,4 +208,4 @@ test('parsing special functions', () => {
 //     tokens = Lexer.scan("z/-|z|");
 //     ({_, accept} = Parser.parse(tokens));
 //     expect(accept).toBeTruthy();
-// })
+})

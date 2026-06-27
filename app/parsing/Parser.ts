@@ -2,7 +2,7 @@ import * as AST from './AST/AST';
 import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } from './grammar';
 import preParse  from './PreParser';
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, FUNC, END,
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, BAR, FUNC, END,
     E, EPrime, T, TPrime, P, PPrime, F
 } from "./constants"
 
@@ -16,7 +16,7 @@ import {
 
 // TODO: error reporting
 class Parser {
-    static parse(tokens: Token[]) {
+    static parse(tokens: Token[], verbose=false) {
         let accept = true;
         const ast = new AST.E();
         const nodeStack: AST.ASTNode[] = [ast];
@@ -28,6 +28,11 @@ class Parser {
 
         // NOTE: every token is a terminal symbol in the grammar
         for (const token of tokens) {
+            if (verbose) {
+                console.log('stackFinal: ', stackFinal);
+                console.log('stack: ', stack);
+            }
+            
             if (accept == false) break;
 
             if (token.name == UNK) {
@@ -41,7 +46,7 @@ class Parser {
                 
                 for (const symbol of stack) {
                     if (NONTERMINALS.has(symbol) && !NULLABLE_NONTERMINALS.has(symbol)) {
-                        console.log('parsing ERROR: reached END token while stack has non-nullable nonterminal symbols');
+                        console.log(`parsing ERROR: reached END token while stack has non-nullable nonterminal symbols ${stack}`);
                         accept = false;
                         breakLoop = true;
                         break;
@@ -99,8 +104,7 @@ class Parser {
                         } else {
                             // this is the only case in which the while loop continues running
                             for (let i = production.length - 1; i >= 0; i--) {
-                                const producedSymbol = production[i];
-                                stack.push(producedSymbol);
+                                stack.push(production[i]);
                             }
 
                             Parser.buildASTNode(nodeStack, token, symbol);
@@ -207,6 +211,11 @@ class Parser {
                     } else if (token.name == FUNC) {
                         node.f = new AST.Func();
                         node.f.name = token.value;
+
+                        nodeStack.push(node.f);
+                    } else if (token.name == BAR) {
+                        node.f = new AST.Func();
+                        node.f.name = "conj";
 
                         nodeStack.push(node.f);
                     }

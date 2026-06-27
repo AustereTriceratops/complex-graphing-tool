@@ -70,6 +70,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         PLUS: PRODUCTIONS[1][1], //[PLUS, T, EPrime],
         MINUS: PRODUCTIONS[2][1], //[MINUS, T, EPrime]
         RPAREN: PRODUCTIONS[3][1], //[],
+        BAR: PRODUCTIONS[3][1], //[],
         END: PRODUCTIONS[3][1], //[],
     },
     T: {
@@ -89,6 +90,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         PLUS: PRODUCTIONS[7][1], //[],
         MINUS: PRODUCTIONS[7][1], //[],
         RPAREN: PRODUCTIONS[7][1], //[],
+        BAR: PRODUCTIONS[7][1], //[],
         END: PRODUCTIONS[7][1], //[],
     },
     P: {
@@ -109,6 +111,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         PLUS: PRODUCTIONS[10][1], //[],
         MINUS: PRODUCTIONS[10][1], //[],
         RPAREN: PRODUCTIONS[10][1], //[],
+        BAR: PRODUCTIONS[10][1], //[],
         END: PRODUCTIONS[10][1], //[],
     },
     F: {
