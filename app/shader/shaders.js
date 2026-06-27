@@ -211,10 +211,10 @@ void main() {
 
   vec3 pixel_color = vec3(0.0, 0.0, 0.0);
 
-  for (float i = 0.0; i < 4.0; i += 1.0) {
-    float i_mod_2 = mod(i, 2.0);
-    vec2 sample_coord = gl_FragCoord.xy + 0.5*vec2((i - i_mod_2) / 2.0, i_mod_2);
-    vec2 normalized_coords = aspect_ * 2.0 * gl_FragCoord.xy/resolution - aspect_;
+  for (float i = 0.0; i < 16.0; i += 1.0) {
+    float i_mod_4 = mod(i, 4.0);
+    vec2 sample_coord = gl_FragCoord.xy + 0.25*vec2((i - i_mod_4) / 4.0, i_mod_4);
+    vec2 normalized_coords = aspect_ * 2.0 * sample_coord/resolution - aspect_;
     vec2 coords = zoom * normalized_coords + offset;
 
     // vec2 val = (coords.y > 0.0) ? eisenstein_function_4(coords) : vec2(0.0,0.0);
@@ -265,8 +265,10 @@ void main() {
     float inv_param_1 = 1.0 - param_1;
     color = vec3(inv_param_1, inv_param_1, inv_param_1) + param_1 * color;
 
-    pixel_color += contour_mask * fac * color / 4.0;
+    pixel_color += contour_mask * fac * color;
   }
+  
+  pixel_color = pixel_color / 16.0;
 
   gl_FragColor = vec4(pixel_color, 1.0);
 }
