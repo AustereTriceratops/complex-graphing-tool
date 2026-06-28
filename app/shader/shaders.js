@@ -211,9 +211,9 @@ void main() {
 
   vec3 pixel_color = vec3(0.0, 0.0, 0.0);
 
-  for (float i = 0.0; i < 16.0; i += 1.0) {
-    float i_mod_4 = mod(i, 4.0);
-    vec2 sample_coord = gl_FragCoord.xy + 0.25*vec2((i - i_mod_4) / 4.0, i_mod_4);
+  for (float i = 0.0; i < 9.0; i += 1.0) {
+    float i_mod_3 = mod(i, 3.0);
+    vec2 sample_coord = gl_FragCoord.xy + 0.33333*vec2((i - i_mod_3) / 3.0, i_mod_3) + 0.16667*vec2(mod(i_mod_3, 2.0), 0.0);
     vec2 normalized_coords = aspect_ * 2.0 * sample_coord/resolution - aspect_;
     vec2 coords = zoom * normalized_coords + offset;
 
@@ -241,7 +241,7 @@ void main() {
     float exponent = 2.0;
   
     float contour_mask_angular = max(
-      0.0,
+      1.0/(radius + 1.0),
       min(
         1.0,
         tightness_angular * (pow(2.0, exponent) - pow(1.0 + sin(n_contours * phased_angle), exponent)) - 1.0
@@ -251,15 +251,15 @@ void main() {
     float tightness_radial = 40.0;
     exponent = 2.0;
     float contour_mask_radial = max(
-      0.0,
+      1.0/(radius + 1.0), // should be 1 when radius is 0 and approach 0 othw
       min(
         1.0,
-        tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(10.0*log(radius)), exponent)) - 1.0
+        tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(8.0*log(radius)), exponent)) - 1.0
       )
     );
   
-    float contour_mask = contour_mask_radial * contour_mask_angular;
-    
+    float contour_mask = min(contour_mask_radial,contour_mask_angular);
+    // float contour_mask = 1.0;
   
     // extra parameters
     float inv_param_1 = 1.0 - param_1;
@@ -268,7 +268,7 @@ void main() {
     pixel_color += contour_mask * fac * color;
   }
   
-  pixel_color = pixel_color / 16.0;
+  pixel_color = pixel_color / 9.0;
 
   gl_FragColor = vec4(pixel_color, 1.0);
 }
