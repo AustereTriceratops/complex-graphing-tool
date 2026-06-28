@@ -18,7 +18,17 @@ const EquationInput = (props) => {
                 value={internalValue}
                 error={error}
                 onChange={(ev) => setInternalValue(ev.target.value)}
-                sx={{backgroundColor: 'white', width: '30rem', paddingLeft: '0.5rem'}}
+                sx={{
+                    backgroundColor: 'white',
+                    opacity: 0.6,
+                    width: '50rem',
+                    height: '3rem',
+                    paddingLeft: '0.5rem',
+                    borderRadius: '8px',
+                    ":hover": {
+                        opacity: 1.0
+                    }
+                }}
                 onKeyDown={(ev) => {
                     if (ev.key == 'Enter') {
                         setEquation(internalValue)

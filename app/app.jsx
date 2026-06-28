@@ -191,93 +191,93 @@ const App = () => {
     }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight, ast, degree]);
 
     return (
-        <div>
-            <EquationInput
-                value={equation}
-                setEquation={setEquation}
-                error={error}
-            />
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: '5px'
-            }}>
-                <div style={{
-                    display:'flex',
-                    flexDirection:'column',
-                    padding: '1rem',
-                    width: '15%',
-                    gap: '5px'
-                }}>
-                    <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
-                    <InputSlider
-                        title="parameter 1"
-                        value={equationParameter1}
-                        step={0.01}
-                        min={-10}
-                        max={10}
-                        setValue={setEquationParameter1}
-                    />
-                    <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
-                    <InputSlider
-                        title="Color intensity"
-                        value={shaderParameter1}
-                        step={0.01}
-                        min={0}
-                        max={0.5}
-                        setValue={setShaderParameter1}
-                    />
-                    <InputSlider
-                        title="Phase"
-                        value={shaderParameter2}
-                        step={0.01}
-                        min={0}
-                        max={4*Math.PI}
-                        setValue={setShaderParameter2}
-                    />
-                    <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
-                    <NumberInput
-                        title="zoom"
-                        value={zoom.toFixed(5)}
-                        updateValue={setZoom}
-                    />
-                    <NumberInput
-                        title="offset_x"
-                        value={offsetX.toFixed(5)}
-                        updateValue={setOffsetX}
-                        />
-                    <NumberInput
-                        title="offset_y"
-                        value={offsetY.toFixed(5)}
-                        updateValue={setOffsetY}
-                    />
-                    <NumberDisplay
-                        title="x_min"
-                        value={xMin.toFixed(5)}
-                    />
-                    <NumberDisplay
-                        title="x_max"
-                        value={xMax.toFixed(5)}
-                    />
-                    <NumberDisplay
-                        title="y_min"
-                        value={yMin.toFixed(5)}
-                    />
-                    <NumberDisplay
-                        title="y_max"
-                        value={yMax.toFixed(5)}
-                    />
-                </div>
-                <canvas
-                    ref={canvasRef}
-                    width={0.85*window.innerWidth}
-                    height={0.95*window.innerHeight}
-                    onMouseDown={onMouseDown}
-                    onMouseUp={onMouseUp}
-                    onMouseMove={onMouseMove}
-                    onWheel={onScroll}
+        <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '5px'
+        }}>
+            <div style={{position: 'fixed', top:'0.2rem', right:'10%'}}>
+                <EquationInput
+                    value={equation}
+                    setEquation={setEquation}
+                    error={error}
                 />
             </div>
+            <div style={{
+                display:'flex',
+                flexDirection:'column',
+                padding: '1rem',
+                minWidth: '20%',
+                gap: '5px'
+            }}>
+                <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
+                <InputSlider
+                    title="parameter 1"
+                    value={equationParameter1}
+                    step={0.01}
+                    min={-10}
+                    max={10}
+                    setValue={setEquationParameter1}
+                />
+                <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
+                <InputSlider
+                    title="Color intensity"
+                    value={shaderParameter1}
+                    step={0.01}
+                    min={0}
+                    max={0.5}
+                    setValue={setShaderParameter1}
+                />
+                <InputSlider
+                    title="Phase"
+                    value={shaderParameter2}
+                    step={0.01}
+                    min={0}
+                    max={4*Math.PI}
+                    setValue={setShaderParameter2}
+                />
+                <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
+                <NumberInput
+                    title="zoom"
+                    value={zoom.toFixed(5)}
+                    updateValue={setZoom}
+                />
+                <NumberInput
+                    title="offset_x"
+                    value={offsetX.toFixed(5)}
+                    updateValue={setOffsetX}
+                    />
+                <NumberInput
+                    title="offset_y"
+                    value={offsetY.toFixed(5)}
+                    updateValue={setOffsetY}
+                />
+                <NumberDisplay
+                    title="x_min"
+                    value={xMin.toFixed(5)}
+                />
+                <NumberDisplay
+                    title="x_max"
+                    value={xMax.toFixed(5)}
+                />
+                <NumberDisplay
+                    title="y_min"
+                    value={yMin.toFixed(5)}
+                />
+                <NumberDisplay
+                    title="y_max"
+                    value={yMax.toFixed(5)}
+                />
+            </div>
+            <canvas
+                ref={canvasRef}
+                width={0.85*window.innerWidth}
+                height={0.95*window.innerHeight}
+                onMouseDown={onMouseDown}
+                onMouseUp={onMouseUp}
+                onMouseMove={onMouseMove}
+                onWheel={onScroll}
+            />
         </div>
     )
 }
