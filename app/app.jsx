@@ -181,15 +181,16 @@ const App = () => {
     //
     // SHADER CONTROLS
     //
-    const [colorSaturation, setColorSaturation] = useState(0.3);
+    const [saturation, setSaturation] = useState(0.3);
     const [phase, setPhase] = useState(0);
+    const [radialOffset, setRadialOffset] = useState(0);
 
     //
     // CANVAS RE-RENDERING
     //
     useEffect(() => {
-        programRef.current.render(zoom, offsetX, offsetY, colorSaturation, phase)
-    }, [zoom, offsetX, offsetY, colorSaturation, phase, canvasWidth, canvasHeight, ast]);
+        programRef.current.render(zoom, offsetX, offsetY, saturation, phase, radialOffset)
+    }, [zoom, offsetX, offsetY, saturation, phase, radialOffset, canvasWidth, canvasHeight, ast]);
 
     return (
         <div style={{
@@ -222,20 +223,28 @@ const App = () => {
                 />
                 <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
                 <InputSlider
-                    title="Color intensity"
-                    value={colorSaturation}
+                    title="Saturation"
+                    value={saturation}
                     step={0.01}
                     min={0}
                     max={0.5}
-                    setValue={setColorSaturation}
+                    setValue={setSaturation}
                 />
                 <InputSlider
                     title="Phase"
                     value={phase}
-                    step={0.01}
+                    step={0.005}
                     min={0}
                     max={4*Math.PI}
                     setValue={setPhase}
+                />
+                <InputSlider
+                    title="Radial offset"
+                    value={radialOffset}
+                    step={0.005}
+                    min={0}
+                    max={10}
+                    setValue={setRadialOffset}
                 />
                 <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
                 <NumberInput

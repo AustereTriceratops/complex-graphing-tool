@@ -19,9 +19,9 @@ uniform float zoom;
 uniform vec2 offset;
 
 // display parameters
-uniform float param_1;
-uniform float param_2;
-uniform float degree;
+uniform float saturation;
+uniform float phase;
+uniform float radialOffset;
 `
 
 const complexNumbers = `
@@ -231,7 +231,7 @@ void main() {
     
   
     // color by complex angle
-    float phased_angle = angle + param_2;
+    float phased_angle = angle + phase;
     vec3 color = vec3(sin(phased_angle), sin(phased_angle - 2.0*PI/3.0), sin(phased_angle - 4.0*PI/3.0));
   
   
@@ -254,7 +254,7 @@ void main() {
       1.0/(radius + 1.0), // should be 1 when radius is 0 and approach 0 othw
       min(
         1.0,
-        tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(8.0*log(radius)), exponent)) - 1.0
+        tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(8.0*log(radius * (radialOffset + 1.0))), exponent)) - 1.0
       )
     );
   
@@ -262,8 +262,8 @@ void main() {
     // float contour_mask = 1.0;
   
     // extra parameters
-    float inv_param_1 = 1.0 - param_1;
-    color = vec3(inv_param_1, inv_param_1, inv_param_1) + param_1 * color;
+    float inv_sat = 1.0 - saturation;
+    color = vec3(inv_sat, inv_sat, inv_sat) + saturation * color;
 
     pixel_color += contour_mask * fac * color;
   }
