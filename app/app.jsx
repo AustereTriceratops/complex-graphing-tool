@@ -7,7 +7,7 @@ import {InputSlider, NumberInput, NumberDisplay, EquationInput} from './componen
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
-import {GLSLVisitor, DegreeVisitor, EquationVisitor} from './parsing/visitors';
+import {GLSLVisitor, EquationVisitor} from './parsing/visitors';
 
 
 const App = () => {
@@ -123,29 +123,31 @@ const App = () => {
     //
     // EQUATION INPUT
     //
-    const [equation, setEquation] = useState("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5")
+    const [equation, setEquation] = useState('')
     const [ast, setAst] = useState(undefined);
     const [error, setError] = useState(false);
 
-    useEffect(() => {
-        const tokens = Lexer.scan(equation);
+    const updateEquation = (eq) => {
+        console.log('updating equation')
+        setEquation(eq)
+        const tokens = Lexer.scan(eq);
                         
         const {ast, accept} = Parser.parse(tokens);
         
         if (!accept) {
             setError(true);
         } else {
-            setAst(ast);
+            updateAST(ast);
             setError(false);
         }
-    }, [equation])
+    }
 
-    useEffect(() => {
+    const updateAST = (ast) => {
         if (ast != undefined) {
             const visitor = new GLSLVisitor();
             const function_source = ast.accept(visitor);
             const fragmentShader = createFragmentShader(function_source)
-            console.log(function_source)
+            // console.log(function_source)
             
             const equationVisitor = new EquationVisitor();
             const equationString = ast.accept(equationVisitor);
@@ -159,15 +161,14 @@ const App = () => {
             if (glManager) {
                 glManager.updateFragmentShader(fragmentShader)
             }
-        }
-    }, [ast])
 
-    var degree = useMemo(() => {
-        if (ast != undefined) {
-            const degreeVisitor = new DegreeVisitor();
-            return ast.accept(degreeVisitor)
+            setAst(ast);
         }
-    }, [ast])
+    };
+
+    useEffect(() => {
+        updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
+    }, [])
 
     ///
     /// EQUATION CONTROLS
@@ -180,15 +181,15 @@ const App = () => {
     //
     // SHADER CONTROLS
     //
-    const [shaderParameter1, setShaderParameter1] = useState(0.3);
-    const [shaderParameter2, setShaderParameter2] = useState(0);
+    const [colorSaturation, setColorSaturation] = useState(0.3);
+    const [phase, setPhase] = useState(0);
 
     //
     // CANVAS RE-RENDERING
     //
     useEffect(() => {
-        programRef.current.render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, degree)
-    }, [zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, canvasWidth, canvasHeight, ast, degree]);
+        programRef.current.render(zoom, offsetX, offsetY, colorSaturation, phase)
+    }, [zoom, offsetX, offsetY, colorSaturation, phase, canvasWidth, canvasHeight, ast]);
 
     return (
         <div style={{
@@ -199,7 +200,7 @@ const App = () => {
             <div style={{position: 'fixed', top:'0.2rem', right:'10%'}}>
                 <EquationInput
                     value={equation}
-                    setEquation={setEquation}
+                    setEquation={updateEquation}
                     error={error}
                 />
             </div>
@@ -222,19 +223,19 @@ const App = () => {
                 <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
                 <InputSlider
                     title="Color intensity"
-                    value={shaderParameter1}
+                    value={colorSaturation}
                     step={0.01}
                     min={0}
                     max={0.5}
-                    setValue={setShaderParameter1}
+                    setValue={setColorSaturation}
                 />
                 <InputSlider
                     title="Phase"
-                    value={shaderParameter2}
+                    value={phase}
                     step={0.01}
                     min={0}
                     max={4*Math.PI}
-                    setValue={setShaderParameter2}
+                    setValue={setPhase}
                 />
                 <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
                 <NumberInput

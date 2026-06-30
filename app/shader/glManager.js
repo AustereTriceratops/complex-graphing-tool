@@ -45,12 +45,11 @@ export default class glManager {
         this.positionBuffer = initPositionBuffer(this.gl, this.shaderAttribs.vertexPosition);
     }
 
-    render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2, degree) {
+    render(zoom, offsetX, offsetY, shaderParameter1, shaderParameter2) {
         this.gl.uniform1f(this.shaderAttribs.zoom, zoom);
         this.gl.uniform2fv(this.shaderAttribs.offset, [offsetX, offsetY]);
         this.gl.uniform1f(this.shaderAttribs.param_1, shaderParameter1);
         this.gl.uniform1f(this.shaderAttribs.param_2, shaderParameter2);
-        this.gl.uniform1f(this.shaderAttribs.degree, degree);
 
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
