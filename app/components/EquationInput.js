@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Input } from "@mui/material";
 import ErrorIcon from '@mui/icons-material/Error';
 
+import Info from './Info';
+
 const EquationInput = (props) => {
     const {value, setEquation, error} = props;
 
@@ -12,7 +14,14 @@ const EquationInput = (props) => {
     }, [value])
 
     return (
-        <div style={{display: 'flex', flexDirection: 'row', padding: '0.5rem', gap: '0.25rem', justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            padding: '0.5rem', gap: '0.25rem',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
+            <ErrorIcon style={{visibility: (error)? 'visible' : 'hidden'}}/>
             <Input
                 type="text"
                 value={internalValue}
@@ -37,7 +46,7 @@ const EquationInput = (props) => {
                     }
                 }}
             />
-            <ErrorIcon style={{visibility: (error)? 'visible' : 'hidden'}}/>
+            <Info/>
         </div>
     )
 }
