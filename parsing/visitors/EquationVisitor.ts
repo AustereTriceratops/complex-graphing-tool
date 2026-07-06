@@ -29,7 +29,7 @@ export class EquationVisitor extends Visitor {
 
         return `${p}${t_prime}`;
     }
-_
+
     visitTimes(node: AST.Times): string {
         const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? '';

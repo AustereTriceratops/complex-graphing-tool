@@ -210,12 +210,18 @@ class Parser {
                         nodeStack.push(node.f);
                     } else if (token.name == FUNC) {
                         node.f = new AST.Func();
-                        node.f.name = token.value;
+
+                        if (node.f instanceof AST.Func) {
+                            node.f.name = token.value ?? '';
+                        }
 
                         nodeStack.push(node.f);
                     } else if (token.name == BAR) {
                         node.f = new AST.Func();
-                        node.f.name = "conj";
+
+                        if (node.f instanceof AST.Func) {
+                            node.f.name = "conj";
+                        }
 
                         nodeStack.push(node.f);
                     }

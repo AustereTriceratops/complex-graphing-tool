@@ -18,8 +18,10 @@ const App = () => {
     const canvasRef = useRef(null);
     const programRef = useRef(null);
 
-    const [canvasWidth, setCanvasWidth] = useState(0);
+    const [canvasWidth, setCanvasWidth] = useState(1);
     const [canvasHeight, setCanvasHeight] = useState(0);
+    const [windowWidth, setWindowWidth] = useState(100);
+    const [windowHeight, setWindowHeight] = useState(100);
 
     const aspect = useMemo(() => {
         return canvasHeight/canvasWidth;
@@ -30,6 +32,9 @@ const App = () => {
     ///
     useEffect(() => {
         const canvas = canvasRef.current;
+
+        setWindowWidth(window.innerWidth)
+        setWindowHeight(window.innerHeight)
 
         if (canvas) {
             programRef.current = new glManager(canvas);
@@ -52,6 +57,14 @@ const App = () => {
             return () => observer.disconnect();
         }
     }, [])
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+
+        if (canvas) {
+            programRef.current.updateDims(canvas);
+        }
+    }, [windowWidth, windowHeight])
 
     //
     // INTERACTIVITY
@@ -198,7 +211,8 @@ const App = () => {
         <div style={{
             display: 'flex',
             flexDirection: 'row',
-            gap: '5px'
+            gap: '5px',
+            overflow: 'hidden'
         }}>
             <div style={{position: 'fixed', top:'0.2rem', right:'10%'}}>
                 <EquationInput
@@ -290,8 +304,8 @@ const App = () => {
             </div>
             <canvas
                 ref={canvasRef}
-                width={0.85*window.innerWidth}
-                height={0.95*window.innerHeight}
+                width={0.8*windowWidth}
+                height={windowHeight}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
                 onMouseMove={onMouseMove}

@@ -1,4 +1,4 @@
-import Visitor from "./Visitor";
+import Visitor from "../visitors/Visitor";
 
 export class ASTNode{
     constructor(){}

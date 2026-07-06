@@ -114,11 +114,11 @@ export class PrintVisitor extends Visitor {
         node.f?.accept(this)
     };
 
-    visitNegation(node: AST.Negation): void {
+    visitFunc(node: AST.Func): void {
         console.log(`${this.spacing}${node.name}(`);
 
         this.indent_level += 1;
-        node.f?.accept(this);
+        node.e?.accept(this);
         this.indent_level -= 1;
 
         console.log(`${this.spacing})`);
