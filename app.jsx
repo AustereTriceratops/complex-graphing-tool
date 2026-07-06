@@ -10,7 +10,6 @@ import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
 import { GLSLVisitor, EquationVisitor } from './parsing/visitors';
 
-// TODO: find out why deployment isn't working
 
 const App = () => {
     //
