@@ -214,7 +214,7 @@ const App = () => {
                 minWidth: '20%',
                 gap: '5px'
             }}>
-                <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
+                {/* <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
                 <InputSlider
                     title="parameter 1"
                     value={equationParameter1}
@@ -222,7 +222,7 @@ const App = () => {
                     min={-10}
                     max={10}
                     setValue={setEquationParameter1}
-                />
+                /> */}
                 <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
                 <FormControlLabel control={
                     <Checkbox
