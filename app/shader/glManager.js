@@ -36,7 +36,8 @@ export default class glManager {
             offset: this.gl.getUniformLocation(this.shaderProgram, 'offset'),
             saturation: this.gl.getUniformLocation(this.shaderProgram, 'saturation'),
             phase: this.gl.getUniformLocation(this.shaderProgram, 'phase'),
-            radialOffset: this.gl.getUniformLocation(this.shaderProgram, 'radialOffset')
+            radialOffset: this.gl.getUniformLocation(this.shaderProgram, 'radialOffset'),
+            displayContours: this.gl.getUniformLocation(this.shaderProgram, 'displayContours')
         };
         
         this.gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
@@ -45,12 +46,13 @@ export default class glManager {
         this.positionBuffer = initPositionBuffer(this.gl, this.shaderAttribs.vertexPosition);
     }
 
-    render(zoom, offsetX, offsetY, saturation, phase, radialOffset) {
+    render(zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours) {
         this.gl.uniform1f(this.shaderAttribs.zoom, zoom);
         this.gl.uniform2fv(this.shaderAttribs.offset, [offsetX, offsetY]);
         this.gl.uniform1f(this.shaderAttribs.saturation, saturation);
         this.gl.uniform1f(this.shaderAttribs.phase, phase);
         this.gl.uniform1f(this.shaderAttribs.radialOffset, radialOffset);
+        this.gl.uniform1f(this.shaderAttribs.displayContours, displayContours);
 
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);

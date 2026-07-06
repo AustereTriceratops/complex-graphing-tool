@@ -22,6 +22,7 @@ uniform vec2 offset;
 uniform float saturation;
 uniform float phase;
 uniform float radialOffset;
+uniform float displayContours;
 `
 
 const complexNumbers = `
@@ -241,7 +242,7 @@ void main() {
     float exponent = 2.0;
   
     float contour_mask_angular = max(
-      1.0/(radius + 1.0),
+      0.0, //1.0/(radius + 1.0),
       min(
         1.0,
         tightness_angular * (pow(2.0, exponent) - pow(1.0 + sin(n_contours * phased_angle), exponent)) - 1.0
@@ -251,7 +252,7 @@ void main() {
     float tightness_radial = 40.0;
     exponent = 2.0;
     float contour_mask_radial = max(
-      1.0/(radius + 1.0), // should be 1 when radius is 0 and approach 0 othw
+      0.0, //1.0/(radius + 1.0), // should be 1 when radius is 0 and approach 0 othw
       min(
         1.0,
         tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(8.0*log(radius * (radialOffset + 1.0))), exponent)) - 1.0
@@ -259,6 +260,9 @@ void main() {
     );
   
     float contour_mask = min(contour_mask_radial,contour_mask_angular);
+    // must be 1.0 when displayContours is 0.0
+    // else must be contour_mask when displayContours is 1.0
+    contour_mask = 1.0 + (contour_mask - 1.0) * displayContours;
     // float contour_mask = 1.0;
   
     // extra parameters

@@ -1,13 +1,14 @@
 "use client"; // allows next.js to use useState, useRef, etc.
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 import glManager from './shader/glManager';
-import {InputSlider, NumberInput, NumberDisplay, EquationInput} from './components';
+import { InputSlider, NumberInput, NumberDisplay, EquationInput } from './components';
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
-import {GLSLVisitor, EquationVisitor} from './parsing/visitors';
+import { GLSLVisitor, EquationVisitor } from './parsing/visitors';
 
 
 const App = () => {
@@ -184,13 +185,14 @@ const App = () => {
     const [saturation, setSaturation] = useState(0.3);
     const [phase, setPhase] = useState(0);
     const [radialOffset, setRadialOffset] = useState(0);
+    const [displayContours, setDisplayContours] = useState(1);
 
     //
     // CANVAS RE-RENDERING
     //
     useEffect(() => {
-        programRef.current.render(zoom, offsetX, offsetY, saturation, phase, radialOffset)
-    }, [zoom, offsetX, offsetY, saturation, phase, radialOffset, canvasWidth, canvasHeight, ast]);
+        programRef.current.render(zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours);
+    }, [zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours, canvasWidth, canvasHeight, ast]);
 
     return (
         <div style={{
@@ -222,6 +224,13 @@ const App = () => {
                     setValue={setEquationParameter1}
                 />
                 <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
+                <FormControlLabel control={
+                    <Checkbox
+                        checked={displayContours > 0}
+                        onChange = {() => setDisplayContours(1 - displayContours)}
+                    />}
+                    label='Show contour lines'
+                />
                 <InputSlider
                     title="Saturation"
                     value={saturation}
