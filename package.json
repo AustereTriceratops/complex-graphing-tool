@@ -1,6 +1,7 @@
 {
   "name": "complex-graphing-tool-2",
   "version": "0.1.0",
+  "homepage": "https://austeretriceratops.github.io/complex-graphing-tool",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +10,7 @@
     "lint": "eslint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "deploy": "gh-pages -d app"
+    "deploy": "npm run build && gh-pages -d out --dotfiles"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
