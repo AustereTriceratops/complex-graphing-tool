@@ -2,5 +2,5 @@
 2:I[71929,["/complex-graphing-tool/_next/static/chunks/431fc1db47d95ff5.js","/complex-graphing-tool/_next/static/chunks/b173c853fc1a165a.js"],"default"]
 3:I[97367,["/complex-graphing-tool/_next/static/chunks/2f236954d6a65e12.js"],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"buildId":"CH_FkYEu0yIJ5gt13Eggw","rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/complex-graphing-tool/_next/static/chunks/b173c853fc1a165a.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"NVrevo6RxC7cMJOmmccsQ","rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/complex-graphing-tool/_next/static/chunks/b173c853fc1a165a.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
 5:null
