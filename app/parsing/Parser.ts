@@ -3,7 +3,7 @@ import { PARSING_TABLE, Token } from './grammar';
 import preParse  from './PreParser';
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, BAR, FUNC, END,
-    E, EPrime, T, TPrime, P, PPrime, F,
+    E, EPrime, T, TPrime, P, PPrime, F, CONSTANTS,
     TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS
 } from "./constants"
 
@@ -193,7 +193,8 @@ class Parser {
                 if ((node instanceof AST.PPrime || node instanceof AST.P || node instanceof AST.Negation)) {
                     if (token.name == NUM) {
                         if (token.value != null) {
-                            node.f = new AST.Num(parseFloat(token.value));
+                            const isConstant = CONSTANTS.has(token.value);
+                            node.f = new AST.Num(parseFloat(token.value), isConstant);
                         }
                     } else if (token.name == LPAREN) {
                         node.f = new AST.Paren();

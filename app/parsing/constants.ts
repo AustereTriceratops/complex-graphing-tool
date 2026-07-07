@@ -25,6 +25,11 @@ export const BAR = 'BAR';
 export const FUNC = 'FUNC';
 export const END = 'END';
 
+// named numbers
+export const e = '2.718281828459045';
+export const pi = '3.141592653589793';
+export const CONSTANTS = Object.freeze(new Set([e, pi]));
+
 // named functions
 export const EXP = 'exp';
 export const SIN = 'sin';

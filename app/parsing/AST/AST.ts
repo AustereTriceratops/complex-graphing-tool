@@ -136,10 +136,12 @@ export  class F extends ASTNode {
 
 export class Num extends F {
     value: number;
+    isConstant = false;
 
-    constructor(value: number) {
+    constructor(value: number, isConstant: boolean) {
         super();
         this.value = value;
+        this.isConstant = isConstant;
     }
 
     accept(visitor: Visitor) {
