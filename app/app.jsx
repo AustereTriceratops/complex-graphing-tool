@@ -1,15 +1,13 @@
 "use client"; // allows next.js to use useState, useRef, etc.
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Checkbox, FormControlLabel } from '@mui/material';
 
 import glManager from './shader/glManager';
-import { InputSlider, NumberInput, NumberDisplay, EquationInput } from './components';
+import { EquationInput, ControlPanel } from './components';
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
 import { GLSLVisitor, EquationVisitor } from './parsing/visitors';
-
 
 const App = () => {
     //
@@ -110,30 +108,6 @@ const App = () => {
         }
     }
 
-    const xMin = useMemo(() => {
-        const xMin = (aspect < 1) ? offsetX - zoom/aspect : offsetX - zoom;
-        
-        return xMin;
-    }, [zoom, aspect, offsetX]);
-
-    const xMax = useMemo(() => {
-        const xMax = (aspect < 1) ? offsetX + zoom/aspect : offsetX + zoom;
-        
-        return xMax;
-    }, [zoom, aspect, offsetX]);
-
-    const yMin = useMemo(() => {
-        const yMin = (aspect < 1) ? offsetY - zoom : offsetY - zoom/aspect;
-        
-        return yMin;
-    }, [zoom, aspect, offsetY]);
-
-    const yMax = useMemo(() => {
-        const yMax = (aspect < 1) ? offsetY + zoom : offsetY + zoom/aspect;
-        
-        return yMax;
-    }, [zoom, aspect, offsetY]);
-
     //
     // EQUATION INPUT
     //
@@ -221,87 +195,23 @@ const App = () => {
                     error={error}
                 />
             </div>
-            <div style={{
-                display:'flex',
-                flexDirection:'column',
-                padding: '1rem',
-                minWidth: '20%',
-                gap: '5px'
-            }}>
-                {/* <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
-                <InputSlider
-                    title="parameter 1"
-                    value={equationParameter1}
-                    step={0.01}
-                    min={-10}
-                    max={10}
-                    setValue={setEquationParameter1}
-                /> */}
-                <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
-                <FormControlLabel control={
-                    <Checkbox
-                        checked={displayContours > 0}
-                        onChange = {() => setDisplayContours(1 - displayContours)}
-                    />}
-                    label='Show contour lines'
-                />
-                <InputSlider
-                    title="Saturation"
-                    value={saturation}
-                    step={0.01}
-                    min={0}
-                    max={0.5}
-                    setValue={setSaturation}
-                />
-                <InputSlider
-                    title="Phase"
-                    value={phase}
-                    step={0.005}
-                    min={0}
-                    max={4*Math.PI}
-                    setValue={setPhase}
-                />
-                <InputSlider
-                    title="Radial offset"
-                    value={radialOffset}
-                    step={0.005}
-                    min={0}
-                    max={10}
-                    setValue={setRadialOffset}
-                />
-                <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
-                <NumberInput
-                    title="zoom"
-                    value={zoom.toFixed(5)}
-                    updateValue={setZoom}
-                />
-                <NumberInput
-                    title="offset_x"
-                    value={offsetX.toFixed(5)}
-                    updateValue={setOffsetX}
-                    />
-                <NumberInput
-                    title="offset_y"
-                    value={offsetY.toFixed(5)}
-                    updateValue={setOffsetY}
-                />
-                <NumberDisplay
-                    title="x_min"
-                    value={xMin.toFixed(5)}
-                />
-                <NumberDisplay
-                    title="x_max"
-                    value={xMax.toFixed(5)}
-                />
-                <NumberDisplay
-                    title="y_min"
-                    value={yMin.toFixed(5)}
-                />
-                <NumberDisplay
-                    title="y_max"
-                    value={yMax.toFixed(5)}
-                />
-            </div>
+            <ControlPanel
+                offsetX={offsetX}
+                setOffsetX={setOffsetX}
+                offsetY={offsetY}
+                setOffsetY={setOffsetY}
+                zoom={zoom}
+                setZoom={setZoom}
+                aspect={aspect}
+                phase={phase}
+                setPhase={setPhase}
+                radialOffset={radialOffset}
+                setRadialOffset={setRadialOffset}
+                displayContours={displayContours}
+                setDisplayContours={setDisplayContours}
+                saturation={saturation}
+                setSaturation={setSaturation}
+            />
             <canvas
                 ref={canvasRef}
                 width={0.8*windowWidth}
