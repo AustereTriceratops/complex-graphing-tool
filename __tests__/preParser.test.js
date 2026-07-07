@@ -276,7 +276,7 @@ test('test initial minus signs', () => {
     let expectedTokens = [NUM, MINUS, X, END];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-    expect(tokens[0].value).toEqual('0')
+    expect(tokens[0].value).toEqual('0');
 
     tokens = Lexer.scan("-75");
     tokens = preParser(tokens);

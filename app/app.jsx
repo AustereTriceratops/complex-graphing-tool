@@ -25,14 +25,15 @@ const App = () => {
         return canvasHeight/canvasWidth;
     }, [canvasWidth, canvasHeight])
 
+
     ///
     /// INITIALIZE CANVAS
     ///
     useEffect(() => {
         const canvas = canvasRef.current;
 
-        setWindowWidth(window.innerWidth)
-        setWindowHeight(window.innerHeight)
+        setWindowWidth(window.innerWidth);
+        setWindowHeight(window.innerHeight);
 
         if (canvas) {
             programRef.current = new glManager(canvas);
@@ -64,6 +65,7 @@ const App = () => {
         }
     }, [windowWidth, windowHeight])
 
+
     //
     // INTERACTIVITY
     //
@@ -76,7 +78,7 @@ const App = () => {
     const [offsetY, setOffsetY] = useState(0);
 
     const onScroll = (ev) => {
-        const dZoom = 0.002 * zoom * ev.deltaY
+        const dZoom = 0.002 * zoom * ev.deltaY;
         setZoom(zoom + dZoom);
 
         const biasX = mouseX/canvasWidth;
@@ -107,6 +109,7 @@ const App = () => {
             setOffsetY(offsetY + 2 * zoom * ev.movementY/canvasHeight);
         }
     }
+
 
     //
     // EQUATION INPUT
@@ -156,15 +159,17 @@ const App = () => {
 
     useEffect(() => {
         updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
-    }, [])
+    }, []);
+
 
     ///
     /// EQUATION CONTROLS
     ///
-    const [equationParameter1, setEquationParameter1] = useState(0)
+    const [equationParameter1, setEquationParameter1] = useState(0);
     // const [equationParameter2, setEquationParameter2] = useState(0)
     // const [equationParameter3, setEquationParameter3] = useState(0)
     // const [equationParameter4, setEquationParameter4] = useState(0)
+
 
     //
     // SHADER CONTROLS
@@ -173,6 +178,7 @@ const App = () => {
     const [phase, setPhase] = useState(0);
     const [radialOffset, setRadialOffset] = useState(0);
     const [displayContours, setDisplayContours] = useState(1);
+
 
     //
     // CANVAS RE-RENDERING

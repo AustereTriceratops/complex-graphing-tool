@@ -8,14 +8,14 @@ class GLSLVisitor extends Visitor {
     entering = true;
 
     visitE(node: AST.E): string {
-        let result = ''
+        let result = '';
 
         if (this.entering) {
             this.entering = false;
 
             const txt1 = node.t?.accept(this) ?? '';
             const txt2 = node.e_prime?.accept(this) ?? '';
-            result = this.function_start + txt1 + txt2 + this.function_end
+            result = this.function_start + txt1 + txt2 + this.function_end;
         } else {
             const txt1 = node.t?.accept(this) ?? '';
             const txt2 = node.e_prime?.accept(this) ?? '';

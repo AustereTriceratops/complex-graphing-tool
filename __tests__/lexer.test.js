@@ -89,7 +89,7 @@ test('tokenizing single characters', () => {
 
     tokens = Lexer.scan("+-*/()^xiqz1");
     expectedTokens = [
-        "PLUS", "MINUS", "TIMES", "DIVIDE", "LPAREN", "RPAREN", "POW", "<?>", "END"
+        PLUS, MINUS, TIMES, DIVIDE, LPAREN, RPAREN, POW, UNK, END
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
@@ -98,7 +98,7 @@ test('tokenizing single characters', () => {
 test('tokenizing simple expressions', () => {
     let tokens = Lexer.scan("x + 2 + i");
     let expectedTokens = [
-        "X", "PLUS", "NUM", "PLUS", "I", "END"
+        X, PLUS, NUM, PLUS, I, END
     ];
 
     expect(tokens.length).toEqual(expectedTokens.length);
@@ -106,7 +106,7 @@ test('tokenizing simple expressions', () => {
 
     tokens = Lexer.scan("x*(1+i)");
     expectedTokens = [
-        "X", "TIMES", "LPAREN", "NUM", "PLUS", "I", "RPAREN", "END"
+        X, TIMES, LPAREN, NUM, PLUS, I, RPAREN, END
     ];
 
     expect(tokens.length).toEqual(expectedTokens.length);
@@ -114,7 +114,7 @@ test('tokenizing simple expressions', () => {
 
     tokens = Lexer.scan("x*x*x");
     expectedTokens = [
-        "X", "TIMES", "X", "TIMES", "X", "END"
+        X, TIMES, X, TIMES, X, END
     ];
 
     expect(tokens.length).toEqual(expectedTokens.length);
@@ -123,7 +123,7 @@ test('tokenizing simple expressions', () => {
 
 test('tokenizing integers', () => {
     let tokens = Lexer.scan("7");
-    let expectedTokens = ["NUM", "END"];
+    let expectedTokens = [NUM, END];
     let expectedValues = ["7", null];
 
     expect(tokens.length).toEqual(expectedTokens.length);
@@ -131,7 +131,7 @@ test('tokenizing integers', () => {
     tokens.map((t, i) => expect(t.value).toEqual(expectedValues[i]));
 
     tokens = Lexer.scan("51");
-    expectedTokens = ["NUM", "END"];
+    expectedTokens = [NUM, END];
     expectedValues = ["51", null];
 
     expect(tokens.length).toEqual(expectedTokens.length);
@@ -139,7 +139,7 @@ test('tokenizing integers', () => {
     tokens.map((t, i) => expect(t.value).toEqual(expectedValues[i]));
 
     tokens = Lexer.scan("9999 999");
-    expectedTokens = ["NUM", "NUM", "END"];
+    expectedTokens = [NUM, NUM, END];
     expectedValues = ["9999", "999", null];
 
     expect(tokens.length).toEqual(expectedTokens.length);

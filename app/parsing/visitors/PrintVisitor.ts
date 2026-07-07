@@ -16,23 +16,23 @@ export class PrintVisitor extends Visitor {
     visitPlus(node: AST.Plus): void {
         console.log(`${this.spacing}+`);
 
-        this.indent_level += 1
+        this.indent_level += 1;
 
         node.t?.accept(this);
         node.e_prime?.accept(this);
 
-        this.indent_level -= 1
+        this.indent_level -= 1;
     }
 
     visitMinus(node: AST.Minus): void {
         console.log(`${this.spacing}-`);
 
-        this.indent_level += 1
+        this.indent_level += 1;
 
         node.t?.accept(this);
         node.e_prime?.accept(this);
 
-        this.indent_level -= 1
+        this.indent_level -= 1;
     }
 
     visitT(node: AST.T): void {
@@ -111,7 +111,7 @@ export class PrintVisitor extends Visitor {
 
     visitNegation(node: AST.Negation): void {
         console.log(`${this.spacing}-`);
-        node.f?.accept(this)
+        node.f?.accept(this);
     };
 
     visitFunc(node: AST.Func): void {

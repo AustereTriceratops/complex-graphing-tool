@@ -1,5 +1,5 @@
-import { OPERATIONS, VARIABLES, Token } from "./grammar";
-import { NUM, LPAREN, RPAREN, PLUS, MINUS, TIMES, BAR, END } from "./constants";
+import { Token } from "./grammar";
+import { NUM, LPAREN, RPAREN, PLUS, MINUS, TIMES, BAR, END, OPERATIONS, VARIABLES, } from "./constants";
 
 export function preParse(tokens: Token[]) {
     let new_tokens = scanImplicitMultiplication(tokens);

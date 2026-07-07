@@ -1,32 +1,7 @@
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END,
+    X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC,
     E, EPrime, T, TPrime, P, PPrime, F
 } from "./constants"
-
-export const TERMINALS = Object.freeze(new Set([
-    UNK,
-    X,
-    Z,
-    Q,
-    I,
-    PLUS,
-    MINUS,
-    TIMES,
-    DIVIDE,
-    POW,
-    NUM,
-    LPAREN,
-    RPAREN,
-    BAR,
-    FUNC,
-    END,
-]));
-export const OPERATIONS = Object.freeze(new Set([PLUS, MINUS, TIMES, DIVIDE, POW]));
-export const VARIABLES = Object.freeze(new Set([X, Z, Q]));
-
-export const NONTERMINALS = Object.freeze(new Set([E, EPrime, T, TPrime, P, PPrime, F]));
-export const NULLABLE_NONTERMINALS = Object.freeze(new Set([EPrime, TPrime, PPrime]));
-
 
 export const PRODUCTIONS: [string, string[]][]  = [
     [E, [T, EPrime]],

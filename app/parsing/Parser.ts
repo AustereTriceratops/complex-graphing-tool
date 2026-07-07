@@ -1,9 +1,10 @@
 import * as AST from './AST/AST';
-import { TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS, PARSING_TABLE, Token } from './grammar';
+import { PARSING_TABLE, Token } from './grammar';
 import preParse  from './PreParser';
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, BAR, FUNC, END,
-    E, EPrime, T, TPrime, P, PPrime, F
+    E, EPrime, T, TPrime, P, PPrime, F,
+    TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS
 } from "./constants"
 
 // this parsing method buils the abstract syntax tree (AST) top-down
