@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import katex from 'katex';
+import "katex/dist/katex.min.css";
 import { Paper, Typography, IconButton } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 
@@ -54,19 +56,49 @@ const Info = () => {
                 color: 'white',
                 width: '20rem',
             }}>
-                <Typography variant="h6" sx={{fontWeight: 'bold'}}>
-                    Constants
-                </Typography>
-                <Typography sx={{ml: 2}}>pi = 3.141592653589793</Typography>
-                <Typography sx={{ml: 2}}>e = 2.718281828459045</Typography>
+                <Typography variant="h6" sx={{fontWeight: 'bold'}}>Constants</Typography>
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString("pi = 3.141592653589793"),
+                    }}
+                />
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString("e = 2.718281828459045"),
+                    }}
+                />
 
                 <Typography variant="h6" sx={{fontWeight: 'bold'}}>Functions</Typography>
-                <Typography sx={{ml: 2}}>sin(x)</Typography>
-                <Typography sx={{ml: 2}}>cos(x)</Typography>
-                <Typography sx={{ml: 2}}>exp(x)</Typography>
-                <Typography sx={{ml: 2}}>log(x)</Typography>
-                <Typography sx={{ml: 2}}>sqrt(x)</Typography>
-                <Typography sx={{ml: 2}}>conj(x)</Typography>
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString("sin(x)"),
+                    }}
+                />
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString("cos(x)"),
+                    }}
+                />
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString("exp(x)"),
+                    }}
+                />
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString("log(x)"),
+                    }}
+                />
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString("sqrt(x)"),
+                    }}
+                />
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString(`conj(x) \\quad \\text{complex conjugation}`),
+                    }}
+                />
             </Paper>
         </div>
     )

@@ -221,7 +221,7 @@ const App = () => {
             <canvas
                 ref={canvasRef}
                 width={0.8*windowWidth}
-                height={windowHeight}
+                height={0.99*windowHeight}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
                 onMouseMove={onMouseMove}
