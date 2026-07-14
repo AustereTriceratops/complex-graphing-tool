@@ -9,6 +9,7 @@ const ControlPanel = (props) => {
     const {
         offsetX, setOffsetX, offsetY, setOffsetY, zoom, setZoom, aspect, phase, setPhase,
         radialOffset, setRadialOffset, displayContours, setDisplayContours, saturation, setSaturation,
+        parameters, setParameters
     } = props;
 
     const xMin = useMemo(() => {
@@ -43,15 +44,27 @@ const ControlPanel = (props) => {
             minWidth: '20%',
             gap: '5px'
         }}>
-            {/* <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
-            <InputSlider
-                title="parameter 1"
-                value={equationParameter1}
-                step={0.01}
-                min={-10}
-                max={10}
-                setValue={setEquationParameter1}
-            /> */}
+            <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
+            { (parameters.length > 0) &&
+                <InputSlider
+                    title={`parameter 1`}
+                    value={parameters[0].value}
+                    step={0.01}
+                    min={-100}
+                    max={100}
+                    setValue={
+                        (newVal) => {
+                            parameters.forEach((param, j) => {
+                                if (j == 0) {
+                                    param.value = newVal
+                                }
+                            });
+                            
+                            setParameters(parameters);
+                        }
+                    }
+                />
+            }
             <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
             <FormControlLabel control={
                 <Checkbox

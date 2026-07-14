@@ -7,7 +7,7 @@ import { EquationInput, ControlPanel } from './components';
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import Lexer from './parsing/Lexer';
-import { GLSLVisitor, EquationVisitor } from './parsing/visitors';
+import { GLSLVisitor, EquationVisitor, ParameterVisitor } from './parsing/visitors';
 
 const App = () => {
     //
@@ -114,13 +114,13 @@ const App = () => {
     //
     // EQUATION INPUT
     //
-    const [equation, setEquation] = useState('')
+    const [equation, setEquation] = useState('');
+    const [parameters, setParameters] = useState([]);
     const [ast, setAst] = useState(undefined);
     const [error, setError] = useState(false);
 
     const updateEquation = (eq) => {
-        console.log('updating equation')
-        setEquation(eq)
+        setEquation(eq);
         const tokens = Lexer.scan(eq);
                         
         const {ast, accept} = Parser.parse(tokens);
@@ -147,6 +147,11 @@ const App = () => {
             // const printVisitor = new PrintVisitor();
             // ast.accept(printVisitor);
 
+            const parameterVisitor = new ParameterVisitor();
+            ast.accept(parameterVisitor);
+            const params = parameterVisitor.parameters;
+            setParameters(params);
+
             const glManager = programRef.current;
     
             if (glManager) {
@@ -165,10 +170,6 @@ const App = () => {
     ///
     /// EQUATION CONTROLS
     ///
-    const [equationParameter1, setEquationParameter1] = useState(0);
-    // const [equationParameter2, setEquationParameter2] = useState(0)
-    // const [equationParameter3, setEquationParameter3] = useState(0)
-    // const [equationParameter4, setEquationParameter4] = useState(0)
 
 
     //
@@ -217,6 +218,8 @@ const App = () => {
                 setDisplayContours={setDisplayContours}
                 saturation={saturation}
                 setSaturation={setSaturation}
+                parameters={parameters}
+                setParameters={setParameters}
             />
             <canvas
                 ref={canvasRef}
