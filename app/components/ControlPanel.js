@@ -59,7 +59,8 @@ const ControlPanel = (props) => {
                                     param.value = newVal
                                 }
                             });
-                            
+
+                            console.log('set parameters')
                             setParameters(parameters);
                         }
                     }

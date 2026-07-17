@@ -116,39 +116,43 @@ const App = () => {
     //
     const [equation, setEquation] = useState('');
     const [parameters, setParameters] = useState([]);
-    const [ast, setAst] = useState(undefined);
     const [error, setError] = useState(false);
 
+    const ast = useRef(null);
+    const [astVer, setAstVer] = useState(0);
+
     const updateEquation = (eq) => {
+        console.log('updateEquation()');
         setEquation(eq);
         const tokens = Lexer.scan(eq);
                         
-        const {ast, accept} = Parser.parse(tokens);
+        const {ast: newAST, accept} = Parser.parse(tokens);
         
         if (!accept) {
             setError(true);
         } else {
-            updateAST(ast);
+            updateAST(newAST);
             setError(false);
         }
     }
 
-    const updateAST = (ast) => {
-        if (ast != undefined) {
+    const updateAST = (newAST) => {
+        console.log('updateAST()');
+        if (newAST != undefined) {
             const visitor = new GLSLVisitor();
-            const function_source = ast.accept(visitor);
+            const function_source = newAST.accept(visitor);
             const fragmentShader = createFragmentShader(function_source)
             // console.log(function_source)
             
             const equationVisitor = new EquationVisitor();
-            const equationString = ast.accept(equationVisitor);
-            console.log(equationString)
+            const equationString = newAST.accept(equationVisitor);
+            // console.log(equationString)
 
             // const printVisitor = new PrintVisitor();
-            // ast.accept(printVisitor);
+            // newAST.accept(printVisitor);
 
             const parameterVisitor = new ParameterVisitor();
-            ast.accept(parameterVisitor);
+            newAST.accept(parameterVisitor);
             const params = parameterVisitor.parameters;
             setParameters(params);
 
@@ -158,18 +162,14 @@ const App = () => {
                 glManager.updateFragmentShader(fragmentShader)
             }
 
-            setAst(ast);
+            ast.current = newAST;
+            setAstVer(astVer + 1);
         }
     };
 
     useEffect(() => {
         updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
     }, []);
-
-
-    ///
-    /// EQUATION CONTROLS
-    ///
 
 
     //
@@ -186,7 +186,7 @@ const App = () => {
     //
     useEffect(() => {
         programRef.current.render(zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours);
-    }, [zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours, canvasWidth, canvasHeight, ast]);
+    }, [zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours, canvasWidth, canvasHeight, astVer]);
 
     return (
         <div style={{
