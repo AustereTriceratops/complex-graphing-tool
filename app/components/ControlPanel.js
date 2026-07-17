@@ -54,14 +54,17 @@ const ControlPanel = (props) => {
                     max={100}
                     setValue={
                         (newVal) => {
-                            parameters.forEach((param, j) => {
-                                if (j == 0) {
+                            const newParameters = parameters.map((param, i) => {
+                                if (i == 0) {
                                     param.value = newVal
+                                    return param
+                                } else {
+                                    return param
                                 }
-                            });
+                            })
 
-                            console.log('set parameters')
-                            setParameters(parameters);
+                            console.log('set parameter to: ', newVal)
+                            setParameters(newParameters);
                         }
                     }
                 />

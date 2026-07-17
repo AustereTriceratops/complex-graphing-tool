@@ -115,11 +115,11 @@ const App = () => {
     // EQUATION INPUT
     //
     const [equation, setEquation] = useState('');
-    const [parameters, setParameters] = useState([]);
     const [error, setError] = useState(false);
-
-    const ast = useRef(null);
+    
+    const astRef = useRef(null);
     const [astVer, setAstVer] = useState(0);
+    const [parameters, setParameters] = useState([]);
 
     const updateEquation = (eq) => {
         console.log('updateEquation()');
@@ -162,7 +162,7 @@ const App = () => {
                 glManager.updateFragmentShader(fragmentShader)
             }
 
-            ast.current = newAST;
+            astRef.current = newAST;
             setAstVer(astVer + 1);
         }
     };
