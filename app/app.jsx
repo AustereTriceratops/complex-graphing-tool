@@ -122,7 +122,6 @@ const App = () => {
     const [parameters, setParameters] = useState([]);
 
     const updateEquation = (eq) => {
-        console.log('updateEquation()');
         setEquation(eq);
         const tokens = Lexer.scan(eq);
                         
@@ -131,41 +130,43 @@ const App = () => {
         if (!accept) {
             setError(true);
         } else {
-            updateAST(newAST);
+            astRef.current = newAST;
+            updateAST();
+            updateASTParameters();
             setError(false);
         }
     }
 
-    const updateAST = (newAST) => {
-        console.log('updateAST()');
-        if (newAST != undefined) {
+    const updateAST = () => {
+        if (astRef.current != undefined) {
             const visitor = new GLSLVisitor();
-            const function_source = newAST.accept(visitor);
+            const function_source = astRef.current.accept(visitor);
             const fragmentShader = createFragmentShader(function_source)
             // console.log(function_source)
             
             const equationVisitor = new EquationVisitor();
-            const equationString = newAST.accept(equationVisitor);
+            const equationString = astRef.current.accept(equationVisitor);
             // console.log(equationString)
 
             // const printVisitor = new PrintVisitor();
-            // newAST.accept(printVisitor);
-
-            const parameterVisitor = new ParameterVisitor();
-            newAST.accept(parameterVisitor);
-            const params = parameterVisitor.parameters;
-            setParameters(params);
+            // astRef.current.accept(printVisitor);
 
             const glManager = programRef.current;
     
             if (glManager) {
-                glManager.updateFragmentShader(fragmentShader)
+                glManager.updateFragmentShader(fragmentShader);
             }
 
-            astRef.current = newAST;
             setAstVer(astVer + 1);
         }
     };
+
+    const updateASTParameters = () => {
+        const parameterVisitor = new ParameterVisitor();
+        astRef.current.accept(parameterVisitor);
+        const params = parameterVisitor.parameters;
+        setParameters(params);
+    }
 
     useEffect(() => {
         updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
@@ -220,6 +221,7 @@ const App = () => {
                 setSaturation={setSaturation}
                 parameters={parameters}
                 setParameters={setParameters}
+                updateAST={updateAST}
             />
             <canvas
                 ref={canvasRef}

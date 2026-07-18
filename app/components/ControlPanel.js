@@ -9,7 +9,7 @@ const ControlPanel = (props) => {
     const {
         offsetX, setOffsetX, offsetY, setOffsetY, zoom, setZoom, aspect, phase, setPhase,
         radialOffset, setRadialOffset, displayContours, setDisplayContours, saturation, setSaturation,
-        parameters, setParameters
+        parameters, setParameters, updateAST
     } = props;
 
     const xMin = useMemo(() => {
@@ -54,17 +54,16 @@ const ControlPanel = (props) => {
                     max={100}
                     setValue={
                         (newVal) => {
-                            const newParameters = parameters.map((param, i) => {
+                            parameters.forEach((param, i) => {
                                 if (i == 0) {
-                                    param.value = newVal
-                                    return param
+                                    param.value = newVal;
+                                    return param;
                                 } else {
-                                    return param
+                                    return param;
                                 }
                             })
 
-                            console.log('set parameter to: ', newVal)
-                            setParameters(newParameters);
+                            updateAST();
                         }
                     }
                 />
