@@ -120,7 +120,7 @@ class GLSLVisitor extends Visitor {
     };
 
     visitNum(node: AST.Num): string {
-        return `vec2(${node.value.toFixed(1)}, 0.0)`;
+        return `vec2(${node.value.toFixed(10)}, 0.0)`;
     };
 
     visitParen(node: AST.Paren): string {

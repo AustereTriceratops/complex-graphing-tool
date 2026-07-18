@@ -220,7 +220,6 @@ const App = () => {
                 saturation={saturation}
                 setSaturation={setSaturation}
                 parameters={parameters}
-                setParameters={setParameters}
                 updateAST={updateAST}
             />
             <canvas

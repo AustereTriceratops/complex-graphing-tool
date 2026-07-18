@@ -9,7 +9,7 @@ const ControlPanel = (props) => {
     const {
         offsetX, setOffsetX, offsetY, setOffsetY, zoom, setZoom, aspect, phase, setPhase,
         radialOffset, setRadialOffset, displayContours, setDisplayContours, saturation, setSaturation,
-        parameters, setParameters, updateAST
+        parameters, updateAST
     } = props;
 
     const xMin = useMemo(() => {
@@ -41,7 +41,7 @@ const ControlPanel = (props) => {
             display:'flex',
             flexDirection:'column',
             padding: '1rem',
-            minWidth: '20%',
+            minWidth: '250px',
             gap: '5px'
         }}>
             <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
@@ -50,8 +50,8 @@ const ControlPanel = (props) => {
                     title={`parameter 1`}
                     value={parameters[0].value}
                     step={0.01}
-                    min={-100}
-                    max={100}
+                    min={-20}
+                    max={20}
                     setValue={
                         (newVal) => {
                             parameters.forEach((param, i) => {
