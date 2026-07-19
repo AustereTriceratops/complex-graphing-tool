@@ -194,7 +194,8 @@ const App = () => {
             display: 'flex',
             flexDirection: 'row',
             gap: '5px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            maxHeight: '100vh'
         }}>
             <div style={{position: 'fixed', top:'0.2rem', right:'10%'}}>
                 <EquationInput
@@ -224,8 +225,8 @@ const App = () => {
             />
             <canvas
                 ref={canvasRef}
-                width={0.8*windowWidth}
-                height={0.99*windowHeight}
+                width={windowWidth}
+                height={windowHeight}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
                 onMouseMove={onMouseMove}

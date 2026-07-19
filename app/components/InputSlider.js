@@ -18,7 +18,7 @@ const InputSlider = (props) => {
                     min={min}
                     max={max}
                     onChange={(_, value) => setValue(value)}
-                    sx={{minWidth: '180px'}}
+                    sx={{minWidth: '200px', maxWidth: '200px'}}
                 />
                 {value.toFixed(2)}
             </div>

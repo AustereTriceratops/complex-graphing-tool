@@ -6,7 +6,7 @@ const NumberInput = (props) => {
             display:'flex',
             flexDirection:'row',
             justifyContent:'center',
-            gap: '1.0rem'
+            gap: '0.75rem'
         }}>
             <div>
                 {title}

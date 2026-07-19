@@ -38,36 +38,17 @@ const ControlPanel = (props) => {
 
     return (
         <div style={{
+            position:'absolute',
             display:'flex',
             flexDirection:'column',
+            overflow: 'auto',
             padding: '1rem',
-            minWidth: '250px',
-            gap: '5px'
+            maxHeight: '100vh',
+            minWidth: '260px',
+            gap: '5px',
+            background: '#333',
+            opacity: 0.8
         }}>
-            <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
-            { (parameters.length > 0) &&
-                <InputSlider
-                    title={`parameter 1`}
-                    value={parameters[0].value}
-                    step={0.01}
-                    min={-20}
-                    max={20}
-                    setValue={
-                        (newVal) => {
-                            parameters.forEach((param, i) => {
-                                if (i == 0) {
-                                    param.value = newVal;
-                                    return param;
-                                } else {
-                                    return param;
-                                }
-                            })
-
-                            updateAST();
-                        }
-                    }
-                />
-            }
             <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
             <FormControlLabel control={
                 <Checkbox
@@ -116,22 +97,51 @@ const ControlPanel = (props) => {
                 value={offsetY.toFixed(5)}
                 updateValue={setOffsetY}
             />
-            <NumberDisplay
-                title="x_min"
-                value={xMin.toFixed(5)}
-            />
-            <NumberDisplay
-                title="x_max"
-                value={xMax.toFixed(5)}
-            />
-            <NumberDisplay
-                title="y_min"
-                value={yMin.toFixed(5)}
-            />
-            <NumberDisplay
-                title="y_max"
-                value={yMax.toFixed(5)}
-            />
+            <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+                <NumberDisplay
+                    title="x_min:"
+                    value={xMin.toFixed(5)}
+                />
+                <NumberDisplay
+                    title="x_max:"
+                    value={xMax.toFixed(5)}
+                />
+            </div>
+            <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+                <NumberDisplay
+                    title="y_min"
+                    value={yMin.toFixed(5)}
+                />
+                <NumberDisplay
+                    title="y_max"
+                    value={yMax.toFixed(5)}
+                />
+            </div>
+            <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
+            { parameters.map((param, i) =>
+                <InputSlider
+                    key={i}
+                    title={`parameter ${i + 1}`}
+                    value={param.value}
+                    step={0.01}
+                    min={-20}
+                    max={20}
+                    setValue={
+                        (newVal) => {
+                            parameters.forEach((param, j) => {
+                                if (i == j) {
+                                    param.value = newVal;
+                                    return param;
+                                } else {
+                                    return param;
+                                }
+                            })
+
+                            updateAST();
+                        }
+                    }
+                />
+            )}
         </div>
     )
 }
