@@ -1,0 +1,10 @@
+.controlPanelSection {
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+}
+
+.controlPanelSectionTitle {
+    font-size: 20px;
+    font-weight: 600;
+}

@@ -2,7 +2,7 @@
 import { useMemo } from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 
-
+import './components.css';
 import { InputSlider, NumberInput, NumberDisplay } from './index';
 
 const ControlPanel = (props) => {
@@ -44,104 +44,111 @@ const ControlPanel = (props) => {
             overflow: 'auto',
             padding: '1rem',
             maxHeight: '100vh',
-            minWidth: '260px',
-            gap: '5px',
+            minWidth: '320px',
+            maxWidth: '320px',
+            gap: '2rem',
             background: '#333',
             opacity: 0.8
         }}>
-            <p style={{fontSize: '18px', fontWeight: '600'}}>Display options</p>
-            <FormControlLabel control={
-                <Checkbox
-                    checked={displayContours > 0}
-                    onChange = {() => setDisplayContours(1 - displayContours)}
-                />}
-                label='Show contour lines'
-            />
-            <InputSlider
-                title="Saturation"
-                value={saturation}
-                step={0.01}
-                min={0}
-                max={0.5}
-                setValue={setSaturation}
-            />
-            <InputSlider
-                title="Phase"
-                value={phase}
-                step={0.005}
-                min={0}
-                max={4*Math.PI}
-                setValue={setPhase}
-            />
-            <InputSlider
-                title="Radial offset"
-                value={radialOffset}
-                step={0.005}
-                min={0}
-                max={10}
-                setValue={setRadialOffset}
-            />
-            <p style={{fontSize: '18px', fontWeight: '600'}}>Graph info</p>
-            <NumberInput
-                title="zoom"
-                value={zoom.toFixed(5)}
-                updateValue={setZoom}
-            />
-            <NumberInput
-                title="offset_x"
-                value={offsetX.toFixed(5)}
-                updateValue={setOffsetX}
+            <div className='controlPanelSection'>
+                <p className='controlPanelSectionTitle'>Display options</p>
+                <FormControlLabel control={
+                    <Checkbox
+                        checked={displayContours > 0}
+                        onChange = {() => setDisplayContours(1 - displayContours)}
+                    />}
+                    label='Show contour lines'
                 />
-            <NumberInput
-                title="offset_y"
-                value={offsetY.toFixed(5)}
-                updateValue={setOffsetY}
-            />
-            <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
-                <NumberDisplay
-                    title="x_min:"
-                    value={xMin.toFixed(5)}
-                />
-                <NumberDisplay
-                    title="x_max:"
-                    value={xMax.toFixed(5)}
-                />
-            </div>
-            <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
-                <NumberDisplay
-                    title="y_min"
-                    value={yMin.toFixed(5)}
-                />
-                <NumberDisplay
-                    title="y_max"
-                    value={yMax.toFixed(5)}
-                />
-            </div>
-            <p style={{fontSize: '18px', fontWeight: '600'}}>Equation Parameters</p>
-            { parameters.map((param, i) =>
                 <InputSlider
-                    key={i}
-                    title={`parameter ${i + 1}`}
-                    value={param.value}
+                    title="Saturation"
+                    value={saturation}
                     step={0.01}
-                    min={-20}
-                    max={20}
-                    setValue={
-                        (newVal) => {
-                            parameters.forEach((param, j) => {
-                                if (i == j) {
-                                    param.value = newVal;
-                                    return param;
-                                } else {
-                                    return param;
-                                }
-                            })
-
-                            updateAST();
-                        }
-                    }
+                    min={0}
+                    max={0.5}
+                    setValue={setSaturation}
                 />
-            )}
+                <InputSlider
+                    title="Phase"
+                    value={phase}
+                    step={0.005}
+                    min={0}
+                    max={4*Math.PI}
+                    setValue={setPhase}
+                />
+                <InputSlider
+                    title="Radial offset"
+                    value={radialOffset}
+                    step={0.005}
+                    min={0}
+                    max={10}
+                    setValue={setRadialOffset}
+                />
+            </div>
+            <div className='controlPanelSection'>
+                <p className='controlPanelSectionTitle'>Graph info</p>
+                <NumberInput
+                    title="zoom"
+                    value={zoom.toFixed(4)}
+                    updateValue={setZoom}
+                />
+                <NumberInput
+                    title="offset_x"
+                    value={offsetX.toFixed(4)}
+                    updateValue={setOffsetX}
+                    />
+                <NumberInput
+                    title="offset_y"
+                    value={offsetY.toFixed(4)}
+                    updateValue={setOffsetY}
+                />
+                <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+                    <NumberDisplay
+                        title="x_min:"
+                        value={xMin.toFixed(4)}
+                    />
+                    <NumberDisplay
+                        title="x_max:"
+                        value={xMax.toFixed(4)}
+                    />
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+                    <NumberDisplay
+                        title="y_min"
+                        value={yMin.toFixed(4)}
+                    />
+                    <NumberDisplay
+                        title="y_max"
+                        value={yMax.toFixed(4)}
+                    />
+                </div>
+            </div>
+            <div className='controlPanelSection'>
+                <p className='controlPanelSectionTitle'>Equation Parameters</p>
+                { parameters.map((param, i) =>
+                    <InputSlider
+                        key={i}
+                        title={`parameter ${i + 1}`}
+                        value={param.value}
+                        step={0.01}
+                        min={-20}
+                        max={20}
+                        setValue={
+                            (newVal) => {
+                                parameters.forEach((param, j) => {
+                                    if (i == j) {
+                                        param.value = newVal;
+                                        return param;
+                                    } else {
+                                        return param;
+                                    }
+                                })
+
+                                updateAST();
+                            }
+                        }
+                    />
+                )}
+            </div>
         </div>
     )
 }
