@@ -66,7 +66,7 @@ export class EquationVisitor extends Visitor {
         if (p_prime == '') {
             return `^${f}`;
         } else {
-            return `^(${f}${p_prime})`;
+            return `^${f}${p_prime}`;
         }
     }
 
