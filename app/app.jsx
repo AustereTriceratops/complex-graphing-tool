@@ -217,13 +217,6 @@ const App = () => {
             overflow: 'hidden',
             maxHeight: '100vh'
         }}>
-            <div style={{position: 'fixed', top:'0.2rem', right:'10%'}}>
-                <EquationInput
-                    value={equation}
-                    setEquation={updateEquation}
-                    error={error}
-                />
-            </div>
             <ControlPanel
                 offsetX={offsetX}
                 setOffsetX={setOffsetX}
@@ -243,7 +236,15 @@ const App = () => {
                 parameters={parameters}
                 updateASTParameter={updateASTParameter}
             />
+            <div style={{position: 'fixed', top:'0.2rem', right:'15vw'}}>
+                <EquationInput
+                    value={equation}
+                    setEquation={updateEquation}
+                    error={error}
+                />
+            </div>
             <canvas
+            style={{cursor: 'pointer'}}
                 ref={canvasRef}
                 width={windowWidth}
                 height={windowHeight}

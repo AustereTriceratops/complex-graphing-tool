@@ -30,7 +30,7 @@ const EquationInput = (props) => {
                 sx={{
                     backgroundColor: 'white',
                     opacity: 0.6,
-                    width: '50rem',
+                    width: '50vw',
                     height: '3rem',
                     paddingLeft: '0.5rem',
                     borderRadius: '8px',

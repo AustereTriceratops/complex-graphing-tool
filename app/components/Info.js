@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import katex from 'katex';
 import "katex/dist/katex.min.css";
 import { Paper, Typography, IconButton } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import HelpIcon from '@mui/icons-material/Help';
 
 const useClickOutsideEvent = (targetRef, exceptionRef, close) => {
     useEffect(() => {
@@ -37,7 +37,7 @@ const Info = () => {
             <div ref={controlRef} onClick={() => {
                 setPanelIsVisible(!panelIsVisible);
             }}>
-                <InfoIcon
+                <HelpIcon
                     sx={{
                         cursor: 'pointer',
                         opacity: '0.8',
