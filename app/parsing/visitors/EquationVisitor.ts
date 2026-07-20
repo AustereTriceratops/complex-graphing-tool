@@ -41,21 +41,33 @@ export class EquationVisitor extends Visitor {
         const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? '';
 
-        return `/${p}${t_prime}`;
+        if (t_prime == '') {
+            return `/${p}${t_prime}`;
+        } else {
+            return `/(${p}${t_prime})`;
+        }
     }
 
     visitP(node: AST.P): string {
         const f = node.f?.accept(this);
         const p_prime = node.p_prime?.accept(this) ?? '';
 
-        return `${f}${p_prime}`;
+        if (p_prime == '') {
+            return `${f}`;
+        } else {
+            return `${f}${p_prime}`;
+        }
     }
 
     visitPow(node: AST.Pow): string {
         const f = node.f?.accept(this);
         const p_prime = node.p_prime?.accept(this) ?? '';
 
-        return `^(${f}${p_prime})`;
+        if (p_prime == '') {
+            return `^${f}`;
+        } else {
+            return `^(${f}${p_prime})`;
+        }
     }
 
     visitNum(node: AST.Num): string {
@@ -63,7 +75,6 @@ export class EquationVisitor extends Visitor {
     }
     
     visitParen(node: AST.Paren): string {
-
         const expr = node.e?.accept(this);
 
         return `(${expr})`;
@@ -88,7 +99,7 @@ export class EquationVisitor extends Visitor {
     visitNegation(node: AST.Negation): string {
         const expr = node.f?.accept(this) ?? '';
 
-        return `(-${expr})`;
+        return `-${expr}`;
     }
 
     visitFunc(node: AST.Func): string {

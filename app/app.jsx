@@ -132,7 +132,7 @@ const App = () => {
         } else {
             astRef.current = newAST;
             updateAST();
-            updateASTParameters();
+            gatherASTParameters();
             setError(false);
         }
     }
@@ -161,11 +161,31 @@ const App = () => {
         }
     };
 
-    const updateASTParameters = () => {
+    const gatherASTParameters = () => {
         const parameterVisitor = new ParameterVisitor();
         astRef.current.accept(parameterVisitor);
         const params = parameterVisitor.parameters;
         setParameters(params);
+    }
+
+    const updateASTParameter = (index) => {
+        return (newVal) => {
+            parameters.forEach((param, j) => {
+                if (index == j) {
+                    param.value = newVal;
+                    return param;
+                } else {
+                    return param;
+                }
+            })
+
+            updateAST();
+
+            // update equation on the displayed equation input field
+            const equationVisitor = new EquationVisitor();
+            const equationString = astRef.current.accept(equationVisitor);
+            setEquation(equationString);
+        }
     }
 
     useEffect(() => {
@@ -221,7 +241,7 @@ const App = () => {
                 saturation={saturation}
                 setSaturation={setSaturation}
                 parameters={parameters}
-                updateAST={updateAST}
+                updateASTParameter={updateASTParameter}
             />
             <canvas
                 ref={canvasRef}
