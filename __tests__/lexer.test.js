@@ -212,7 +212,7 @@ test('tokenizing special functions', () => {
     let expectedValue = "exp";
     let expectedTokens = [FUNC, LPAREN, X, RPAREN, END];
 
-    expect(tokens.length).toEqual(5);
+    expect(tokens.length).toEqual(expectedTokens.length);
     expect(tokens[0].value).toEqual(expectedValue);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
@@ -220,7 +220,7 @@ test('tokenizing special functions', () => {
     expectedValue = "cos";
     expectedTokens = [FUNC, LPAREN, X, RPAREN, END];
 
-    expect(tokens.length).toEqual(5);
+    expect(tokens.length).toEqual(expectedTokens.length);
     expect(tokens[0].value).toEqual(expectedValue);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
@@ -228,7 +228,7 @@ test('tokenizing special functions', () => {
     expectedValue = "sin";
     expectedTokens = [FUNC, LPAREN, X, RPAREN, END];
 
-    expect(tokens.length).toEqual(5);
+    expect(tokens.length).toEqual(expectedTokens.length);
     expect(tokens[0].value).toEqual(expectedValue);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
@@ -236,7 +236,7 @@ test('tokenizing special functions', () => {
     expectedValue = "sin";
     expectedTokens = [FUNC, LPAREN, X, POW, NUM, RPAREN, END];
 
-    expect(tokens.length).toEqual(7);
+    expect(tokens.length).toEqual(expectedTokens.length);
     expect(tokens[0].value).toEqual(expectedValue)
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
@@ -244,7 +244,7 @@ test('tokenizing special functions', () => {
     expectedValue = "sin";
     expectedTokens = [FUNC, LPAREN, FUNC, LPAREN, X, RPAREN, RPAREN, END];
 
-    expect(tokens.length).toEqual(8);
+    expect(tokens.length).toEqual(expectedTokens.length);
     expect(tokens[0].value).toEqual(expectedValue);
     expect(tokens[2].value).toEqual(expectedValue);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
@@ -252,14 +252,64 @@ test('tokenizing special functions', () => {
     tokens = Lexer.scan("sin(pi*x)");
     expectedTokens = [FUNC, LPAREN, NUM, TIMES, X, RPAREN, END];
 
-    expect(tokens.length).toEqual(7);
+    expect(tokens.length).toEqual(expectedTokens.length);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 
     tokens = Lexer.scan("sink()");
     expectedValue = "sink";
     expectedTokens = [UNK, LPAREN, RPAREN, END];
 
-    expect(tokens.length).toEqual(4);
+    expect(tokens.length).toEqual(expectedTokens.length);
     expect(tokens[0].value).toEqual(expectedValue);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+})
+
+test('test lexing negative numbers and variables', () => {
+    let tokens = Lexer.scan("-x");
+    let expectedTokens = [MINUS, X, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+    tokens = Lexer.scan("-75");
+    expectedTokens = [MINUS, NUM, END];
+    
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+    tokens = Lexer.scan("-(-q)");
+    expectedTokens = [MINUS, LPAREN, MINUS, Q, RPAREN, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+    tokens = Lexer.scan("(-q - -4)");
+    expectedTokens = [LPAREN, MINUS, Q, MINUS, MINUS, NUM, RPAREN, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+    tokens = Lexer.scan("x^-1");
+    expectedTokens = [X, POW, MINUS, NUM, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+    tokens = Lexer.scan("x * -1");
+    expectedTokens = [X, TIMES, MINUS, NUM, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+    tokens = Lexer.scan("x / -1");
+    expectedTokens = [X, DIVIDE, MINUS, NUM, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
+    tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
+    
+    tokens = Lexer.scan("x * -(x - 2i)");
+    expectedTokens = [X, TIMES, MINUS, LPAREN, X, MINUS, NUM, I, RPAREN, END];
+
+    expect(tokens.length).toEqual(expectedTokens.length);
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
 })

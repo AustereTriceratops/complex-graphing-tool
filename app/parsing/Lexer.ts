@@ -85,7 +85,7 @@ class Lexer {
                     if (input[i+1] == '.') {
                         const {txt: txt2, indexIncrement} = lookAhead(input, i + 2, /[0-9]/);
                         i += indexIncrement + 2;
-                        txt += "." + txt2
+                        txt += "." + txt2;
                     }
 
                     const token = new Token(NUM, txt);
