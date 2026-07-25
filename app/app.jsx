@@ -123,9 +123,8 @@ const App = () => {
 
     const updateEquation = (eq) => {
         setEquation(eq);
-        const tokens = Lexer.scan(eq);
                         
-        const {ast: newAST, accept} = Parser.parse(tokens);
+        const {ast: newAST, accept} = Parser.parse(eq);
         
         if (!accept) {
             setError(true);

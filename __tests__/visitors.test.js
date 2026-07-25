@@ -8,16 +8,14 @@ import { ParameterVisitor, EquationVisitor } from '../app/parsing/visitors';
 test('test parameter visitor', () => {
     const parameterVisitor = new ParameterVisitor();
 
-    let tokens = Lexer.scan("1 + 2");
-    let {ast, _} = Parser.parse(tokens);
+    let {ast, _} = Parser.parse("1 + 2");
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(2);
     expect(parameterVisitor.parameters[0].value).toEqual(1);
     expect(parameterVisitor.parameters[1].value).toEqual(2);
 
-    parameterVisitor.parameters = []
-    tokens = Lexer.scan("3.2x^2 + 6x - 4");
-    ({ast, _} = Parser.parse(tokens));
+    parameterVisitor.parameters = [];
+    ({ast, _} = Parser.parse("3.2x^2 + 6x - 4"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(4);
     expect(parameterVisitor.parameters[0].value).toEqual(3.2);
@@ -25,44 +23,38 @@ test('test parameter visitor', () => {
     expect(parameterVisitor.parameters[2].value).toEqual(6);
     expect(parameterVisitor.parameters[3].value).toEqual(4);
 
-    parameterVisitor.parameters = []
-    tokens = Lexer.scan("x^4");
-    ({ast, _} = Parser.parse(tokens));
+    parameterVisitor.parameters = [];
+    ({ast, _} = Parser.parse("x^4"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(1);
     expect(parameterVisitor.parameters[0].value).toEqual(4);
 
-    parameterVisitor.parameters = []
-    tokens = Lexer.scan("x^(5.11 - 1x)");
-    ({ast, _} = Parser.parse(tokens));
+    parameterVisitor.parameters = [];
+    ({ast, _} = Parser.parse("x^(5.11 - 1x)"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(2);
     expect(parameterVisitor.parameters[0].value).toEqual(5.11);
     expect(parameterVisitor.parameters[1].value).toEqual(1);
 
-    parameterVisitor.parameters = []
-    tokens = Lexer.scan("3x + -5");
-    ({ast, _} = Parser.parse(tokens));
+    parameterVisitor.parameters = [];
+    ({ast, _} = Parser.parse("3x + -5"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(2);
     expect(parameterVisitor.parameters[0].value).toEqual(3);
     expect(parameterVisitor.parameters[1].value).toEqual(5);
 
-    parameterVisitor.parameters = []
-    tokens = Lexer.scan("2sin(2*pi*z + 1)");
-    ({ast, _} = Parser.parse(tokens));
+    parameterVisitor.parameters = [];
+    ({ast, _} = Parser.parse("2sin(2*pi*z + 1)"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(3);
 
-    parameterVisitor.parameters = []
-    tokens = Lexer.scan("-x");
-    ({ast, _} = Parser.parse(tokens));
+    parameterVisitor.parameters = [];
+    ({ast, _} = Parser.parse("-x"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(0);
 
-    parameterVisitor.parameters = []
-    tokens = Lexer.scan("-2x");
-    ({ast, _} = Parser.parse(tokens));
+    parameterVisitor.parameters = [];
+    ({ast, _} = Parser.parse("-2x"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(1);
 })
@@ -195,6 +187,24 @@ test('test parameter visitor', () => {
 //     expect(degree).toEqual(null)
 // })
 
-test('test equation visitor', () => {
+test('test equation visitor on negative ints', () => {
     const equationVisitor = new EquationVisitor();
+
+    let {ast, _} = Parser.parse('5.5');
+    let eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('5.5');
+
+    ({ast, _} = Parser.parse('-1'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('-1');
+
+    ({ast, _} = Parser.parse('1'));
+    ast.t.p.f.value = '-1'
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('-1');
+
+    // ({ast, _} = Parser.parse('-1'));
+    // ast.t.p.f.f.value = '-1'
+    // eq = ast.accept(equationVisitor);
+    // expect(eq).toEqual('1');
 });

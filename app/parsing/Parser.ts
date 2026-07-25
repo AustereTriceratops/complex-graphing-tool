@@ -1,6 +1,7 @@
 import * as AST from './AST/AST';
 import { PARSING_TABLE, Token } from './grammar';
 import preParse  from './PreParser';
+import Lexer  from './Lexer';
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, BAR, FUNC, END,
     E, EPrime, T, TPrime, P, PPrime, F, CONSTANTS,
@@ -17,7 +18,7 @@ import {
 
 // TODO: error reporting
 class Parser {
-    static parse(tokens: Token[], verbose=false) {
+    static parseTokens(tokens: Token[], verbose=false) {
         let accept = true;
         const ast = new AST.E();
         const nodeStack: AST.ASTNode[] = [ast];
@@ -118,6 +119,10 @@ class Parser {
         return {
             ast: ast, accept: accept
         };
+    }
+
+    static parse(input: string) {
+        return Parser.parseTokens(Lexer.scan(input));
     }
 
     static buildASTNode(nodeStack: AST.ASTNode[], token: Token,  symbol: string) {
