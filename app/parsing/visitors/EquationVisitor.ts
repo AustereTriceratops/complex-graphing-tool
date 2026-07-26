@@ -2,6 +2,10 @@ import Visitor from './Visitor';
 import * as AST from '../AST/AST';
 
 export class EquationVisitor extends Visitor {
+    visitS(node: AST.S): string {
+        return node.e?.accept(this);
+    }
+
     visitE(node: AST.E): string {
         const t = node.t?.accept(this);
         const e_prime = node.e_prime?.accept(this) ?? '';

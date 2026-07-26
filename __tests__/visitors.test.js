@@ -199,7 +199,7 @@ test('test equation visitor on negative ints', () => {
     expect(eq).toEqual('-1');
 
     ({ast, _} = Parser.parse('1'));
-    ast.t.p.f.value = '-1'
+    ast.e.t.p.f.value = '-1'
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual('-1');
 

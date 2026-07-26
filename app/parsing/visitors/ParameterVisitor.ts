@@ -4,6 +4,10 @@ import * as AST from '../AST/AST';
 class ParameterVisitor extends Visitor{
     parameters: AST.Num[] = [];
 
+    visitS(node: AST.S): void {
+        node.e?.accept(this);
+    }
+
     visitE(node: AST.E): void {
         node.t?.accept(this);
         node.e_prime?.accept(this);

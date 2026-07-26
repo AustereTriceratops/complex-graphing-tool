@@ -4,7 +4,7 @@ import preParse  from './PreParser';
 import Lexer  from './Lexer';
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, BAR, FUNC, END,
-    E, EPrime, T, TPrime, P, PPrime, F, CONSTANTS,
+    S, E, EPrime, T, TPrime, P, PPrime, F, CONSTANTS,
     TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS
 } from "./constants"
 
@@ -20,11 +20,11 @@ import {
 class Parser {
     static parseTokens(tokens: Token[], verbose=false) {
         let accept = true;
-        const ast = new AST.E();
+        const ast = new AST.S();
         const nodeStack: AST.ASTNode[] = [ast];
 
         const stackFinal: string[] = []; // will have only terminal symbols
-        const stack: string[] = ['E']; // will have a mix of terminal and nonterminals
+        const stack: string[] = ['S']; // will have a mix of terminal and nonterminals
 
         tokens = preParse(tokens);
 
@@ -94,6 +94,8 @@ class Parser {
                         continueLoop = false;
                         break;
                     } else if (NONTERMINALS.has(symbol)) {
+                        // the right-hand-side of a production of this form
+                        // {symbol} ::= {token.name} + {other terminal and nonterminal symbols}
                         const production = PARSING_TABLE[symbol][token.name];
 
                         if (production == undefined) {
@@ -125,15 +127,28 @@ class Parser {
         return Parser.parseTokens(Lexer.scan(input));
     }
 
+    /**
+     * 'Fills in' missing AST nodes for top-down parsing (AST nodes get initialized with no children)
+     * Takes a nonterminal symbol with multiple productions and finds the production corresponding 
+     * to a given token being looked at by the parser. It initializes the AST node corresponding to 
+     * that production and stores in in the parent node at the stop of the node stack.
+     * 
+     * @param nodeStack - when nodes are created, they need to be "filled in" later on. This tracks them.
+     * @param token  - the current input token (always a terminal symbol)
+     * @param symbol - the current node being filled in
+     */
     static buildASTNode(nodeStack: AST.ASTNode[], token: Token,  symbol: string) {
         const node = nodeStack.pop();
 
         if (node != undefined) {
+            if (symbol == S) {
+                if (node instanceof AST.S) {
+                    if (token.name != END) {
+                        nodeStack.push(node);
+                    }
+                }
+            }
             if (symbol == E) {
-                // TODO: this case has a lot of "special code" because we
-                // create the base of the AST ahead of time instead of
-                // through productions.
-                // Could maybe add the usual "starter" production that compilers use
                 if (token.name != END) {
                     if (node instanceof AST.Paren) {
                         node.e = new AST.E();
@@ -143,9 +158,10 @@ class Parser {
                         node.e = new AST.E();
                         nodeStack.push(node.e);
                         nodeStack.push(node.e);
-                    } else if (node instanceof AST.E) {
-                        nodeStack.push(node);
-                        nodeStack.push(node);
+                    } else if (node instanceof AST.S) {
+                        node.e = new AST.E();
+                        nodeStack.push(node.e);
+                        nodeStack.push(node.e);
                     }
                 }
             } else if (symbol == EPrime) {

@@ -7,6 +7,11 @@ class GLSLVisitor extends Visitor {
 
     entering = true;
 
+    visitS(node: AST.S): string {
+        const result = node.e?.accept(this);
+        return result;
+    }
+
     visitE(node: AST.E): string {
         let result = '';
 

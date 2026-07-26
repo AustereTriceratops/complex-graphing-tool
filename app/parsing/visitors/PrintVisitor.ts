@@ -8,6 +8,10 @@ export class PrintVisitor extends Visitor {
         return ' '.repeat(2*this.indent_level);
     }
 
+    visitS(node: AST.S): void {
+        node.e?.accept(this);
+    }
+
     visitE(node: AST.E): void {
         node.t?.accept(this);
         node.e_prime?.accept(this);

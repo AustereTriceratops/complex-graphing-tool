@@ -1,6 +1,7 @@
 import * as AST from '../AST/AST';
 
 class Visitor{
+    visitS(_node: AST.S) { throw Error('visitS not implemented') };
     visitE(_node: AST.E) { throw Error('visitE not implemented') };
     visitPlus(_node: AST.Plus) { throw Error('visitPlus not implemented') };
     visitMinus(_node: AST.Minus) { throw Error('visitMinus not implemented') };

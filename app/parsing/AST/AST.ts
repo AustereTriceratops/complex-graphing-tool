@@ -4,6 +4,14 @@ export class ASTNode{
     constructor(){}
 }
 
+export class S extends ASTNode {
+    e?: E;
+
+    accept(visitor: Visitor){
+        return visitor.visitS(this);
+    }
+}
+
 export class E extends ASTNode {
     t?: T;
     e_prime?: EPrime;
