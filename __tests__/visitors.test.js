@@ -164,7 +164,7 @@ test('test equation visitor on operations', () => {
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual(expectedEq);
 
-    expectedEq = 'x * x';
+    expectedEq = 'x*x';
     ({ast, _} = Parser.parse(expectedEq));
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual(expectedEq);

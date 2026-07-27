@@ -57,7 +57,7 @@ export class EquationVisitor extends Visitor {
         const p = node.p?.accept(this);
         const t_prime = node.t_prime?.accept(this) ?? '';
 
-        return ` * ${p}${t_prime}`;
+        return `*${p}${t_prime}`;
     }
     
     visitDivide(node: AST.Divide): string {

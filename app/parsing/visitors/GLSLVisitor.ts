@@ -2,8 +2,8 @@ import Visitor from "./Visitor";
 import * as AST from '../AST/AST';
 
 class GLSLVisitor extends Visitor {
-    function_start = "vec2 function(vec2 x) { vec2 y = "
-    function_end = "; return y;}"
+    function_start = "vec2 function(vec2 x) { vec2 y = ";
+    function_end = "; return y;}";
 
     visitS(node: AST.S): string {
         const txt = node.e?.accept(this) ?? '';
@@ -140,7 +140,7 @@ class GLSLVisitor extends Visitor {
 
     visitNegation(node: AST.Negation): string {
         const txt = node.f?.accept(this) ?? '';
-        return `vec2(0.0, 0.0) - ${txt}`;
+        return `(vec2(0.0, 0.0) - ${txt})`;
     };
 
     visitFunc(node: AST.Func): string {
