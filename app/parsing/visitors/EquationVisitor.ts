@@ -20,7 +20,7 @@ function foldInitialMinuses(txt: string): string {
 
 export class EquationVisitor extends Visitor {
     visitS(node: AST.S): string {
-        const txt = node.e?.accept(this);
+        const txt = node.e?.accept(this) ?? '';
 
         return foldInitialMinuses(txt);
     }

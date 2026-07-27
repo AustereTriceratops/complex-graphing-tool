@@ -1,7 +1,7 @@
 import { Token } from "./grammar";
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END, FUNCTIONS
-} from "./constants"
+} from "./constants";
 
 export function lookAhead(inputString: string, startIndex: number, regex: RegExp) {
     let lookAheadIndex = startIndex;
@@ -27,12 +27,12 @@ export function lookAhead(inputString: string, startIndex: number, regex: RegExp
 }
 
 class Lexer {
-    static scan(input: string) {
+    static scan(input: string): Token[] {
         const n = input.length;
-        const tokens = [];
+        const tokens: Token[] = [];
 
         for (let i = 0; i < n; i++) {
-            const char = input[i]
+            const char = input[i];
             
             if (char == ' ') {
                 continue;
@@ -40,7 +40,7 @@ class Lexer {
                 throw Error("undefined character in input string");
             } else {
                 if (/[a-zA-Z]/.test(char)) {
-                    const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z_1-9]/)
+                    const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z_1-9]/);
 
                     if (txt == 'x') {
                         tokens.push(new Token(X));

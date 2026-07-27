@@ -139,7 +139,7 @@ export class Pow extends PPrime {
 }
 
 export  class F extends ASTNode {
-    accept(_visitor: Visitor) { throw new Error("F.accept() is an abstract method")};
+    accept(_visitor: Visitor) { throw new Error("F.accept() is an abstract method");};
 }
 
 export class Num extends F {
@@ -161,7 +161,7 @@ export class Paren extends F {
     e?: E;
     
     accept(visitor: Visitor) {
-        return visitor.visitParen(this)
+        return visitor.visitParen(this);
     }
 }
 
@@ -193,15 +193,15 @@ export class Negation extends F {
     f?: F;
     
     accept(visitor: Visitor) {
-        return visitor.visitNegation(this)
+        return visitor.visitNegation(this);
     }
 }
 
 export class Func extends F {
     e?: E;
-    name = ''
+    name = '';
     
     accept(visitor: Visitor) {
-        return visitor.visitFunc(this)
+        return visitor.visitFunc(this);
     }
 }
