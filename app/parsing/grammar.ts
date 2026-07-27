@@ -32,14 +32,14 @@ export const PRODUCTIONS: [string, string[]][]  = [
 export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     S: {
         NUM: PRODUCTIONS[0][1], //[E, END]
-        LPAREN: PRODUCTIONS[0][1], //[E, END
-        X: PRODUCTIONS[0][1], //[E, END
-        Z: PRODUCTIONS[0][1], //[E, END
-        Q: PRODUCTIONS[0][1], //[E, END
-        I: PRODUCTIONS[0][1], //[E, END
-        MINUS: PRODUCTIONS[0][1], //[E, END
-        FUNC: PRODUCTIONS[0][1], //[E, END
-        BAR: PRODUCTIONS[0][1], //[E, END
+        LPAREN: PRODUCTIONS[0][1], //[E, END]
+        X: PRODUCTIONS[0][1], //[E, END]
+        Z: PRODUCTIONS[0][1], //[E, END]
+        Q: PRODUCTIONS[0][1], //[E, END]
+        I: PRODUCTIONS[0][1], //[E, END]
+        MINUS: PRODUCTIONS[0][1], //[E, END]
+        FUNC: PRODUCTIONS[0][1], //[E, END]
+        BAR: PRODUCTIONS[0][1], //[E, END]
     },
 
     E: {

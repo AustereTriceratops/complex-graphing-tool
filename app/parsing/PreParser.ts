@@ -3,12 +3,12 @@ import { NUM, LPAREN, RPAREN, PLUS, MINUS, TIMES, BAR, END, OPERATIONS, VARIABLE
 
 export function preParse(tokens: Token[]) {
     let new_tokens = scanImplicitMultiplication(tokens);
-    new_tokens = scanFoldableMinus(new_tokens);
-    // new_tokens = scanInitialMinus(new_tokens);
+    // new_tokens = scanFoldableMinus(new_tokens);
+    new_tokens = scanInitialPlus(new_tokens);
     return new_tokens;
 }
 
-export function scanInitialMinus(tokens: Token[]) {
+export function scanInitialPlus(tokens: Token[]) {
     const n_tokens = tokens.length;
     const new_tokens = []
 
@@ -16,14 +16,11 @@ export function scanInitialMinus(tokens: Token[]) {
         const t = tokens[i];
         const t_next = tokens[i + 1];
 
-        if (
-            (i == 0 && t.name == MINUS)
-        ) {
-            new_tokens.push(new Token(NUM, '0'));
+        if (i == 0 && t.name == PLUS) {
+            ;
+        } else if (t.name == LPAREN && t_next.name == PLUS) {
             new_tokens.push(t);
-        } else if (t.name == LPAREN && t_next.name == MINUS) {
-            new_tokens.push(t);
-            new_tokens.push(new Token(NUM, '0'));
+            i += 1
         } else {
             new_tokens.push(t);
         }
@@ -35,7 +32,7 @@ export function scanInitialMinus(tokens: Token[]) {
 
 export function scanFoldableMinus(tokens: Token[]) {
     const n_tokens = tokens.length;
-    const new_tokens = []
+    const new_tokens = [];
 
     for (let i = 0; i < n_tokens - 1; i++) {
         const t = tokens[i];
@@ -45,8 +42,8 @@ export function scanFoldableMinus(tokens: Token[]) {
             new_tokens.push(new Token(PLUS));
             i += 1;
         } else if (t.name == PLUS && t_next.name == MINUS) {
-            new_tokens.push(new Token(MINUS));
-            i += 1;
+            // new_tokens.push(new Token(MINUS));
+            // i += 1;
         } else {
             new_tokens.push(t);
         }
@@ -55,6 +52,29 @@ export function scanFoldableMinus(tokens: Token[]) {
     new_tokens.push(new Token(END));
     return new_tokens;
 }
+
+// export function scanFoldableMinus(tokens: Token[]) {
+//     const n_tokens = tokens.length;
+//     const new_tokens = [];
+
+//     for (let i = 0; i < n_tokens - 1; i++) {
+//         const t = tokens[i];
+//         const t_next = tokens[i + 1];
+
+//         if (t.name == MINUS && t_next.name == MINUS) {
+//             new_tokens.push(new Token(PLUS));
+//             i += 1;
+//         } else if (t.name == PLUS && t_next.name == MINUS) {
+//             new_tokens.push(new Token(MINUS));
+//             i += 1;
+//         } else {
+//             new_tokens.push(t);
+//         }
+//     }
+
+//     new_tokens.push(new Token(END));
+//     return new_tokens;
+// }
 
 export function scanImplicitMultiplication(tokens: Token[]) {
     const n_tokens = tokens.length;

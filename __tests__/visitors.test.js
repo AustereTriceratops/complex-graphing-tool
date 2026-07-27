@@ -207,4 +207,12 @@ test('test equation visitor on negative ints', () => {
     // ast.t.p.f.f.value = '-1'
     // eq = ast.accept(equationVisitor);
     // expect(eq).toEqual('1');
+
+    // ({ast, _} = Parser.parse('--1'));
+    // eq = ast.accept(equationVisitor);
+    // expect(eq).toEqual('1');
+
+    // ({ast, _} = Parser.parse('---1'));
+    // eq = ast.accept(equationVisitor);
+    // expect(eq).toEqual('-1');
 });

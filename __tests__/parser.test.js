@@ -45,6 +45,35 @@ test('simple malformed expressions', () => {
     
     ({_, accept} = Parser.parse("++++"));
     expect(accept).toBeFalsy();
+
+    ({_, accept} = Parser.parse("x -+ z"));
+    expect(accept).toBeFalsy();
+
+    ({_, accept} = Parser.parse("x --+ z"));
+    expect(accept).toBeFalsy();
+
+    ({_, accept} = Parser.parse("x ---+ z"));
+    expect(accept).toBeFalsy();
+    
+    ({_, accept} = Parser.parse("x ++ z"));
+    expect(accept).toBeFalsy();
+
+    ({_, accept} = Parser.parse("x +++ z"));
+    expect(accept).toBeFalsy();
+
+    ({_, accept} = Parser.parse("x ++++ z"));
+    expect(accept).toBeFalsy();
+
+    // TODO: the grammar allows these expressions by F ::= -F
+    // maybe refactor into 
+    //      P ::= FP' | F'P'
+    //      P' ::= ^FP' | ^F'P' | null. (requires 2 lookahead)  
+    //      F' ::= F
+    // ({_, accept} = Parser.parse("5 ----75"));
+    // expect(accept).toBeFalsy();
+
+    // ({_, accept} = Parser.parse("12 +-- z"));
+    // expect(accept).toBeFalsy();
 })
 
 test('accepts simple expressions', () => {
@@ -64,6 +93,26 @@ test('accepts simple expressions', () => {
     expect(accept).toBeTruthy();
 
     ({_, accept} = Parser.parse("2x + 5i"));
+    expect(accept).toBeTruthy();
+})
+
+test('parses initial plus / minus', () => {
+    let {_, accept} = Parser.parse("+x");
+    expect(accept).toBeTruthy();
+
+    ({_, accept} = Parser.parse("(+x)"));
+    expect(accept).toBeTruthy();
+
+    ({_, accept} = Parser.parse("+cos(+x)"));
+    expect(accept).toBeTruthy();
+
+    ({_, accept} = Parser.parse("-z"));
+    expect(accept).toBeTruthy();
+
+    ({_, accept} = Parser.parse("(-z)"));
+    expect(accept).toBeTruthy();
+
+    ({_, accept} = Parser.parse("-sin(-z)"));
     expect(accept).toBeTruthy();
 })
 
@@ -108,7 +157,7 @@ test('parsing special functions', () => {
     let {_, accept} = Parser.parse("2exp(x)");
     expect(accept).toBeTruthy();
 
-    ({_, accept} = Parser.parse("sin(x) + cos(2x)"));
+    ({_, accept} = Parser.parse("sin(x) + -cos(2x)"));
     expect(accept).toBeTruthy();
 
     ({_, accept} = Parser.parse("1.3/exp(exp(-x))"));

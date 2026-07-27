@@ -5,27 +5,16 @@ class GLSLVisitor extends Visitor {
     function_start = "vec2 function(vec2 x) { vec2 y = "
     function_end = "; return y;}"
 
-    entering = true;
-
     visitS(node: AST.S): string {
-        const result = node.e?.accept(this);
+        const txt = node.e?.accept(this) ?? '';
+        const result = this.function_start + txt + this.function_end;
         return result;
     }
 
     visitE(node: AST.E): string {
-        let result = '';
-
-        if (this.entering) {
-            this.entering = false;
-
-            const txt1 = node.t?.accept(this) ?? '';
-            const txt2 = node.e_prime?.accept(this) ?? '';
-            result = this.function_start + txt1 + txt2 + this.function_end;
-        } else {
-            const txt1 = node.t?.accept(this) ?? '';
-            const txt2 = node.e_prime?.accept(this) ?? '';
-            result = txt1 + txt2;
-        }
+        const txt1 = node.t?.accept(this) ?? '';
+        const txt2 = node.e_prime?.accept(this) ?? '';
+        const result = txt1 + txt2;
         return result;
     }
         
