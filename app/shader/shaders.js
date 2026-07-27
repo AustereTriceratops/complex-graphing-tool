@@ -203,6 +203,17 @@ vec2 eisenstein_function_4(vec2 x) {
 `;
 
 const fragmentShaderMain = `
+float contourLine(float p, float width, float n_contours) {
+  float s = 2.0*PI/n_contours;
+  float hs = s/2.0;
+
+  return min(
+    1.0,
+    pow(max(0.0, 2.0*abs((mod(p + hs, s) - hs)/width) - 1.0), 4.0)
+  );
+}
+
+
 // gl_FragCoord in [ (0, 0), (pixel_width, pixel_height) ]
 void main() {
   // these ternary conditions ensure that the scale of the image will never be below 1 in either dimension
@@ -237,33 +248,17 @@ void main() {
   
   
     // draw contour lines
-    float tightness_angular = 40.0;
     float n_contours = 8.0;
-    float exponent = 2.0;
+    
+    float contour_mask_angular = contourLine(phased_angle, 0.03, n_contours);
   
-    float contour_mask_angular = max(
-      0.0, //1.0/(radius + 1.0),
-      min(
-        1.0,
-        tightness_angular * (pow(2.0, exponent) - pow(1.0 + cos(n_contours * phased_angle), exponent)) - 1.0
-      )
-    );
-  
-    float tightness_radial = 40.0;
-    exponent = 2.0;
-    float contour_mask_radial = max(
-      0.0, //1.0/(radius + 1.0), // should be 1 when radius is 0 and approach 0 othw
-      min(
-        1.0,
-        tightness_radial * (pow(2.0, exponent) - pow(1.0 + cos(8.0*log(radius * (radialOffset + 1.0))), exponent)) - 1.0
-      )
-    );
+    float contour_mask_radial = contourLine(log(radius * (radialOffset + 1.0)), 0.03, n_contours);
   
     float contour_mask = min(contour_mask_radial,contour_mask_angular);
+
     // must be 1.0 when displayContours is 0.0
     // else must be contour_mask when displayContours is 1.0
     contour_mask = 1.0 + (contour_mask - 1.0) * displayContours;
-    // float contour_mask = 1.0;
   
     // extra parameters
     float inv_sat = 1.0 - saturation;
