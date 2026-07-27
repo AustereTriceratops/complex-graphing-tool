@@ -9,7 +9,7 @@ export function preParse(tokens: Token[]) {
 
 export function scanInitialPlus(tokens: Token[]) {
     const n_tokens = tokens.length;
-    const new_tokens = []
+    const new_tokens = [];
 
     for (let i = 0; i < n_tokens - 1; i++) {
         const t = tokens[i];
@@ -19,7 +19,7 @@ export function scanInitialPlus(tokens: Token[]) {
             ;
         } else if (t.name == LPAREN && t_next.name == PLUS) {
             new_tokens.push(t);
-            i += 1
+            i += 1;
         } else {
             new_tokens.push(t);
         }
@@ -79,8 +79,8 @@ export function scanImplicitMultiplication(tokens: Token[]) {
     const new_tokens = [];
 
     for (let i = 0; i < n_tokens - 1; i++) {
-        const t = tokens[i]
-        const t_next = tokens[i + 1]
+        const t = tokens[i];
+        const t_next = tokens[i + 1];
         new_tokens.push(t);
 
         const is_var = VARIABLES.has(t.name);
@@ -102,7 +102,7 @@ export function scanImplicitMultiplication(tokens: Token[]) {
     }
 
     new_tokens.push(new Token(END));
-    return new_tokens
+    return new_tokens;
 }
 
 export default preParse;

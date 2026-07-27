@@ -10,19 +10,19 @@ test('parsing end token', () => {
     const {_, accept} = Parser.parseTokens(tokens);
 
     expect(accept).toBeFalsy();
-})
+});
 
 test('unknown token', () => {
     const tokens = [new Token(UNK)];
     const {_, accept} = Parser.parseTokens(tokens);
 
     expect(accept).toBeFalsy();
-})
+});
 
 test('parser rejects empty string', () => {
     const {_, accept} = Parser.parse('');
     expect(accept).toBeFalsy();
-})
+});
 
 test('simple malformed expressions', () => {
     let {_, accept} = Parser.parse("1+");
@@ -74,7 +74,7 @@ test('simple malformed expressions', () => {
 
     // ({_, accept} = Parser.parse("12 +-- z"));
     // expect(accept).toBeFalsy();
-})
+});
 
 test('accepts simple expressions', () => {
     let {_, accept} = Parser.parse("1 + 1");
@@ -94,7 +94,7 @@ test('accepts simple expressions', () => {
 
     ({_, accept} = Parser.parse("2x + 5i"));
     expect(accept).toBeTruthy();
-})
+});
 
 test('parses initial plus / minus', () => {
     let {_, accept} = Parser.parse("+x");
@@ -114,7 +114,7 @@ test('parses initial plus / minus', () => {
 
     ({_, accept} = Parser.parse("-sin(-z)"));
     expect(accept).toBeTruthy();
-})
+});
 
 test('parses exponential expressions', () => {
     let {_, accept} = Parser.parse("x^2");
@@ -125,7 +125,7 @@ test('parses exponential expressions', () => {
 
     ({_, accept} = Parser.parse("x^x^x"));
     expect(accept).toBeTruthy();
-})
+});
 
 test('test parsing negative numbers and variables', () => {
     let {_, accept} = Parser.parse("-x");
@@ -151,7 +151,7 @@ test('test parsing negative numbers and variables', () => {
 
     ({_, accept} = Parser.parse("x * -(x - 2i)"));
     expect(accept).toBeTruthy();
-})
+});
 
 test('parsing special functions', () => {
     let {_, accept} = Parser.parse("2exp(x)");
@@ -165,7 +165,7 @@ test('parsing special functions', () => {
 
     ({_, accept} = Parser.parse("(1 + cos(1/(1 + 2z)))z^3 / (z + 6i - z^2)"));
     expect(accept).toBeTruthy();
-})
+});
 
 test('parsing conjugation', () => {
     let {_, accept} = Parser.parse("|x|");
@@ -208,4 +208,4 @@ test('parsing conjugation', () => {
 //     tokens = Lexer.scan("z/-|z|");
 //     ({_, accept} = Parser.parse(tokens));
 //     expect(accept).toBeTruthy();
-})
+});

@@ -65,4 +65,3 @@ export const VARIABLES = Object.freeze(new Set([X, Z, Q]));
 
 export const NONTERMINALS = Object.freeze(new Set([S, E, EPrime, T, TPrime, P, PPrime, F]));
 export const NULLABLE_NONTERMINALS = Object.freeze(new Set([EPrime, TPrime, PPrime]));
-

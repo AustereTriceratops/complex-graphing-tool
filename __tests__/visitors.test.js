@@ -56,24 +56,45 @@ test('test parameter visitor', () => {
     ({ast, _} = Parser.parse("-2x"));
     ast.accept(parameterVisitor);
     expect(parameterVisitor.parameters.length).toEqual(1);
-})
+});
 
 
 test('test equation visitor on negative ints', () => {
     const equationVisitor = new EquationVisitor();
 
-    let {ast, _} = Parser.parse('5.5');
+    let expectedEq = '5.5';
+    let {ast, _} = Parser.parse(expectedEq);
     let eq = ast.accept(equationVisitor);
-    expect(eq).toEqual('5.5');
-
-    ({ast, _} = Parser.parse('-1'));
+    expect(eq).toEqual(expectedEq);
+    
+    expectedEq = '-1';
+    ({ast, _} = Parser.parse(expectedEq));
     eq = ast.accept(equationVisitor);
-    expect(eq).toEqual('-1');
+    expect(eq).toEqual(expectedEq);
+    
+    ({ast, _} = Parser.parse('+1'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('1');
+
+    expectedEq = '1 + -2';
+    ({ast, _} = Parser.parse(expectedEq));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = '-1 + -2';
+    ({ast, _} = Parser.parse(expectedEq));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
 
     ({ast, _} = Parser.parse('1'));
-    ast.e.t.p.f.value = '-1'
+    ast.e.t.p.f.value = '-1';
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual('-1');
+
+    // ({ast, _} = Parser.parse('-1'));
+    // ast.e.t.p.f.value = '-1'
+    // eq = ast.accept(equationVisitor);
+    // expect(eq).toEqual('1');
 
     // TODO
     // ({ast, _} = Parser.parse('-1'));
@@ -88,4 +109,38 @@ test('test equation visitor on negative ints', () => {
     // ({ast, _} = Parser.parse('---1'));
     // eq = ast.accept(equationVisitor);
     // expect(eq).toEqual('-1');
+});
+
+test('test equation visitor on operations', () => {
+    const equationVisitor = new EquationVisitor();
+
+    let expectedEq = 'x + x';
+    let {ast, _} = Parser.parse(expectedEq);
+    let eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'x - x';
+    ({ast, _} = Parser.parse(expectedEq));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'x * x';
+    ({ast, _} = Parser.parse(expectedEq));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'x/x';
+    ({ast, _} = Parser.parse(expectedEq));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'x^x';
+    ({ast, _} = Parser.parse(expectedEq));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'x^x^x';
+    ({ast, _} = Parser.parse(expectedEq));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
 });

@@ -4,7 +4,7 @@ import Lexer from '../app/parsing/Lexer.ts';
 import preParser from '../app/parsing/PreParser';
 import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END
-} from "../app/parsing/constants"
+} from "../app/parsing/constants";
 
 
 test('test sequences left unchanged by the pre-parser', () => {
@@ -96,7 +96,7 @@ test('test sequences left unchanged by the pre-parser', () => {
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-})
+});
 
 
 test('test implicit multiplication on numbers', () => {
@@ -123,7 +123,7 @@ test('test implicit multiplication on numbers', () => {
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-})
+});
 
 
 test('test implicit multiplication on parentheses', () => {
@@ -166,7 +166,7 @@ test('test implicit multiplication on parentheses', () => {
     ];
 
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-})
+});
 
 
 test('test implicit multiplication with nums and vars', () => {
@@ -199,8 +199,7 @@ test('test implicit multiplication with nums and vars', () => {
     ];
     
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-    
-})
+});
 
 test(('implicit multiplication w/ special functions'), () => {
     let tokens = Lexer.scan("(2 + i)sin(x)");
@@ -218,121 +217,8 @@ test(('implicit multiplication w/ special functions'), () => {
     ];
     
     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-})
+});
 
-// test('test folding minus signs', () => {
-//     let tokens = Lexer.scan("x - -2");
-//     tokens = preParser(tokens);
-//     let expectedTokens = [
-//         X, PLUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("2 - -z");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, Z, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("(2000)--(q)");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         LPAREN, NUM, RPAREN, PLUS, LPAREN, Q, RPAREN, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("x + -2");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         X, PLUS, MINUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("2 + -z");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, MINUS, Z, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("(2000)+-(q)");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         LPAREN, NUM, RPAREN, PLUS, MINUS, LPAREN, Q, RPAREN, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 +- 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, MINUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 +-- 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, PLUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 +--- 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, PLUS, MINUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 +---- 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, PLUS, PLUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 --- 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, MINUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 ---- 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, PLUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 ++ 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, PLUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-
-//     tokens = Lexer.scan("1 ++++ 1");
-//     tokens = preParser(tokens);
-//     expectedTokens = [
-//         NUM, PLUS, PLUS, PLUS, PLUS, NUM, END
-//     ];
-    
-//     tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-// })
 
 test('test initial plus signs', () => {
     let tokens = Lexer.scan("+x");
@@ -371,7 +257,7 @@ test('test initial plus signs', () => {
     // expectedTokens = [BAR, NUM, MINUS, Z, BAR, END];
 
     // tokens.map((t, i) => expect(t.name).toEqual(expectedTokens[i]));
-})
+});
 
 // TODO
 // test('implicit multiplication around conjugation bars', () => {

@@ -25,7 +25,8 @@ const eslintConfig = defineConfig([
           "caughtErrorsIgnorePattern": "^_"
         }
       ],
-      "prefer-const": 'warn'
+      "prefer-const": 'warn',
+      "semi": ["error", "always"]
     }
   }
 ]);

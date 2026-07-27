@@ -1,7 +1,7 @@
 import {
     X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END,
     S, E, EPrime, T, TPrime, P, PPrime, F
-} from "./constants"
+} from "./constants";
 
 export const PRODUCTIONS: [string, string[]][]  = [
     [S, [E, END]],
@@ -113,11 +113,11 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         FUNC: PRODUCTIONS[19][1], //[FUNC, LPAREN, E, RPAREN],
         BAR: PRODUCTIONS[20][1], //[BAR, E, BAR],
     }
-}
+};
 
 export class Token {
-    name: string // terminal symbol
-    value: string | null
+    name: string; // terminal symbol
+    value: string | null;
 
     constructor(name: string, value: string | null = null) {
         this.name = name;
