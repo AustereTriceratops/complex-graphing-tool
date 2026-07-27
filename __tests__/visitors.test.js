@@ -71,10 +71,6 @@ test('test equation visitor on negative ints', () => {
     ({ast, _} = Parser.parse(expectedEq));
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual(expectedEq);
-    
-    ({ast, _} = Parser.parse('+1'));
-    eq = ast.accept(equationVisitor);
-    expect(eq).toEqual('1');
 
     expectedEq = '1 + -2';
     ({ast, _} = Parser.parse(expectedEq));
@@ -91,24 +87,68 @@ test('test equation visitor on negative ints', () => {
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual('-1');
 
-    // ({ast, _} = Parser.parse('-1'));
-    // ast.e.t.p.f.value = '-1'
-    // eq = ast.accept(equationVisitor);
-    // expect(eq).toEqual('1');
+    ({ast, _} = Parser.parse('-1'));
+    ast.e.t.p.f.f.value = '-1';
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('1');
 
-    // TODO
-    // ({ast, _} = Parser.parse('-1'));
-    // ast.t.p.f.f.value = '-1'
-    // eq = ast.accept(equationVisitor);
-    // expect(eq).toEqual('1');
+    ({ast, _} = Parser.parse('--1'));
+    ast.e.t.p.f.f.f.value = '-1';
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('-1');
 
-    // ({ast, _} = Parser.parse('--1'));
-    // eq = ast.accept(equationVisitor);
-    // expect(eq).toEqual('1');
+    ({ast, _} = Parser.parse('---1'));
+    ast.e.t.p.f.f.f.f.value = '-1';
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('1');
+});
 
-    // ({ast, _} = Parser.parse('---1'));
-    // eq = ast.accept(equationVisitor);
-    // expect(eq).toEqual('-1');
+test('test equation visitor on initial plus/minus', () => {
+    const equationVisitor = new EquationVisitor();
+
+    let {ast, _} = Parser.parse('--1');
+    let eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('1');
+
+    ({ast, _} = Parser.parse('---1'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('-1');
+
+    ({ast, _} = Parser.parse('----1'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('1');
+
+    ({ast, _} = Parser.parse('-----1'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('-1');
+
+    ({ast, _} = Parser.parse('(-1)'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('(-1)');
+
+    ({ast, _} = Parser.parse('(--1)'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('(1)');
+
+    ({ast, _} = Parser.parse('(---1)'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('(-1)');
+
+    ({ast, _} = Parser.parse('(----1)'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('(1)');
+
+    ({ast, _} = Parser.parse('(-----1)'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('(-1)');
+
+    ({ast, _} = Parser.parse('+1'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('1');
+
+    ({ast, _} = Parser.parse('(+1)'));
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual('(1)');
 });
 
 test('test equation visitor on operations', () => {

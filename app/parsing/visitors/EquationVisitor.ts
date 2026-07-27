@@ -1,9 +1,28 @@
 import Visitor from './Visitor';
 import * as AST from '../AST/AST';
 
+function foldInitialMinuses(txt: string): string {
+    let newTxt = '';
+
+    for (let i = 0; i < txt.length; i++) {
+        if (txt[i] == '-' && txt[i + 1] == '-') {
+            i += 1;
+        } else if (txt[i] == '(' && txt[i + 1] == '-' && txt[i + 2] == '-') {
+            newTxt += txt[i];
+            i += 2;
+        } else {
+            newTxt += txt[i];
+        }
+    }
+
+    return newTxt;
+}
+
 export class EquationVisitor extends Visitor {
     visitS(node: AST.S): string {
-        return node.e?.accept(this);
+        const txt = node.e?.accept(this);
+
+        return foldInitialMinuses(txt);
     }
 
     visitE(node: AST.E): string {
