@@ -15,7 +15,7 @@ const NumberInput = (props) => {
                 {value}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default NumberInput;

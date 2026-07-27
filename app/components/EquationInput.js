@@ -11,7 +11,7 @@ const EquationInput = (props) => {
     
     useEffect(() => {
         setInternalValue(value);
-    }, [value])
+    }, [value]);
 
     return (
         <div style={{
@@ -40,7 +40,7 @@ const EquationInput = (props) => {
                 }}
                 onKeyDown={(ev) => {
                     if (ev.key == 'Enter') {
-                        setEquation(internalValue)
+                        setEquation(internalValue);
                     } else if (!/[A-Za-z0-9\(\)\-\+\*\^/\.| _]/.test(ev.key)) {
                         ev.preventDefault();
                     }
@@ -48,7 +48,7 @@ const EquationInput = (props) => {
             />
             <Info/>
         </div>
-    )
-}
+    );
+};
 
 export default EquationInput;

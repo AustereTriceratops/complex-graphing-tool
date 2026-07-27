@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react';
 import katex from 'katex';
 import "katex/dist/katex.min.css";
-import { Paper, Typography, IconButton } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 
 const useClickOutsideEvent = (targetRef, exceptionRef, close) => {
@@ -13,7 +13,7 @@ const useClickOutsideEvent = (targetRef, exceptionRef, close) => {
             ) {
                 close();
             }
-        }
+        };
 
         // Bind the event listener
         document.addEventListener("mousedown", handleClickOutside);
@@ -22,8 +22,8 @@ const useClickOutsideEvent = (targetRef, exceptionRef, close) => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [targetRef, exceptionRef])
-}
+    }, [targetRef, exceptionRef]);
+};
 
 const Info = () => {
     const [panelIsVisible, setPanelIsVisible] = useState(false);
@@ -101,7 +101,7 @@ const Info = () => {
                 />
             </Paper>
         </div>
-    )
-}
+    );
+};
 
 export default Info;

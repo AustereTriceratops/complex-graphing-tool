@@ -8,7 +8,7 @@ const NumberInput = (props) => {
 
     useEffect(() => {
         setInternalValue(value);
-    }, [value])
+    }, [value]);
 
     return (
         <div style={{
@@ -33,7 +33,7 @@ const NumberInput = (props) => {
                 }}
             />
         </div>
-    )
-}
+    );
+};
 
 export default NumberInput;

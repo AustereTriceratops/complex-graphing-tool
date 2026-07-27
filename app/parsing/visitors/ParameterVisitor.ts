@@ -67,11 +67,11 @@ class ParameterVisitor extends Visitor{
     visitI(_node: AST.I) {};
 
     visitNegation(node: AST.Negation) {
-        node.f?.accept(this)
+        node.f?.accept(this);
     };
 
     visitFunc(node: AST.Func) {
-        node.e?.accept(this)
+        node.e?.accept(this);
     };
 
 }

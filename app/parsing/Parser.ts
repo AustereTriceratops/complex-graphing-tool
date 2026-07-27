@@ -6,7 +6,7 @@ import {
     UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, BAR, FUNC, END,
     S, E, EPrime, T, TPrime, P, PPrime, F, CONSTANTS,
     TERMINALS, NONTERMINALS, NULLABLE_NONTERMINALS
-} from "./constants"
+} from "./constants";
 
 // this parsing method buils the abstract syntax tree (AST) top-down
 // this means that, given a production A -> BC, an AST Node for A is created with the fields for B and C uninitialized
@@ -70,7 +70,7 @@ class Parser {
                     // unsure how to test this, or how to create this fail condition
                     // but this is here just in case it causes an unsuccessful parse
                     if (token.name != END)  {
-                        console.log(`parsing ERROR: stack empty, cannot proceed with token ${token}`)
+                        console.log(`parsing ERROR: stack empty, cannot proceed with token ${token}`);
                         accept = false;
                     }
 
@@ -87,7 +87,7 @@ class Parser {
                             // unsure how to test this case, but this is here just in case
                             console.log(
                                 `parsing ERROR: symbol on the stack (${symbol}) does not match the terminal being looked at (${token.name}). Check the parse table.`
-                            )
+                            );
                             accept = false;
                         }
 
@@ -101,7 +101,7 @@ class Parser {
                         if (production == undefined) {
                             console.log(
                                 `parsing ERROR: symbol on the stack (${symbol}) has no productions for the terminal (${token.name})`
-                            )
+                            );
                             accept = false;
                             continueLoop = false;
                             break;
@@ -188,12 +188,12 @@ class Parser {
                 if ((node instanceof AST.TPrime || node instanceof AST.T)) {
                     if (token.name == TIMES) {
                         node.t_prime = new AST.Times();
-                        nodeStack.push(node.t_prime)
-                        nodeStack.push(node.t_prime)
+                        nodeStack.push(node.t_prime);
+                        nodeStack.push(node.t_prime);
                     } else if (token.name == DIVIDE) {
                         node.t_prime = new AST.Divide();
-                        nodeStack.push(node.t_prime)
-                        nodeStack.push(node.t_prime)
+                        nodeStack.push(node.t_prime);
+                        nodeStack.push(node.t_prime);
                     }
                 }
             } else if (symbol == P) {
@@ -206,8 +206,8 @@ class Parser {
                 if ((node instanceof AST.PPrime || node instanceof AST.P)) {
                     if (token.name == POW) {
                         node.p_prime = new AST.Pow();
-                        nodeStack.push(node.p_prime)
-                        nodeStack.push(node.p_prime)
+                        nodeStack.push(node.p_prime);
+                        nodeStack.push(node.p_prime);
                     }
                 }
             } else if (symbol == F) {

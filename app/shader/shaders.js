@@ -4,7 +4,7 @@ attribute vec4 aVertexPosition;
 void main() {
     gl_Position = aVertexPosition;
 }
-`
+`;
 
 const fragmentShaderSetup = `
 precision highp float;
@@ -23,7 +23,7 @@ uniform float saturation;
 uniform float phase;
 uniform float radialOffset;
 uniform float displayContours;
-`
+`;
 
 const complexNumbers = `
 vec2 conj(vec2 a) {
@@ -124,7 +124,7 @@ vec2 c_sin(vec2 z) {
 vec2 c_cos(vec2 z) {
   return (c_exp(c_multiply(i, z)) + c_exp(-c_multiply(i, z))) / 2.0;
 }
-`
+`;
 
 const functions = `
 // the basic term q in q expansions
@@ -200,7 +200,7 @@ vec2 eisenstein_function_4(vec2 x) {
     term_11 + term_12 + term_13 + term_14 + term_15 + term_16 + term_17 + term_18 + term_19
   );
 }
-`
+`;
 
 const fragmentShaderMain = `
 // gl_FragCoord in [ (0, 0), (pixel_width, pixel_height) ]
@@ -245,7 +245,7 @@ void main() {
       0.0, //1.0/(radius + 1.0),
       min(
         1.0,
-        tightness_angular * (pow(2.0, exponent) - pow(1.0 + sin(n_contours * phased_angle), exponent)) - 1.0
+        tightness_angular * (pow(2.0, exponent) - pow(1.0 + cos(n_contours * phased_angle), exponent)) - 1.0
       )
     );
   
@@ -276,7 +276,7 @@ void main() {
 
   gl_FragColor = vec4(pixel_color, 1.0);
 }
-`
+`;
 
 const user_function = `
 vec2 function(vec2 x) {
@@ -286,9 +286,9 @@ vec2 function(vec2 x) {
 
   return y;
 }
-`
+`;
 
-const fragmentShader = fragmentShaderSetup + complexNumbers + functions + user_function + fragmentShaderMain
+const fragmentShader = fragmentShaderSetup + complexNumbers + functions + user_function + fragmentShaderMain;
 
 export function createFragmentShader(user_function) {
   const shader = fragmentShaderSetup + complexNumbers + functions + user_function + fragmentShaderMain;
@@ -296,4 +296,4 @@ export function createFragmentShader(user_function) {
   return shader;
 }
 
-export {vertexShader, fragmentShader}
+export {vertexShader, fragmentShader};

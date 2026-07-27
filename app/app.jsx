@@ -6,8 +6,8 @@ import glManager from './shader/glManager';
 import { EquationInput, ControlPanel } from './components';
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
-import Lexer from './parsing/Lexer';
 import { GLSLVisitor, EquationVisitor, ParameterVisitor } from './parsing/visitors';
+import { printEquationFromAST } from './parsing/utils';
 
 const App = () => {
     //
@@ -23,7 +23,7 @@ const App = () => {
 
     const aspect = useMemo(() => {
         return canvasHeight/canvasWidth;
-    }, [canvasWidth, canvasHeight])
+    }, [canvasWidth, canvasHeight]);
 
 
     ///
@@ -48,14 +48,14 @@ const App = () => {
                     setCanvasHeight(height);
                     programRef.current.updateDims(canvas);
                 }
-            })
+            });
 
             observer.observe(canvas);
 
             // cleanup
             return () => observer.disconnect();
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -63,7 +63,7 @@ const App = () => {
         if (canvas) {
             programRef.current.updateDims(canvas);
         }
-    }, [windowWidth, windowHeight])
+    }, [windowWidth, windowHeight]);
 
 
     //
@@ -85,18 +85,18 @@ const App = () => {
         const biasY = mouseY/canvasHeight;
         setOffsetX(offsetX - (2.0 * biasX - 1) * dZoom);
         setOffsetY(offsetY + (2.0 * biasY - 1) * dZoom);
-    }
+    };
 
     // dragging
     const [isDragging, setIsDragging] = useState(false);
 
     const onMouseDown = () => {
         setIsDragging(true);
-    }
+    };
 
     const onMouseUp = () => {
         setIsDragging(false);
-    }
+    };
     
     const onMouseMove = (ev) => {
         // (0,0) at top left, increasing rightwards and downwards to (canvasWidth, canvasHeight)
@@ -108,7 +108,7 @@ const App = () => {
             setOffsetX(offsetX - 2 * zoom * ev.movementX/canvasWidth);
             setOffsetY(offsetY + 2 * zoom * ev.movementY/canvasHeight);
         }
-    }
+    };
 
 
     //
@@ -134,18 +134,16 @@ const App = () => {
             gatherASTParameters();
             setError(false);
         }
-    }
+    };
 
     const updateAST = () => {
         if (astRef.current != undefined) {
             const visitor = new GLSLVisitor();
             const function_source = astRef.current.accept(visitor);
-            const fragmentShader = createFragmentShader(function_source)
+            const fragmentShader = createFragmentShader(function_source);
             // console.log(function_source)
             
-            const equationVisitor = new EquationVisitor();
-            const equationString = astRef.current.accept(equationVisitor);
-            // console.log(equationString)
+            // printEquationFromAST(astRef.current)
 
             // const printVisitor = new PrintVisitor();
             // astRef.current.accept(printVisitor);
@@ -165,7 +163,7 @@ const App = () => {
         astRef.current.accept(parameterVisitor);
         const params = parameterVisitor.parameters;
         setParameters(params);
-    }
+    };
 
     const updateASTParameter = (index) => {
         return (newVal) => {
@@ -176,7 +174,7 @@ const App = () => {
                 } else {
                     return param;
                 }
-            })
+            });
 
             updateAST();
 
@@ -184,8 +182,8 @@ const App = () => {
             const equationVisitor = new EquationVisitor();
             const equationString = astRef.current.accept(equationVisitor);
             setEquation(equationString);
-        }
-    }
+        };
+    };
 
     useEffect(() => {
         updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
@@ -253,7 +251,7 @@ const App = () => {
                 onWheel={onScroll}
             />
         </div>
-    )
-}
+    );
+};
 
 export default App;

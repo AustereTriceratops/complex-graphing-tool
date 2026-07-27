@@ -23,7 +23,7 @@ const InputSlider = (props) => {
                 {value.toFixed(2)}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default InputSlider;

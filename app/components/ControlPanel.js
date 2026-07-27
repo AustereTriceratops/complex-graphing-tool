@@ -137,7 +137,7 @@ const ControlPanel = (props) => {
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ControlPanel;

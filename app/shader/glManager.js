@@ -1,5 +1,5 @@
- import {initProgram, initPositionBuffer} from './glUtils'
- import {fragmentShader, vertexShader} from './shaders'
+ import {initProgram, initPositionBuffer} from './glUtils';
+ import {fragmentShader, vertexShader} from './shaders';
 
 export default class glManager {
     constructor(canvas) {
@@ -41,7 +41,7 @@ export default class glManager {
         };
         
         this.gl.uniform2fv(this.shaderAttribs.resolution, [this.width, this.height]);
-        this.gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width)
+        this.gl.uniform1f(this.shaderAttribs.aspect, this.height/this.width);
 
         this.positionBuffer = initPositionBuffer(this.gl, this.shaderAttribs.vertexPosition);
     }
