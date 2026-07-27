@@ -3,7 +3,6 @@ import { NUM, LPAREN, RPAREN, PLUS, MINUS, TIMES, BAR, END, OPERATIONS, VARIABLE
 
 export function preParse(tokens: Token[]) {
     let new_tokens = scanImplicitMultiplication(tokens);
-    // new_tokens = scanFoldableMinus(new_tokens);
     new_tokens = scanInitialPlus(new_tokens);
     return new_tokens;
 }
@@ -42,8 +41,7 @@ export function scanFoldableMinus(tokens: Token[]) {
             new_tokens.push(new Token(PLUS));
             i += 1;
         } else if (t.name == PLUS && t_next.name == MINUS) {
-            // new_tokens.push(new Token(MINUS));
-            // i += 1;
+            ;
         } else {
             new_tokens.push(t);
         }
