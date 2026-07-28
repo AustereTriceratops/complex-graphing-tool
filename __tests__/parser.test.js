@@ -7,205 +7,205 @@ import { END, UNK } from '../app/parsing/constants';
 
 test('parsing end token', () => {
     const tokens = [new Token(END)];
-    const {_, accept} = Parser.parseTokens(tokens);
+    const ast = Parser.parseTokens(tokens);
 
-    expect(accept).toBeFalsy();
+    expect(ast.valid).toBeFalsy();
 });
 
 test('unknown token', () => {
     const tokens = [new Token(UNK)];
-    const {_, accept} = Parser.parseTokens(tokens);
+    const ast = Parser.parseTokens(tokens);
 
-    expect(accept).toBeFalsy();
+    expect(ast.valid).toBeFalsy();
 });
 
 test('parser rejects empty string', () => {
-    const {_, accept} = Parser.parse('');
-    expect(accept).toBeFalsy();
+    const ast = Parser.parse('');
+    expect(ast.valid).toBeFalsy();
 });
 
 test('simple malformed expressions', () => {
-    let {_, accept} = Parser.parse("1+");
-    expect(accept).toBeFalsy();
+    let ast = Parser.parse("1+");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("1 1"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("1 1");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("*2"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("*2");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("x++i"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("x++i");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("((()"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("((()");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse(")))))"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse(")))))");
+    expect(ast.valid).toBeFalsy();
     
-    ({_, accept} = Parser.parse("++++"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("++++");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("x -+ z"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("x -+ z");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("x --+ z"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("x --+ z");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("x ---+ z"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("x ---+ z");
+    expect(ast.valid).toBeFalsy();
     
-    ({_, accept} = Parser.parse("x ++ z"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("x ++ z");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("x +++ z"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("x +++ z");
+    expect(ast.valid).toBeFalsy();
 
-    ({_, accept} = Parser.parse("x ++++ z"));
-    expect(accept).toBeFalsy();
+    ast = Parser.parse("x ++++ z");
+    expect(ast.valid).toBeFalsy();
 
     // TODO: the grammar allows these expressions by F ::= -F
     // maybe refactor into 
     //      P ::= FP' | F'P'
     //      P' ::= ^FP' | ^F'P' | null. (requires 2 lookahead)  
     //      F' ::= F
-    // ({_, accept} = Parser.parse("5 ----75"));
-    // expect(accept).toBeFalsy();
+    // ({_, ast.valid} = Parser.parse("5 ----75"));
+    // expect(ast.valid).toBeFalsy();
 
-    // ({_, accept} = Parser.parse("12 +-- z"));
-    // expect(accept).toBeFalsy();
+    // ({_, ast.valid} = Parser.parse("12 +-- z"));
+    // expect(ast.valid).toBeFalsy();
 });
 
-test('accepts simple expressions', () => {
-    let {_, accept} = Parser.parse("1 + 1");
-    expect(accept).toBeTruthy();
+test('ast.valids simple expressions', () => {
+    let ast = Parser.parse("1 + 1");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("(50)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("(50)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("1 * x + 6"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("1 * x + 6");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("(x / 4)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("(x / 4)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("6/(1 + x)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("6/(1 + x)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("2x + 5i"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("2x + 5i");
+    expect(ast.valid).toBeTruthy();
 });
 
 test('parses initial plus / minus', () => {
-    let {_, accept} = Parser.parse("+x");
-    expect(accept).toBeTruthy();
+    let ast = Parser.parse("+x");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("(+x)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("(+x)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("+cos(+x)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("+cos(+x)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("-z"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("-z");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("(-z)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("(-z)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("-sin(-z)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("-sin(-z)");
+    expect(ast.valid).toBeTruthy();
 });
 
 test('parses exponential expressions', () => {
-    let {_, accept} = Parser.parse("x^2");
-    expect(accept).toBeTruthy();
+    let ast = Parser.parse("x^2");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("x^(2)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("x^(2)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("x^x^x"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("x^x^x");
+    expect(ast.valid).toBeTruthy();
 });
 
 test('test parsing negative numbers and variables', () => {
-    let {_, accept} = Parser.parse("-x");
-    expect(accept).toBeTruthy();
+    let ast = Parser.parse("-x");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("-75"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("-75");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("-(-q)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("-(-q)");
+    expect(ast.valid).toBeTruthy();
     
-    ({_, accept} = Parser.parse("(-q - -4)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("(-q - -4)");
+    expect(ast.valid).toBeTruthy();
     
-    ({_, accept} = Parser.parse("x^-1"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("x^-1");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("x * -1"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("x * -1");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("x / -1"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("x / -1");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("x * -(x - 2i)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("x * -(x - 2i)");
+    expect(ast.valid).toBeTruthy();
 });
 
 test('parsing special functions', () => {
-    let {_, accept} = Parser.parse("2exp(x)");
-    expect(accept).toBeTruthy();
+    let ast = Parser.parse("2exp(x)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("sin(x) + -cos(2x)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("sin(x) + -cos(2x)");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("1.3/exp(exp(-x))"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("1.3/exp(exp(-x))");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("(1 + cos(1/(1 + 2z)))z^3 / (z + 6i - z^2)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("(1 + cos(1/(1 + 2z)))z^3 / (z + 6i - z^2)");
+    expect(ast.valid).toBeTruthy();
 });
 
 test('parsing conjugation', () => {
-    let {_, accept} = Parser.parse("|x|");
-    expect(accept).toBeTruthy();
+    let ast = Parser.parse("|x|");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("3 * |x|"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("3 * |x|");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("1 - |x|"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("1 - |x|");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("|||x|||"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("|||x|||");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("|x + 3|"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("|x + 3|");
+    expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("|2|*|||x| + 3||"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("|2|*|||x| + 3||");
+    expect(ast.valid).toBeTruthy();
 
     // tokens = Lexer.scan("-|x|");
-    // ({_, accept} = Parser.parse(tokens));
-    // expect(accept).toBeTruthy();
+    // ast = Parser.parse(tokens);
+    // expect(ast.valid).toBeTruthy();
 
 //     tokens = Lexer.scan("-|-x|");
-//     ({_, accept} = Parser.parse(tokens));
-//     expect(accept).toBeTruthy();
+//     ast = Parser.parse(tokens);
+//     expect(ast.valid).toBeTruthy();
 
 //     tokens = Lexer.scan("z|-z|");
-//     ({_, accept} = Parser.parse(tokens));
-//     expect(accept).toBeTruthy();
+//     ast = Parser.parse(tokens);
+//     expect(ast.valid).toBeTruthy();
 
-    ({_, accept} = Parser.parse("|x| * sin(x)"));
-    expect(accept).toBeTruthy();
+    ast = Parser.parse("|x| * sin(x)");
+    expect(ast.valid).toBeTruthy();
 
 //     tokens = Lexer.scan("|-x|sin(x)");
-//     ({_, accept} = Parser.parse(tokens));
-//     expect(accept).toBeTruthy();
+//     ast = Parser.parse(tokens);
+//     expect(ast.valid).toBeTruthy();
 
 //     tokens = Lexer.scan("z/-|z|");
-//     ({_, accept} = Parser.parse(tokens));
-//     expect(accept).toBeTruthy();
+//     ast = Parser.parse(tokens);
+//     expect(ast.valid).toBeTruthy();
 });

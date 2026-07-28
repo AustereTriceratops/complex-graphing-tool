@@ -7,6 +7,8 @@ export class ASTNode{
 export class S extends ASTNode {
     e?: E;
 
+    valid = false;
+
     accept(visitor: Visitor){
         return visitor.visitS(this);
     }

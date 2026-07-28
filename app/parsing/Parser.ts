@@ -18,7 +18,7 @@ import {
 
 // TODO: error reporting
 class Parser {
-    static parseTokens(tokens: Token[], verbose=false) {
+    static parseTokens(tokens: Token[], verbose=false): AST.S {
         let accept = true;
         const ast = new AST.S();
         const nodeStack: AST.ASTNode[] = [ast];
@@ -118,12 +118,11 @@ class Parser {
             }
         }
 
-        return {
-            ast: ast, accept: accept
-        };
+        ast.valid = accept;
+        return ast;
     }
 
-    static parse(input: string) {
+    static parse(input: string): AST.S {
         return Parser.parseTokens(Lexer.scan(input));
     }
 

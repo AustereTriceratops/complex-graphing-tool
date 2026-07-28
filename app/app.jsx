@@ -25,18 +25,10 @@ const App = () => {
     }, [canvasWidth, canvasHeight]);
 
 
-    const dedekind_eta = "(x^(1/24))(1-x)(1-x^2)(1-x^3)(1-x^4)(1-x^5)(1-x^6)(1-x^7)(1-x^8)(1-x^9)(1-x^10)(1-x^11)(1-x^12)(1-x^13)"; 
     ///
     /// INITIALIZE CANVAS
     ///
-    useEffect(() => {
-        // const {ast, _} = Parser.parse(dedekind_eta);
-
-        // const visitor = new GLSLVisitor();
-        // const function_source = ast.accept(visitor);
-        // console.log(function_source);
-
-        const canvas = canvasRef.current;
+    useEffect(() => {const canvas = canvasRef.current;
 
         setWindowWidth(window.innerWidth);
         setWindowHeight(window.innerHeight);
@@ -130,9 +122,9 @@ const App = () => {
     const updateEquation = (eq) => {
         setEquation(eq);
                         
-        const {ast: newAST, accept} = Parser.parse(eq);
+        const newAST= Parser.parse(eq);
         
-        if (!accept) {
+        if (!newAST.valid) {
             setError(true);
         } else {
             astRef.current = newAST;
