@@ -7,6 +7,9 @@ function foldInitialMinuses(txt: string): string {
     for (let i = 0; i < txt.length; i++) {
         if (txt[i] == '-' && txt[i + 1] == '-') {
             i += 1;
+        } else if (txt[i] == '-' && txt[i + 1] == ' ' && txt[i + 2] == '-') {
+            newTxt += '+ ';
+            i += 2;
         } else if (txt[i] == '(' && txt[i + 1] == '-' && txt[i + 2] == '-') {
             newTxt += txt[i];
             i += 2;

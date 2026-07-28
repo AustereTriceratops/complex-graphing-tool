@@ -54,7 +54,7 @@ const Info = () => {
                 padding: '0.5rem',
                 background: '#555',
                 color: 'white',
-                width: '20rem',
+                width: '30rem',
             }}>
                 <Typography variant="h6" sx={{fontWeight: 'bold'}}>Constants</Typography>
                 <div style={{marginLeft: '1rem'}}
@@ -81,22 +81,27 @@ const Info = () => {
                 />
                 <div style={{marginLeft: '1rem'}}
                     dangerouslySetInnerHTML={{
-                        __html: katex.renderToString("exp(x)"),
+                        __html: katex.renderToString("\\text{exp(x)} \\hspace{2cm} e^x"),
                     }}
                 />
                 <div style={{marginLeft: '1rem'}}
                     dangerouslySetInnerHTML={{
-                        __html: katex.renderToString("log(x)"),
+                        __html: katex.renderToString("\\text{log(x)} \\hspace{2.1cm} ln(x)"),
                     }}
                 />
                 <div style={{marginLeft: '1rem'}}
                     dangerouslySetInnerHTML={{
-                        __html: katex.renderToString("sqrt(x)"),
+                        __html: katex.renderToString("\\text{sqrt(x)} \\hspace{1.9cm} \\sqrt{x}"),
                     }}
                 />
                 <div style={{marginLeft: '1rem'}}
                     dangerouslySetInnerHTML={{
-                        __html: katex.renderToString(`conj(x) \\quad \\text{complex conjugation}`),
+                        __html: katex.renderToString(`\\text{conj(x)} \\hspace{1.8cm} \\text{complex conjugation}`),
+                    }}
+                />
+                <div style={{marginLeft: '1rem'}}
+                    dangerouslySetInnerHTML={{
+                        __html: katex.renderToString(`\\text{dedekind\\_eta(x)} \\hspace{0.5cm} \\eta(x) = x^{1/24} \\prod_{n=1}^\\infty (1 - x^n)`),
                     }}
                 />
             </Paper>

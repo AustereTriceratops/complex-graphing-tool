@@ -7,7 +7,6 @@ import { EquationInput, ControlPanel } from './components';
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import { GLSLVisitor, EquationVisitor, ParameterVisitor } from './parsing/visitors';
-import { printEquationFromAST } from './parsing/utils';
 
 const App = () => {
     //
@@ -26,10 +25,17 @@ const App = () => {
     }, [canvasWidth, canvasHeight]);
 
 
+    const dedekind_eta = "(x^(1/24))(1-x)(1-x^2)(1-x^3)(1-x^4)(1-x^5)(1-x^6)(1-x^7)(1-x^8)(1-x^9)(1-x^10)(1-x^11)(1-x^12)(1-x^13)"; 
     ///
     /// INITIALIZE CANVAS
     ///
     useEffect(() => {
+        // const {ast, _} = Parser.parse(dedekind_eta);
+
+        // const visitor = new GLSLVisitor();
+        // const function_source = ast.accept(visitor);
+        // console.log(function_source);
+
         const canvas = canvasRef.current;
 
         setWindowWidth(window.innerWidth);
@@ -186,7 +192,8 @@ const App = () => {
     };
 
     useEffect(() => {
-        updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
+        updateEquation('dedekind_eta(x)');
+        // updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
     }, []);
 
 

@@ -134,24 +134,8 @@ vec2 q(vec2 x) {
   return y;
 }
 
-vec2 dedekind_eta_function(vec2 x) {
-  vec2 q = q(x);
-  vec2 fac = c_pow(q, 1.0/24.0);
-  vec2 term_1 = vec2(1.0, 0.0) - q;
-
-  vec2 prod1 = c_multiply(fac, term_1);
-  vec2 prod2 = c_multiply(prod1, vec2(1.0, 0.0) - c_pow(q, 2.0));
-  vec2 prod3 = c_multiply(prod2, vec2(1.0, 0.0) - c_pow(q, 3.0));
-  vec2 prod4 = c_multiply(prod3, vec2(1.0, 0.0) - c_pow(q, 4.0));
-  vec2 prod5 = c_multiply(prod4, vec2(1.0, 0.0) - c_pow(q, 5.0));
-  vec2 prod6 = c_multiply(prod5, vec2(1.0, 0.0) - c_pow(q, 6.0));
-  vec2 prod7 = c_multiply(prod6, vec2(1.0, 0.0) - c_pow(q, 7.0));
-  vec2 prod8 = c_multiply(prod7, vec2(1.0, 0.0) - c_pow(q, 8.0));
-  vec2 prod9 = c_multiply(prod8, vec2(1.0, 0.0) - c_pow(q, 9.0));
-  vec2 prod10 = c_multiply(prod9, vec2(1.0, 0.0) - c_pow(q, 10.0));
-
-  return prod10;
-}
+// compiled by GLSLVisitor
+vec2 c_dedekind_eta(vec2 x) { vec2 y = c_multiply((c_pow_full(x, (c_divide(vec2(1.0000000000, 0.0), vec2(24.0000000000, 0.0))))), c_multiply((vec2(1.0000000000, 0.0)-x), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(2.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(3.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(4.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(5.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(6.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(7.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(8.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(9.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(10.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(11.0000000000, 0.0))), c_multiply((vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(12.0000000000, 0.0))), (vec2(1.0000000000, 0.0)-c_pow_full(x, vec2(13.0000000000, 0.0)))))))))))))))); return y;}
 
 vec2 eisenstein_function_4(vec2 x) {
   vec2 q = q(x); 
@@ -237,22 +221,25 @@ void main() {
   
     
     // modulate the brightness by complex magnitude
-    float fac = 1.0/(0.2*pow(radius, 0.2) + 1.0);
+    float fac = 2.7181*radius * exp(-radius);
+    // float fac = 1.0/(0.2*pow(radius, 0.2) + 1.0);
     // float fac = radius; // cool visual effect
     // float fac = 1.0 - 1.0/(radius + 1.0);
     
-  
     // color by complex angle
     float phased_angle = angle + phase;
     vec3 color = vec3(sin(phased_angle), sin(phased_angle - 2.0*PI/3.0), sin(phased_angle - 4.0*PI/3.0));
+    // color = color + 0.5*vec3(2.0, 1.0, 1.0);
+  
   
   
     // draw contour lines
     float n_contours = 8.0;
+    float line_width = 0.02;
     
-    float contour_mask_angular = contourLine(phased_angle, 0.03, n_contours);
+    float contour_mask_angular = contourLine(phased_angle, line_width, n_contours);
   
-    float contour_mask_radial = contourLine(log(radius * (radialOffset + 1.0)), 0.03, n_contours);
+    float contour_mask_radial = contourLine(log(radius * (radialOffset + 1.0)), line_width, n_contours);
   
     float contour_mask = min(contour_mask_radial,contour_mask_angular);
 

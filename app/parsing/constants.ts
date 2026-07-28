@@ -38,8 +38,9 @@ export const COS = 'cos';
 export const LOG = 'log';
 export const SQRT = 'sqrt';
 export const CONJ = 'conj';
+export const DEDEKIND_ETA = 'dedekind_eta';
 
-export const FUNCTIONS = Object.freeze(new Set([EXP, LOG, SIN, COS, SQRT, CONJ]));
+export const FUNCTIONS = Object.freeze(new Set([EXP, LOG, SIN, COS, SQRT, CONJ, DEDEKIND_ETA]));
 
 // grammar
 export const TERMINALS = Object.freeze(new Set([
