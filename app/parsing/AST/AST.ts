@@ -159,6 +159,21 @@ export class Num extends F {
     }
 }
 
+export class Param extends F {
+    value: number;
+    name: string;
+
+    constructor(value: number, name: string) {
+        super();
+        this.value = value;
+        this.name = name;
+    }
+
+    accept(visitor: Visitor) {
+        return visitor.visitNum(this);
+    }
+}
+
 export class Paren extends F {
     e?: E;
     

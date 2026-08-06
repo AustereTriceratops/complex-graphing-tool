@@ -184,3 +184,32 @@ test('test equation visitor on operations', () => {
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual(expectedEq);
 });
+
+test('test equation visitor on named constants', () => {
+    const equationVisitor = new EquationVisitor();
+
+    let expectedEq = '1 + pi';
+    let ast = Parser.parse(expectedEq);
+    let eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = '1/pi^2';
+    ast = Parser.parse(expectedEq);
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'e^x';
+    ast = Parser.parse(expectedEq);
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'pi + e';
+    ast = Parser.parse(expectedEq);
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'e*x^2';
+    ast = Parser.parse(expectedEq);
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+});

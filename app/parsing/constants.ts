@@ -20,6 +20,7 @@ export const TIMES = 'TIMES';
 export const DIVIDE = 'DIVIDE';
 export const POW = 'POW';
 export const NUM = 'NUM';
+export const PARAM = 'PARAM';
 export const LPAREN = 'LPAREN';
 export const RPAREN = 'RPAREN';
 export const BAR = 'BAR';
@@ -30,6 +31,7 @@ export const END = 'END';
 export const e = '2.718281828459045';
 export const pi = '3.141592653589793';
 export const CONSTANTS = Object.freeze(new Set([e, pi]));
+export const CONSTANTS_LOOKUP = Object.freeze({'2.718281828459045': 'e', '3.141592653589793': 'pi'});
 
 // named functions
 export const EXP = 'exp';
@@ -55,6 +57,7 @@ export const TERMINALS = Object.freeze(new Set([
     DIVIDE,
     POW,
     NUM,
+    PARAM,
     LPAREN,
     RPAREN,
     BAR,

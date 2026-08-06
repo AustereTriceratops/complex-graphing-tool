@@ -1,5 +1,6 @@
 import Visitor from './Visitor';
 import * as AST from '../AST/AST';
+import {CONSTANTS_LOOKUP} from '../constants';
 
 function foldInitialMinuses(txt: string): string {
     let newTxt = '';
@@ -97,7 +98,13 @@ export class EquationVisitor extends Visitor {
     }
 
     visitNum(node: AST.Num): string {
-        return `${node.value}`;
+        if (node.isConstant) {
+            // this works but feels kinda ugly
+            // constants may need their own AST node w/ data specific to them
+            return `${CONSTANTS_LOOKUP[node.value]}`;
+        } else {
+            return `${node.value}`;
+        }
     }
     
     visitParen(node: AST.Paren): string {

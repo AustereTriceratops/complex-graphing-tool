@@ -1,5 +1,5 @@
 import {
-    X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END,
+    X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, PARAM, LPAREN, RPAREN, BAR, FUNC, END,
     S, E, EPrime, T, TPrime, P, PPrime, F
 } from "./constants";
 
@@ -25,6 +25,7 @@ export const PRODUCTIONS: [string, string[]][]  = [
     [F, [MINUS, F]],
     [F, [FUNC, LPAREN, E, RPAREN]],
     [F, [BAR, E, BAR]],
+    [F, [PARAM]],
 ] as const;
 
 
@@ -112,6 +113,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         MINUS: PRODUCTIONS[18][1], //[MINUS, F],
         FUNC: PRODUCTIONS[19][1], //[FUNC, LPAREN, E, RPAREN],
         BAR: PRODUCTIONS[20][1], //[BAR, E, BAR],
+        PARAM: PRODUCTIONS[21][1], //[CONST],
     }
 };
 
