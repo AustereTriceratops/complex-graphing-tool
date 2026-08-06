@@ -197,6 +197,17 @@ float contourLine(float p, float width, float n_contours) {
   );
 }
 
+float signed_sqrt(float x) {
+  float s = sign(x);
+  return s * sqrt(abs(x));
+}
+
+float squish(float x) {
+  float a = sign(x - 0.5);
+  float s = 0.5*a + 0.5;
+  return s - 2.0*a*pow(x - s, 2.0);
+}
+
 
 // gl_FragCoord in [ (0, 0), (pixel_width, pixel_height) ]
 void main() {
@@ -217,20 +228,26 @@ void main() {
     vec2 val = function(coords);
   
     float angle = complex_angle(val);
-    float radius = complex_radius(val);
+    float radius = max(complex_radius(val), 0.00001);
   
     
     // modulate the brightness by complex magnitude
-    float fac = 2.7181*radius * exp(-radius);
-    // float fac = 1.0/(0.2*pow(radius, 0.2) + 1.0);
+    // float fac = 2.7181*radius * exp(-0.8*radius);
+    float fac = 1.0/(0.2*pow(radius, 0.5) + 1.0);
     // float fac = radius; // cool visual effect
     // float fac = 1.0 - 1.0/(radius + 1.0);
+    float near = 1.0/(1.0 + 5.0*radius);
     
     // color by complex angle
     float phased_angle = angle + phase;
-    vec3 color = vec3(sin(phased_angle), sin(phased_angle - 2.0*PI/3.0), sin(phased_angle - 4.0*PI/3.0));
+    // vec3 color = 0.5 + 0.5*vec3(sin(phased_angle), sin(phased_angle - 2.0*PI/3.0), sin(phased_angle - 4.0*PI/3.0));
+    vec3 color = vec3(
+      squish(0.5 + 0.5*sin(phased_angle)),
+      squish(0.5 + 0.5*sin(phased_angle - 2.0*PI/3.0)),
+      squish(0.5 + 0.5*sin(phased_angle - 4.0*PI/3.0))
+    );
+    // color = min(color + 0.4*near, 1.0);
     // color = color + 0.5*vec3(2.0, 1.0, 1.0);
-  
   
   
     // draw contour lines
@@ -251,7 +268,7 @@ void main() {
     float inv_sat = 1.0 - saturation;
     color = vec3(inv_sat, inv_sat, inv_sat) + saturation * color;
 
-    pixel_color += contour_mask * fac * color;
+    pixel_color += contour_mask * (fac * color + near);
   }
   
   pixel_color = pixel_color / 9.0;

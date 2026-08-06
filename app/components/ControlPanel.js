@@ -64,7 +64,7 @@ const ControlPanel = (props) => {
                     value={saturation}
                     step={0.01}
                     min={0}
-                    max={0.5}
+                    max={1.0}
                     setValue={setSaturation}
                 />
                 <InputSlider
@@ -75,14 +75,16 @@ const ControlPanel = (props) => {
                     max={4*Math.PI}
                     setValue={setPhase}
                 />
-                <InputSlider
-                    title="Radial offset"
-                    value={radialOffset}
-                    step={0.005}
-                    min={0}
-                    max={10}
-                    setValue={setRadialOffset}
-                />
+                {displayContours > 0 &&
+                    <InputSlider
+                        title="Radial offset"
+                        value={radialOffset}
+                        step={0.005}
+                        min={0}
+                        max={10}
+                        setValue={setRadialOffset}
+                    />
+                }
             </div>
             <div className='controlPanelSection'>
                 <p className='controlPanelSectionTitle'>Graph info</p>

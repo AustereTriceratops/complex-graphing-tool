@@ -184,15 +184,15 @@ const App = () => {
     };
 
     useEffect(() => {
-        updateEquation('dedekind_eta(x)');
-        // updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
+        // updateEquation('dedekind_eta(x)');
+        updateEquation("x^11 - 3x^8 + 2x^4 - 6x^3 + 1x^2 + 2x + 0.5");
     }, []);
 
 
     //
     // SHADER CONTROLS
     //
-    const [saturation, setSaturation] = useState(0.3);
+    const [saturation, setSaturation] = useState(0.6);
     const [phase, setPhase] = useState(0);
     const [radialOffset, setRadialOffset] = useState(0);
     const [displayContours, setDisplayContours] = useState(1);
