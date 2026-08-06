@@ -53,11 +53,10 @@ const ControlPanel = (props) => {
                     background: '#ddd',
                     cursor: 'pointer',
                     opacity: 0.6,
-                    minHeight: '200px',
                 }}
                 onClick={() => setHidden(!hidden)}
             >
-                {hidden ? <ArrowRightIcon/> : <ArrowLeftIcon/>}
+                {hidden ? <ArrowRightIcon fontSize='16'/> : <ArrowLeftIcon/>}
             </Paper>
             <Paper sx={{
                 visibility: hidden ? 'hidden' : 'visible',

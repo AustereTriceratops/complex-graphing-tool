@@ -113,7 +113,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
         MINUS: PRODUCTIONS[18][1], //[MINUS, F],
         FUNC: PRODUCTIONS[19][1], //[FUNC, LPAREN, E, RPAREN],
         BAR: PRODUCTIONS[20][1], //[BAR, E, BAR],
-        PARAM: PRODUCTIONS[21][1], //[CONST],
+        PARAM: PRODUCTIONS[21][1], //[PARAM],
     }
 };
 

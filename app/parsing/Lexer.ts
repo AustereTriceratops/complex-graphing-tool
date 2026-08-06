@@ -1,9 +1,10 @@
 import { Token } from "./grammar";
 import {
-    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, LPAREN, RPAREN, BAR, FUNC, END, FUNCTIONS,
+    UNK, X, Z, Q, I, PLUS, MINUS, TIMES, DIVIDE, POW, NUM, PARAM, LPAREN, RPAREN, BAR, FUNC, END, FUNCTIONS,
     e, pi
 } from "./constants";
 
+// TODO: move to utils.ts
 export function lookAhead(inputString: string, startIndex: number, regex: RegExp) {
     let lookAheadIndex = startIndex;
     let lookAheadChar = inputString[startIndex];
@@ -41,7 +42,7 @@ class Lexer {
                 throw Error("undefined character in input string");
             } else {
                 if (/[a-zA-Z]/.test(char)) {
-                    const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z_1-9]/);
+                    const {txt, indexIncrement} = lookAhead(input, i, /[a-zA-Z_0-9]/);
 
                     if (txt == 'x') {
                         tokens.push(new Token(X));
@@ -58,6 +59,9 @@ class Lexer {
                         i += indexIncrement;
                     } else if (FUNCTIONS.has(txt)) {
                         tokens.push(new Token(FUNC, txt));
+                        i += indexIncrement;
+                    } else if (/^[a-z]{1}_[0-9]/.test(txt) == true) {
+                        tokens.push(new Token(PARAM, txt));
                         i += indexIncrement;
                     } else {
                         tokens.push(new Token(UNK, txt));
