@@ -170,7 +170,7 @@ export class Param extends F {
     }
 
     accept(visitor: Visitor) {
-        return visitor.visitNum(this);
+        return visitor.visitParam(this);
     }
 }
 

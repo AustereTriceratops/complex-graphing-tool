@@ -199,10 +199,10 @@ test('tokenizing floats', () => {
 
     expect(tokens.length).toEqual(2);
     expect(tokens[0].value).toEqual(expectedValue);
-
+    
     tokens = Lexer.scan("e");
     expectedValue = "2.718281828459045";
-
+    
     expect(tokens.length).toEqual(2);
     expect(tokens[0].value).toEqual(expectedValue);
 });

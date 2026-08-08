@@ -217,7 +217,9 @@ class Parser {
                             node.f = new AST.Num(parseFloat(token.value), isConstant);
                         }
                     } else if (token.name == PARAM) {
-                        ;
+                        if (token.value != null) {
+                            node.f = new AST.Param(1, token.value);
+                        }
                     } else if (token.name == LPAREN) {
                         node.f = new AST.Paren();
                         nodeStack.push(node.f);

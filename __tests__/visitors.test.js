@@ -4,7 +4,7 @@ import Parser from '../app/parsing/Parser';
 import { ParameterVisitor, EquationVisitor } from '../app/parsing/visitors';
 
 
-test('test parameter visitor', () => {
+test('test parameter visitor on numbers', () => {
     const parameterVisitor = new ParameterVisitor();
 
     let ast = Parser.parse("1 + 2");
@@ -58,6 +58,66 @@ test('test parameter visitor', () => {
     expect(parameterVisitor.parameters.length).toEqual(1);
 });
 
+test('test paremeter visitor on named parameters', () => {
+    const parameterVisitor = new ParameterVisitor();
+
+    let ast = Parser.parse("a_0");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(1);
+    
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("2*a_0");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(2);
+    
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("g_999*x^2");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(2);
+    
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("(x_0 + x_1)*x");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(2);
+    
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("x^s_1");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(1);
+    
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("a_0*x^3 + a_1*x^2 + a_2*x + a_3");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(6);
+});
+
+test('test parameter visitor on named constants', () => {
+    const parameterVisitor = new ParameterVisitor();
+
+    let ast = Parser.parse("pi");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(0);
+
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("sin(pi*x)");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(0);
+
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("sin(2*pi*x)");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(1);
+
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("e^x");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(0);
+
+    parameterVisitor.parameters = [];
+    ast = Parser.parse("e^(2x)");
+    ast.accept(parameterVisitor);
+    expect(parameterVisitor.parameters.length).toEqual(1);
+});
 
 test('test equation visitor on negative ints', () => {
     const equationVisitor = new EquationVisitor();
@@ -209,6 +269,30 @@ test('test equation visitor on named constants', () => {
     expect(eq).toEqual(expectedEq);
 
     expectedEq = 'e*x^2';
+    ast = Parser.parse(expectedEq);
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+});
+
+test('test equation visitor on parameters', () => {
+    const equationVisitor = new EquationVisitor();
+
+    let expectedEq = '2*a_0';
+    let ast = Parser.parse(expectedEq);
+    let eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'g_999*x^2';
+    ast = Parser.parse(expectedEq);
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = '(x_0 + x_1)*x';
+    ast = Parser.parse(expectedEq);
+    eq = ast.accept(equationVisitor);
+    expect(eq).toEqual(expectedEq);
+
+    expectedEq = 'x^s_1';
     ast = Parser.parse(expectedEq);
     eq = ast.accept(equationVisitor);
     expect(eq).toEqual(expectedEq);

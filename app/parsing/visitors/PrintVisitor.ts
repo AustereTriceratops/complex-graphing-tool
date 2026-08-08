@@ -86,6 +86,10 @@ export class PrintVisitor extends Visitor {
         console.log(`${this.spacing}${node.value}`);
     }
     
+    visitParam(node: AST.Param): void {
+        console.log(`${this.spacing}${node.name}`);
+    };
+    
     visitParen(node: AST.Paren): void {
         console.log(`${this.spacing}(`);
 

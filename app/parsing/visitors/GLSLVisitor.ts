@@ -117,6 +117,10 @@ class GLSLVisitor extends Visitor {
         return `vec2(${node.value.toFixed(10)}, 0.0)`;
     };
 
+    visitParam(node: AST.Param): string {
+        return `vec2(${node.value.toFixed(10)}, 0.0)`;
+    };
+
     visitParen(node: AST.Paren): string {
         const txt = node.e?.accept(this) ?? '';
         return `(${txt})`;

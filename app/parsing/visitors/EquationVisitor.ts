@@ -106,6 +106,10 @@ export class EquationVisitor extends Visitor {
             return `${node.value}`;
         }
     }
+
+    visitParam(node: AST.Param): string {
+        return `${node.name}`;
+    }
     
     visitParen(node: AST.Paren): string {
         const expr = node.e?.accept(this);

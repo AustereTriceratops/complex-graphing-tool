@@ -1,8 +1,10 @@
 import Visitor from "./Visitor";
 import * as AST from '../AST/AST';
 
+type NumOrParam = AST.Num | AST.Param
+
 class ParameterVisitor extends Visitor{
-    parameters: AST.Num[] = [];
+    parameters: NumOrParam[] = [];
 
     visitS(node: AST.S): void {
         node.e?.accept(this);
@@ -52,6 +54,10 @@ class ParameterVisitor extends Visitor{
         if (!node.isConstant) {
             this.parameters.push(node);
         }
+    };
+
+    visitParam(node: AST.Param) {
+        this.parameters.push(node);
     };
 
     visitParen(node: AST.Paren) {

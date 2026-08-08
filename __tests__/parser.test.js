@@ -209,3 +209,23 @@ test('parsing conjugation', () => {
 //     ast = Parser.parse(tokens);
 //     expect(ast.valid).toBeTruthy();
 });
+
+test('parsing parameters', () => {
+    let ast = Parser.parse("a_0");
+    expect(ast.valid).toBeTruthy();
+
+    ast = Parser.parse("2*a_0");
+    expect(ast.valid).toBeTruthy();
+    
+    ast = Parser.parse("g_999*x^2");
+    expect(ast.valid).toBeTruthy();
+
+    ast = Parser.parse("(x_0 + x_1)*x");
+    expect(ast.valid).toBeTruthy();
+
+    ast = Parser.parse("x^s_1");
+    expect(ast.valid).toBeTruthy();
+
+    ast = Parser.parse("a_0*x^3 + a_1*x^2 + a_2*x + a_3");
+    expect(ast.valid).toBeTruthy();
+});

@@ -33,6 +33,7 @@ export const PRODUCTIONS: [string, string[]][]  = [
 export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     S: {
         NUM: PRODUCTIONS[0][1], //[E, END]
+        PARAM: PRODUCTIONS[0][1], //[E, END]
         LPAREN: PRODUCTIONS[0][1], //[E, END]
         X: PRODUCTIONS[0][1], //[E, END]
         Z: PRODUCTIONS[0][1], //[E, END]
@@ -45,6 +46,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
 
     E: {
         NUM: PRODUCTIONS[1][1], //[T, EPrime]
+        PARAM: PRODUCTIONS[1][1], //[T, EPrime]
         LPAREN: PRODUCTIONS[1][1], //[T, EPrime]
         X: PRODUCTIONS[1][1], //[T, EPrime]
         Z: PRODUCTIONS[1][1], //[T, EPrime]
@@ -64,6 +66,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     },
     T: {
         NUM: PRODUCTIONS[5][1], //[P, TPrime],
+        PARAM: PRODUCTIONS[5][1], //[P, TPrime],
         LPAREN: PRODUCTIONS[5][1], //[P, TPrime],
         X: PRODUCTIONS[5][1], //[P, TPrime],
         Z: PRODUCTIONS[5][1], //[P, TPrime],
@@ -84,6 +87,7 @@ export const PARSING_TABLE: Record<string, Record<string, string[]>> = {
     },
     P: {
         NUM: PRODUCTIONS[9][1], //[F, PPrime],
+        PARAM: PRODUCTIONS[9][1], //[F, PPrime],
         LPAREN: PRODUCTIONS[9][1], //[F, PPrime],
         X: PRODUCTIONS[9][1], //[F, PPrime],
         Z: PRODUCTIONS[9][1], //[F, PPrime],
