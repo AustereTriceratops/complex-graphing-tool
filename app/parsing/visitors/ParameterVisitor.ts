@@ -7,6 +7,8 @@ class ParameterVisitor extends Visitor{
     parameters: NumOrParam[] = [];
 
     visitS(node: AST.S): void {
+        this.parameters = [];
+
         node.e?.accept(this);
     }
 
