@@ -31,7 +31,9 @@ export const END = 'END';
 export const e = '2.718281828459045';
 export const pi = '3.141592653589793';
 export const CONSTANTS = Object.freeze(new Set([e, pi]));
-export const CONSTANTS_LOOKUP = Object.freeze({'2.718281828459045': 'e', '3.141592653589793': 'pi'});
+
+// TODO: should remove
+export const CONSTANTS_LOOKUP = Object.freeze(new Map<string, string>([['2.718281828459045', 'e'], ['3.141592653589793', 'pi']]));
 
 // named functions
 export const EXP = 'exp';

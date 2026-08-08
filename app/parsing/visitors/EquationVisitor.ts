@@ -101,7 +101,7 @@ export class EquationVisitor extends Visitor {
         if (node.isConstant) {
             // this works but feels kinda ugly
             // constants may need their own AST node w/ data specific to them
-            return `${CONSTANTS_LOOKUP[node.value]}`;
+            return `${CONSTANTS_LOOKUP.get(String(node.value))}`;
         } else {
             return `${node.value}`;
         }
