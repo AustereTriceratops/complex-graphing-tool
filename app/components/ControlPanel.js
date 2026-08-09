@@ -126,7 +126,9 @@ const ControlPanel = (props) => {
                         value={offsetY.toFixed(4)}
                         updateValue={setOffsetY}
                     />
-                    <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+                    <div style={{
+                        display: 'flex', flexDirection: 'row', justifyContent: 'space-between', gap: '1rem'}}
+                    >
                         <NumberDisplay
                             title="x_min:"
                             value={xMin.toFixed(4)}
@@ -136,13 +138,15 @@ const ControlPanel = (props) => {
                             value={xMax.toFixed(4)}
                         />
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+                    <div style={{
+                        display: 'flex', flexDirection: 'row', justifyContent: 'space-between', gap: '1rem'}}
+                    >
                         <NumberDisplay
-                            title="y_min"
+                            title="y_min:"
                             value={yMin.toFixed(4)}
                         />
                         <NumberDisplay
-                            title="y_max"
+                            title="y_max:"
                             value={yMax.toFixed(4)}
                         />
                     </div>
@@ -152,9 +156,9 @@ const ControlPanel = (props) => {
                     { parameters.map((param, i) =>
                         <InputSlider
                             key={i}
-                            title={`parameter ${i + 1}`}
+                            title={param.name? `${param.name}`: `parameter ${i + 1}`}
                             value={param.value}
-                            step={0.01}
+                            step={0.001}
                             min={-20}
                             max={20}
                             setValue={updateASTParameter(i)}

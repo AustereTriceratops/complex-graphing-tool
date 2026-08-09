@@ -5,23 +5,22 @@ const InputSlider = (props) => {
 
     return (
         <div>
-            <div>{title}</div>
             <div style={{
                 display: 'flex',
                 flexDirection:'row',
                 gap: '1rem',
                 alignItems: 'center'
             }}>
-                <Slider
-                    value={value}
-                    step={step}
-                    min={min}
-                    max={max}
-                    onChange={(_, value) => setValue(value)}
-                    sx={{minWidth: '200px', maxWidth: '200px'}}
-                />
-                {value.toFixed(2)}
+                <div>{title}</div>
+                {value.toFixed(3)}
             </div>
+            <Slider
+                value={value}
+                step={step}
+                min={min}
+                max={max}
+                onChange={(_, value) => setValue(value)}
+            />
         </div>
     );
 };

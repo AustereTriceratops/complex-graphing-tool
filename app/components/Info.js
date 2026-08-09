@@ -55,6 +55,7 @@ const Info = () => {
                 background: '#555',
                 color: 'white',
                 width: '30rem',
+                userSelect: 'none',
             }}>
                 <Typography variant="h6" sx={{fontWeight: 'bold'}}>Constants</Typography>
                 <div style={{marginLeft: '1rem'}}
