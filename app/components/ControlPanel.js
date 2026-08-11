@@ -85,27 +85,27 @@ const ControlPanel = (props) => {
                     <InputSlider
                         title="Saturation"
                         value={saturation}
+                        setValue={setSaturation}
                         step={0.01}
                         min={0}
                         max={1.0}
-                        setValue={setSaturation}
                     />
                     <InputSlider
                         title="Phase"
                         value={phase}
+                        setValue={setPhase}
                         step={0.005}
                         min={0}
                         max={4*Math.PI}
-                        setValue={setPhase}
                     />
                     {displayContours > 0 &&
                         <InputSlider
                             title="Radial offset"
                             value={radialOffset}
+                            setValue={setRadialOffset}
                             step={0.005}
                             min={0}
                             max={10}
-                            setValue={setRadialOffset}
                         />
                     }
                 </div>
@@ -155,13 +155,13 @@ const ControlPanel = (props) => {
                     <p className='controlPanelSectionTitle'>Equation Parameters</p>
                     { parameters.map((param, i) =>
                         <InputSlider
-                            key={i}
                             title={param.name? `${param.name}`: `parameter ${i + 1}`}
                             value={param.value}
+                            setValue={updateASTParameter(i)}
                             step={0.001}
                             min={-20}
                             max={20}
-                            setValue={updateASTParameter(i)}
+                            key={i}
                         />
                     )}
                 </div>

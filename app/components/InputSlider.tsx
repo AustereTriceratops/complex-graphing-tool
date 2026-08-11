@@ -1,8 +1,17 @@
 import { Slider } from '@mui/material';
 
-const InputSlider = (props) => {
-    const {value, setValue, step, min, max, title} = props;
+interface InputSliderProps {
+    title: string;
+    value: number;
+    setValue:  (val: number) => void;
+    step: number;
+    min: number;
+    max: number;
+}
 
+const InputSlider = ({
+    title, value, setValue, step, min, max
+}: InputSliderProps) => {
     return (
         <div>
             <div style={{
