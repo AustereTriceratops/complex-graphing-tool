@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Input } from '@mui/material';
 
-const NumberInput = (props) => {
-    const {title, value, updateValue, readOnly} = props;
+interface NumberInputProps {
+    title: string;
+    value: string;
+    updateValue: (value: number) => void;
+    readOnly?: boolean;
+}
 
+const NumberInput = ({title, value, updateValue, readOnly = false} : NumberInputProps) => {
     const [internalValue, setInternalValue] = useState(value);
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import Visitor from "./Visitor";
 import * as AST from '../AST/AST';
 
-type NumOrParam = AST.Num | AST.Param
+export type NumOrParam = AST.Num | AST.Param
 
 class ParameterVisitor extends Visitor{
     parameters: NumOrParam[] = [];

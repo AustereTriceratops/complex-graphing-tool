@@ -4,9 +4,13 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 import Info from './Info';
 
-const EquationInput = (props) => {
-    const {value, setEquation, error} = props;
+interface EquationInputProps {
+    value: string;
+    setEquation: (eq: string) => string;
+    error: boolean;
+}
 
+const EquationInput = ({value, setEquation, error}: EquationInputProps) => {
     const [internalValue, setInternalValue] = useState(value);
     
     useEffect(() => {

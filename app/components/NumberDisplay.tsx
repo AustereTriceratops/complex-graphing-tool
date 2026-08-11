@@ -1,6 +1,9 @@
-const NumberInput = (props) => {
-    const {title, value} = props;
+interface NumberDisplayProps {
+    title: string;
+    value: string;
+}
 
+const NumberDisplay = ({title, value}: NumberDisplayProps) => {
     return (
         <div style={{
             display:'flex',
@@ -18,4 +21,4 @@ const NumberInput = (props) => {
     );
 };
 
-export default NumberInput;
+export default NumberDisplay;

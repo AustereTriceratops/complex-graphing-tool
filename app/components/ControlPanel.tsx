@@ -6,13 +6,34 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 import './components.css';
 import { InputSlider, NumberInput, NumberDisplay } from './index';
+import { NumOrParam } from '../parsing/visitors/ParameterVisitor';
+import { Param } from '../parsing/AST/AST';
 
-const ControlPanel = (props) => {
-    const {
+interface ControlPanelProps {
+    offsetX: number;
+    setOffsetX: (offsetX: number) => void;
+    offsetY: number;
+    setOffsetY: (offsetY: number) => void;
+    zoom: number;
+    setZoom: (zoom: number) => void;
+    aspect: number;
+    phase: number;
+    setPhase: (phase: number) => void;
+    radialOffset: number;
+    setRadialOffset: (radialOffset: number) => void;
+    displayContours: number;
+    setDisplayContours: (displayContours: number) => void;
+    saturation: number;
+    setSaturation: (saturation: number) => void;
+    parameters: NumOrParam[];
+    updateASTParameter: (index: number) => ((val: number) => void);
+}
+
+const ControlPanel = ({
         offsetX, setOffsetX, offsetY, setOffsetY, zoom, setZoom, aspect, phase, setPhase,
         radialOffset, setRadialOffset, displayContours, setDisplayContours, saturation, setSaturation,
         parameters, updateASTParameter
-    } = props;
+    }: ControlPanelProps) => {
 
     const xMin = useMemo(() => {
         const xMin = (aspect < 1) ? offsetX - zoom/aspect : offsetX - zoom;
@@ -56,7 +77,7 @@ const ControlPanel = (props) => {
                 }}
                 onClick={() => setHidden(!hidden)}
             >
-                {hidden ? <ArrowRightIcon fontSize='16'/> : <ArrowLeftIcon/>}
+                {hidden ? <ArrowRightIcon sx={{fontSize: "14px"}}/> : <ArrowLeftIcon/>}
             </Paper>
             <Paper sx={{
                 visibility: hidden ? 'hidden' : 'visible',
@@ -155,7 +176,7 @@ const ControlPanel = (props) => {
                     <p className='controlPanelSectionTitle'>Equation Parameters</p>
                     { parameters.map((param, i) =>
                         <InputSlider
-                            title={param.name? `${param.name}`: `parameter ${i + 1}`}
+                            title={param instanceof Param? `${param.name}`: `parameter ${i + 1}`}
                             value={param.value}
                             setValue={updateASTParameter(i)}
                             step={0.001}
