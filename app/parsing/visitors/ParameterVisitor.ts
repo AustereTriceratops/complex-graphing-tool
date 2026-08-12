@@ -5,9 +5,11 @@ type NumOrParam = AST.Num | AST.Param
 
 class ParameterVisitor extends Visitor{
     parameters: NumOrParam[] = [];
+    parameterNames: Set<string> = new Set();
 
     visitS(node: AST.S): void {
         this.parameters = [];
+        this.parameterNames = new Set();
 
         node.e?.accept(this);
     }
@@ -59,7 +61,10 @@ class ParameterVisitor extends Visitor{
     };
 
     visitParam(node: AST.Param) {
-        this.parameters.push(node);
+        if (!this.parameterNames.has(node.name)) {
+            this.parameters.push(node);
+            this.parameterNames.add(node.name);
+        }
     };
 
     visitParen(node: AST.Paren) {
