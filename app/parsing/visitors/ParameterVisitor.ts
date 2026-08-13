@@ -5,13 +5,13 @@ type NumOrParam = AST.Num | AST.Param
 
 class ParameterVisitor extends Visitor{
     parameters: NumOrParam[] = [];
-    parameterNames: Set<string> = new Set();
 
     visitS(node: AST.S): void {
         this.parameters = [];
-        this.parameterNames = new Set();
 
         node.e?.accept(this);
+
+        console.log(this.parameters.length);
     }
 
     visitE(node: AST.E): void {
@@ -55,15 +55,23 @@ class ParameterVisitor extends Visitor{
     };
 
     visitNum(node: AST.Num) {
+        // TODO: should only parameters get counted?
         if (!node.isConstant) {
             this.parameters.push(node);
         }
     };
 
     visitParam(node: AST.Param) {
-        if (!this.parameterNames.has(node.name)) {
+        let name_matches = false;
+
+        this.parameters.forEach((paramNode) => {
+            if ((paramNode.name?? '') == node.name) {
+                name_matches = true;
+            }
+        });
+        
+        if (!name_matches) {
             this.parameters.push(node);
-            this.parameterNames.add(node.name);
         }
     };
 

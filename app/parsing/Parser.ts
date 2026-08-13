@@ -22,6 +22,7 @@ class Parser {
         let accept = true;
         const ast = new AST.S();
         const nodeStack: AST.ASTNode[] = [ast];
+        const parameters: AST.Param[] = [];
 
         const stackFinal: string[] = []; // will have only terminal symbols
         const stack: string[] = ['S']; // will have a mix of terminal and nonterminals
@@ -57,8 +58,6 @@ class Parser {
 
                 if (breakLoop) break;
             }
-
-            // TODO: check that token is in TERMINALS?
             
             let continueLoop = true;
 
@@ -111,7 +110,7 @@ class Parser {
                                 stack.push(production[i]);
                             }
 
-                            Parser.buildASTNode(nodeStack, token, symbol);
+                            Parser.buildASTNode(nodeStack, parameters, token, symbol);
                         }
                     }
                 }
@@ -136,7 +135,9 @@ class Parser {
      * @param token  - the current input token (always a terminal symbol)
      * @param symbol - the current node being filled in
      */
-    static buildASTNode(nodeStack: AST.ASTNode[], token: Token,  symbol: string) {
+    static buildASTNode(
+        nodeStack: AST.ASTNode[], parameters: AST.Param[], token: Token,  symbol: string
+    ) {
         const node = nodeStack.pop();
 
         if (node != undefined) {
@@ -218,7 +219,21 @@ class Parser {
                         }
                     } else if (token.name == PARAM) {
                         if (token.value != null) {
-                            node.f = new AST.Param(1, token.value);
+                            let matchNode: AST.Param | null = null;
+                            
+                            parameters.forEach((paramNode) => {
+                                if (paramNode.name == token.value) {
+                                    matchNode = paramNode;
+                                }
+                            });
+                            
+                            if (matchNode == null) {
+                                const paramNode = new AST.Param(1, token.value);
+                                node.f = paramNode;
+                                parameters.push(paramNode);
+                            } else {
+                                node.f = matchNode;
+                            }
                         }
                     } else if (token.name == LPAREN) {
                         node.f = new AST.Paren();
