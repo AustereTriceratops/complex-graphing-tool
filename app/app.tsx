@@ -1,19 +1,21 @@
 "use client"; // allows next.js to use useState, useRef, etc.
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import glManager from './shader/glManager';
 import { EquationInput, ControlPanel } from './components';
 import { createFragmentShader } from './shader/shaders';
 import Parser from './parsing/Parser';
 import { GLSLVisitor, EquationVisitor, ParameterVisitor } from './parsing/visitors';
+import * as AST from './parsing/AST/AST';
+import { NumOrParam } from './parsing/visitors/ParameterVisitor';
 
 const App = () => {
     //
     // CANVAS AND SHADER STATE
     //
-    const canvasRef = useRef(null);
-    const programRef = useRef(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const programRef = useRef<glManager>(null);
 
     const [canvasWidth, setCanvasWidth] = useState(1);
     const [canvasHeight, setCanvasHeight] = useState(0);
@@ -44,7 +46,7 @@ const App = () => {
                     const {width, height} = entry.contentRect;
                     setCanvasWidth(width);
                     setCanvasHeight(height);
-                    programRef.current.updateDims(canvas);
+                    programRef.current!.updateDims(canvas);
                 }
             });
 
@@ -59,7 +61,7 @@ const App = () => {
         const canvas = canvasRef.current;
 
         if (canvas) {
-            programRef.current.updateDims(canvas);
+            programRef.current!.updateDims(canvas);
         }
     }, [windowWidth, windowHeight]);
 
@@ -75,7 +77,7 @@ const App = () => {
     const [offsetX, setOffsetX] = useState(0);
     const [offsetY, setOffsetY] = useState(0);
 
-    const onScroll = (ev) => {
+    const onScroll = (ev: React.WheelEvent<HTMLCanvasElement>) => {
         const dZoom = 0.002 * zoom * ev.deltaY;
         setZoom(zoom + dZoom);
 
@@ -96,9 +98,9 @@ const App = () => {
         setIsDragging(false);
     };
     
-    const onMouseMove = (ev) => {
+    const onMouseMove = (ev: React.MouseEvent<HTMLCanvasElement>) => {
         // (0,0) at top left, increasing rightwards and downwards to (canvasWidth, canvasHeight)
-        const bounds = canvasRef.current.getBoundingClientRect();
+        const bounds = canvasRef.current!.getBoundingClientRect();
         setMouseX(ev.clientX - bounds.left);
         setMouseY(ev.clientY - bounds.top);
 
@@ -115,11 +117,11 @@ const App = () => {
     const [equation, setEquation] = useState('');
     const [error, setError] = useState(false);
     
-    const astRef = useRef(null);
+    const astRef = useRef<AST.S>(null);
     const [astVer, setAstVer] = useState(0);
-    const [parameters, setParameters] = useState([]);
+    const [parameters, setParameters] = useState<NumOrParam[]>([]);
 
-    const updateEquation = (eq) => {
+    const updateEquation = (eq: string) => {
         setEquation(eq);
                         
         const newAST= Parser.parse(eq);
@@ -158,13 +160,13 @@ const App = () => {
 
     const gatherASTParameters = () => {
         const parameterVisitor = new ParameterVisitor();
-        astRef.current.accept(parameterVisitor);
+        astRef.current!.accept(parameterVisitor);
         const params = parameterVisitor.parameters;
         setParameters(params);
     };
 
-    const updateASTParameter = (index) => {
-        return (newVal) => {
+    const updateASTParameter = (index: number) => {
+        return (newVal: number) => {
             parameters.forEach((param, j) => {
                 if (index == j) {
                     param.value = newVal;
@@ -178,8 +180,8 @@ const App = () => {
 
             // update equation on the displayed equation input field
             const equationVisitor = new EquationVisitor();
-            const equationString = astRef.current.accept(equationVisitor);
-            setEquation(equationString);
+            astRef.current!.accept(equationVisitor);
+            setEquation(equationVisitor.equationString);
         };
     };
 
@@ -202,7 +204,7 @@ const App = () => {
     // CANVAS RE-RENDERING
     //
     useEffect(() => {
-        programRef.current.render(zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours);
+        programRef.current!.render(zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours);
     }, [zoom, offsetX, offsetY, saturation, phase, radialOffset, displayContours, canvasWidth, canvasHeight, astVer]);
 
     return (
@@ -240,7 +242,7 @@ const App = () => {
                 />
             </div>
             <canvas
-            style={{cursor: 'pointer'}}
+                style={{cursor: 'pointer'}}
                 ref={canvasRef}
                 width={windowWidth}
                 height={windowHeight}

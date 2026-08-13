@@ -23,10 +23,12 @@ function foldInitialMinuses(txt: string): string {
 }
 
 export class EquationVisitor extends Visitor {
-    visitS(node: AST.S): string {
+    equationString = '';
+
+    visitS(node: AST.S): void {
         const txt = node.e?.accept(this) ?? '';
 
-        return foldInitialMinuses(txt);
+        this.equationString = foldInitialMinuses(txt);
     }
 
     visitE(node: AST.E): string {

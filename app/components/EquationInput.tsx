@@ -6,7 +6,7 @@ import Info from './Info';
 
 interface EquationInputProps {
     value: string;
-    setEquation: (eq: string) => string;
+    setEquation: (eq: string) => void;
     error: boolean;
 }
 
