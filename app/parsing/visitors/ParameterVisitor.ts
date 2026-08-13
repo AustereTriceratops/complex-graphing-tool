@@ -65,8 +65,10 @@ class ParameterVisitor extends Visitor{
         let name_matches = false;
 
         this.parameters.forEach((paramNode) => {
-            if ((paramNode.name?? '') == node.name) {
-                name_matches = true;
+            if (paramNode instanceof AST.Param) {
+                if (paramNode.name == node.name) {
+                    name_matches = true;
+                }
             }
         });
         
